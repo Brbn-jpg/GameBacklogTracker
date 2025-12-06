@@ -128,9 +128,9 @@ yarn start
 
 The React application will open in your browser, typically at `http://localhost:3000`.
 
-### Running with Docker (Optional)
+### Running with Docker (Recommended)
 
-If you have Docker and Docker Compose installed, you can run both backend and frontend using the provided `docker-compose.yml` (located in the `tracker` directory).
+If you have Docker and Docker Compose installed, you can run both backend and database using the provided `docker-compose.yml` (located in the `tracker` directory).
 
 1.  **Build Docker images:**
     ```bash
@@ -140,7 +140,12 @@ If you have Docker and Docker Compose installed, you can run both backend and fr
     ```bash
     docker-compose up
     ```
-    This will start both the backend and frontend, and potentially a database container, as defined in the `docker-compose.yml`.
+    This will start both the backend and database, as defined in the `docker-compose.yml`.
+3.  **Start frontend**
+    ```bash
+    npm start
+    ```
+    Make sure you have installed dependencied before running frontend.
 
 ## Project Structure (Monorepo)
 
