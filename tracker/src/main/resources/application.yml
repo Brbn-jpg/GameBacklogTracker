@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: game-backlock-tracker
+  datasource:
+    # url: jdbc:postgresql://localhost:5432/game_backlog
+    # username: gameuser
+    # password: gamepass
+    url: ${DB_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  servlet:
+    multipart:
+      max-file-size: 400MB
+      max-request-size: 400MB
+server:
+  servlet:
+    context-path: /v1

@@ -1,0 +1,29 @@
+services:
+  gamebacklog_db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgres/data
+    env_file:
+      - ../.env
+
+  gamebacklog_backend:
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - gamebacklog_db
+    environment:
+      - DB_URL=${DB_URL}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - ../.env
+
+volumes:
+  pgdata: {}
