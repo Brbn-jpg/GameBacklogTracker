@@ -29,14 +29,11 @@ const KanbanColumn = ({
   return (
     <div
       ref={drop}
-      // ZMIANA TUTAJ: Zamieniono 'w-96 shrink-0' na 'w-full'
-      // Dodano również 'min-w-[300px]', aby kolumna nie była zbyt wąska na małych ekranach (opcjonalne)
-      className={`flex flex-col w-full min-w-[300px] rounded-xl bg-slate-900/50 border ${colorClass} h-[calc(100vh-200px)] ${
+      className={`flex flex-col w-full min-w-[300px] h-full max-h-full rounded-xl bg-slate-900/50 border ${colorClass} ${
         isOver ? "bg-slate-700/50" : ""
-      }`}
+      } overflow-hidden transition-colors duration-200`}
     >
-      {/* Header */}
-      <div className="p-4 flex items-center justify-between border-b border-white/5">
+      <div className="p-4 flex items-center justify-between border-b border-white/5 bg-slate-900/30">
         <div className={`flex items-center space-x-2 font-bold ${badgeColor}`}>
           <span
             className={`w-3 h-3 rounded-full ${badgeColor.replace(
@@ -51,8 +48,7 @@ const KanbanColumn = ({
         </span>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin">
+      <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent min-h-0">
         {games.map((game) => (
           <GameCard key={game.id} game={game} onRemove={onRemove} />
         ))}

@@ -138,6 +138,21 @@ public class UserGameServiceImpl implements UserGameService{
         return backlog;
     }
 
+    @Override
+    public UserBacklogStatsDto getAllUsersBacklogStats(){
+        List<UserGame> userGames = this.userGameRepository.findAll();
+        Map<Status, Long> gamesByStatus = userGames.stream().collect(Collectors.groupingBy(UserGame::getStatus, Collectors.counting()));
+        double totalHoursPlayed = userGames.stream().mapToDouble(UserGame::getHoursPlayed).sum();
+        double averageRating = userGames.stream().filter(ug -> ug.getRating() > 0).mapToInt(UserGame::getRating).average().orElse(0.0);
+        
+        UserBacklogStatsDto backlog = new UserBacklogStatsDto();
+        backlog.setTotalGames(userGames.size());
+        backlog.setGamesByStatus(gamesByStatus);
+        backlog.setTotalHoursPlayed(totalHoursPlayed);
+        backlog.setAverageRating(averageRating);
+        return backlog;
+    }
+
     // Helpers
     private User findUser(String token){
         String jwt = token;

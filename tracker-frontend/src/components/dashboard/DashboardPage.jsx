@@ -144,9 +144,14 @@ const DashboardPage = () => {
     );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-300 font-sans p-6 flex flex-col">
-      <UserProfile />
-      <section className="max-w-[1600px] mx-auto w-full mb-8">
+    // 1. h-screen + overflow-hidden: Blokuje scrollowanie całej strony
+    <div className="h-screen w-full bg-slate-950 text-slate-300 font-sans p-6 flex flex-col overflow-hidden">
+      {/* shrink-0: Te elementy nie mogą się kurczyć */}
+      <div className="shrink-0">
+        <UserProfile />
+      </div>
+
+      <section className="shrink-0 max-w-[1600px] mx-auto w-full mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatsCard
             title="Total Games"
@@ -255,7 +260,8 @@ const DashboardPage = () => {
         </div>
       </section>
 
-      <main className="flex-1 max-w-[1600px] mx-auto w-full overflow-x-auto pb-4">
+      {/* 2. min-h-0: Kluczowe! Pozwala gridowi nie rozpychać rodzica */}
+      <main className="flex-1 w-full max-w-[1600px] mx-auto min-h-0">
         <div className="grid grid-flow-col auto-cols-fr gap-4 h-full lg:w-full">
           <KanbanColumn
             title="Ditched"

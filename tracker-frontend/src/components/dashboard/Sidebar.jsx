@@ -12,7 +12,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 
-const Sidebar = () => {
+const Sidebar = ({ setView, currentView }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -32,14 +32,41 @@ const Sidebar = () => {
       <nav className="mt-8 flex-grow">
         <ul className="flex-1 overflow-y-auto">
           <li>
-            <Link
-              to="/dashboard"
-              className="flex items-center px-6 py-3 hover:bg-white/5 text-neon-cyan transition-colors duration-300"
+            <button
+              onClick={() => setView("dashboard")}
+              className={`w-full flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300 ${
+                currentView === "dashboard" ? "text-neon-cyan" : ""
+              }`}
             >
               <FaTachometerAlt className="mr-3" />
               <span>Dashboard</span>
+            </button>
+          </li>
+
+          <li>
+            <button
+              onClick={() => setView("library")}
+              className={`w-full flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300 ${
+                currentView === "library" ? "text-neon-cyan" : ""
+              }`}
+            >
+              <FaThList className="mr-3" />
+              <span>Library</span>
+            </button>
+          </li>
+          <li>
+            <Link
+              to="/wishlist"
+              className="flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300"
+            >
+              <FaHeart className="mr-3" />
+              <span>Wishlist</span>
             </Link>
           </li>
+        </ul>
+      </nav>
+      <div className="mb-16">
+        <ul className="flex-1 overflow-y-auto">
           <li>
             <Link
               to="/games"
@@ -69,33 +96,15 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/library"
-              className="flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300"
+              to="/"
+              onClick={handleLogout}
+              className="flex items-center px-6 py-3 transition-colors duration-300 text-white hover:bg-red-600/25"
             >
-              <FaThList className="mr-3" />
-              <span>Library</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/wishlist"
-              className="flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300"
-            >
-              <FaHeart className="mr-3" />
-              <span>Wishlist</span>
+              <FaSignOutAlt className="mr-3" />
+              <span>Logout</span>
             </Link>
           </li>
         </ul>
-      </nav>
-      <div className="mb-16">
-        <Link
-          to="/"
-          onClick={handleLogout}
-          className="flex items-center px-6 py-3 transition-colors duration-300 text-white hover:bg-red-600/25"
-        >
-          <FaSignOutAlt className="mr-3" />
-          <span>Logout</span>
-        </Link>
       </div>
     </aside>
   );

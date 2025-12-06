@@ -159,7 +159,10 @@ Format: `Authorization: Bearer <YOUR_JWT_TOKEN>`
 - **Description**: Allows an authenticated user (intended for admins) to upload a CSV file to bulk-add games to the database.
 - **Request**: `multipart/form-data` with a file part.
 - **Success Response (200 OK)**: The number of games successfully added.
-- **Games file**: https://drive.google.com/file/d/11-5uNB7viBReZskab1_ZqwBdMYHNcEqs/view?usp=drive_link
+- **Games Dataset**:
+  - The pre-populated game data can be found at this [Google Drive link](https://drive.google.com/file/d/11-5uNB7viBReZskab1_ZqwBdMYHNcEqs/view?usp=drive_link).
+  - This is a cleaned version of the [93182 Steam Games dataset](https://www.kaggle.com/datasets/joebeachcapital/top-1000-steam-games) from Kaggle.
+  - Data cleaning was performed by [perp](https://github.com/Perpluu).
 
 #### 4. Delete a Game 🔐
 

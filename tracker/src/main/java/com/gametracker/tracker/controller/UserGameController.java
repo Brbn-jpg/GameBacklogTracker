@@ -45,6 +45,12 @@ public class UserGameController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/allstats")
+    public ResponseEntity<UserBacklogStatsDto> getAllUsersBacklogStats(){
+        UserBacklogStatsDto dto = this.userGameService.getAllUsersBacklogStats();
+        return ResponseEntity.ok(dto);
+    }
+
     @PostMapping
     public ResponseEntity<UserGameResponseDto> addUserGame(@Valid @RequestBody AddUserGameDto dto, @RequestHeader("Authorization") String token){
         UserGameResponseDto userGame = this.userGameService.addUserGame(dto.getGameId(), token);

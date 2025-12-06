@@ -55,17 +55,18 @@ const Navbar = () => {
           </div>
           <div className="hidden md:block">
             {isAuthenticated ? (
-              <button
+              <Link
+                to="/"
                 onClick={handleLogout}
-                className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-1 transform transition"
+                className="inline-block bg-red-600/50 hover:bg-red-700/75 text-white py-2 px-4 rounded-lg shadow-lg transition-colors duration-300"
               >
                 Logout
-              </button>
+              </Link>
             ) : (
               <div className="flex items-center space-x-4">
                 <Link
                   to="/register"
-                  className="inline-block bg-gradient-to-r from-purple-500 to-cyan-400 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-1 transform transition"
+                  className="inline-block bg-gradient-to-r from-purple-500 to-cyan-400 text-white py-2 px-4 rounded-lg shadow-lg transition-colors duration-300"
                 >
                   Get Started
                 </Link>

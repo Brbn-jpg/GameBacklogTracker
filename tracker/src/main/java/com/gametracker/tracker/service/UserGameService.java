@@ -12,4 +12,5 @@ public interface UserGameService {
     UserGameResponseDto updateUserGame(long userGameId, UpdateUserGameDto dto, String token);
     boolean deleteUserGame(long userGameId, String token);
     UserBacklogStatsDto getBacklogStats(String token);
+    UserBacklogStatsDto getAllUsersBacklogStats();
 }

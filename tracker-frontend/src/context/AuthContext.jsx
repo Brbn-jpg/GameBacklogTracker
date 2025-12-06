@@ -71,7 +71,15 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        login,
+        logout,
+        token: Cookies.get("jwt_token"),
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

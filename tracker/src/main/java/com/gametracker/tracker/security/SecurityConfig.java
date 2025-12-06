@@ -44,6 +44,7 @@ public class SecurityConfig {
         req.requestMatchers(HttpMethod.POST,"/games/**").authenticated();
         req.requestMatchers(HttpMethod.PATCH,"/games/**").authenticated();
         req.requestMatchers(HttpMethod.DELETE,"/games/**").authenticated();
+        req.requestMatchers("/usergames/allstats").permitAll();
         req.requestMatchers("/usergames/**").authenticated();
         req.anyRequest().authenticated();
         });
