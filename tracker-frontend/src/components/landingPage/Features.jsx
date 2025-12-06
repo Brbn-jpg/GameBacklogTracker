@@ -60,7 +60,7 @@ const Features = () => {
           />
           <FeatureCard
             title="Discover New Games"
-            description="Get recommendations based on your gaming habits and wishlist."
+            description="Explore a vast database of games, filter by genre, platform, and more to find your next adventure."
             icon={
               <svg
                 className="w-10 h-10"
@@ -73,7 +73,7 @@ const Features = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707.707M12 21v-1m-4.243-2.757l.707-.707m8.486 0l.707-.707"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 ></path>
               </svg>
             }

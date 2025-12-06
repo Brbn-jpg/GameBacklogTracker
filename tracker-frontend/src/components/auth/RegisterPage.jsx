@@ -32,6 +32,8 @@ const RegisterPage = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 }); // State for rotation
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -65,7 +67,7 @@ const RegisterPage = () => {
       if (!response.ok) {
         throw new Error(data.message || "Failed to register");
       }
-      login(data.token);
+      login(data.token, rememberMe);
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -74,8 +76,26 @@ const RegisterPage = () => {
     }
   };
 
+  // Handle mouse movement for 3D effect
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+
+    const centerX = innerWidth / 2;
+    const centerY = innerHeight / 2;
+
+    const rotateY = ((clientX - centerX) / centerX) * -5; // Max -5 to 5 deg
+    const rotateX = ((clientY - centerY) / centerY) * 5; // Max -5 to 5 deg
+
+    setRotation({ x: rotateX, y: rotateY, z: 0 });
+  };
+
   return (
-    <main className="flex-grow flex items-center justify-center overflow-hidden [perspective:2000px] min-h-screen">
+    <main
+      className="flex-grow flex items-center justify-center overflow-hidden [perspective:2000px] min-h-screen"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setRotation({ x: 0, y: 0, z: 0 })}
+    >
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl opacity-50 animation-blob"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full filter blur-3xl opacity-50 animation-blob animation-delay-4000"></div>
@@ -85,7 +105,7 @@ const RegisterPage = () => {
         className="absolute w-[85vw] h-[85vh] z-0 transition-transform duration-700 ease-out hover:scale-105"
         style={{
           transformStyle: "preserve-3d",
-          transform: "rotateX(10deg) rotateY(-10deg) rotateZ(1deg)",
+          transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${rotation.z}deg)`, // Dynamic transform
         }}
       >
         <div className="w-full h-full bg-slate-900/40 backdrop-blur-sm border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden relative">
@@ -174,6 +194,26 @@ const RegisterPage = () => {
               value={formData.retypePassword}
               onChange={handleChange}
             />
+          </div>
+
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center">
+              <input
+                id="rememberMe"
+                name="rememberMe"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="rememberMe"
+                className="ml-2 block text-sm text-white"
+              >
+                Remember me
+              </label>
+            </div>
+            {/* Optionally add "Forgot password?" link here */}
           </div>
 
           <button

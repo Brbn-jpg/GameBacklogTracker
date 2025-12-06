@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# GameBacklogTracker Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is the frontend application for the GameBacklogTracker, built using React. It provides a user interface for managing a personal game backlog, including authentication, game browsing, dashboard insights, and user-specific game management.
 
-## Available Scripts
+## Technologies Used
 
-In the project directory, you can run:
+- **React**: A JavaScript library for building user interfaces.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly styling components.
+- **React Router DOM**: For declarative routing in the application.
+- **Context API**: For global state management, particularly for authentication.
+- **Axios (or Fetch API)**: For making HTTP requests to the backend API.
+- **React Icons**: For various icons used throughout the application.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- User Authentication (Login, Register, Logout)
+- Dashboard with user statistics and game summaries
+- Browse and discover games
+- Manage user's personal game backlog (add, update, remove games)
+- Filtering and pagination for game lists
+- Responsive design for various screen sizes
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation
 
-### `npm test`
+To get this project up and running on your local machine, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1.  **Clone the repository:**
 
-### `npm run build`
+    ```bash
+    git clone https://github.com/your-username/GameBacklogTracker.git
+    cd GameBacklogTracker/tracker-frontend
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2.  **Install dependencies:**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3.  **Environment Variables:**
+    Create a `.env` file in the `tracker-frontend` directory based on `.env.example` (if provided).
+    A typical setup might include:
 
-### `npm run eject`
+    ```
+    REACT_APP_API_BASE_URL=http://localhost:8080/api
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    Ensure this points to your running backend API.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4.  **Start the development server:**
+    ```bash
+    npm start
+    # or
+    yarn start
+    ```
+    The application will typically run on `http://localhost:3000`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Register/Login**: Access the authentication pages to create an account or log in.
+- **Dashboard**: View your personal game backlog statistics and recent activity.
+- **Games**: Browse available games, apply filters, and add them to your backlog.
+- **Library/Wishlist**: Manage your personal collection of games.
 
-## Learn More
+## Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+tracker-frontend/
+├── public/                 # Static assets
+├── src/
+│   ├── assets/             # Images, logos
+│   ├── components/
+│   │   ├── auth/           # Login, Register pages/components
+│   │   ├── common/         # Reusable UI components (Navbar, Footer, etc.)
+│   │   ├── dashboard/      # Dashboard specific components
+│   │   ├── games/          # Game browsing and detail components
+│   │   └── landingPage/    # Components for the landing page
+│   ├── context/            # React Context for global state (e.g., AuthContext)
+│   ├── App.jsx             # Main application component
+│   ├── index.jsx           # Entry point for the React app
+│   ├── index.css           # Global styles and Tailwind directives
+│   └── ...                 # Other utility files, tests
+├── package.json            # Project dependencies and scripts
+├── tailwind.config.js      # Tailwind CSS configuration
+└── ...
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contributing
 
-### Code Splitting
+Contributions are welcome! Please fork the repository and submit pull requests.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Contact
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For any questions or suggestions, please open an issue in the repository.

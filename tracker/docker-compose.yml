@@ -18,10 +18,10 @@ services:
       - "8080:8080"
     depends_on:
       - gamebacklog_db
-    environment:
-      - DB_URL=${DB_URL}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    # environment:
+    #   - DB_URL=${DB_URL}
+    #   - POSTGRES_USER=${POSTGRES_USER}
+    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     env_file:
       - ../.env
 

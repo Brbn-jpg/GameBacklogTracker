@@ -10,15 +10,20 @@ const DashboardPage = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) return;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
       setLoading(true);
       setError(null);
-      const token = Cookies.get("jwt_token");
+
+      const token = Cookies.get("jwt_token") || user.token;
       const headers = { Authorization: `Bearer ${token}` };
 
       try {
@@ -38,6 +43,7 @@ const DashboardPage = () => {
         setGames(gamesData);
         setStats(statsData);
       } catch (e) {
+        console.error(e);
         setError(e.message);
       } finally {
         setLoading(false);
@@ -74,7 +80,7 @@ const DashboardPage = () => {
         }
       } catch (error) {
         console.error("Error updating game status:", error);
-        setGames(originalGames); // Revert on error
+        setGames(originalGames);
       }
     },
     [games]
@@ -102,7 +108,7 @@ const DashboardPage = () => {
       }
     } catch (error) {
       console.error("Error removing game:", error);
-      setGames(originalGames); // Revert on error
+      setGames(originalGames);
     }
   };
 
@@ -125,10 +131,17 @@ const DashboardPage = () => {
 
   if (loading)
     return (
-      <div className="text-center py-8 text-white">Loading dashboard...</div>
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-300">
+        Loading dashboard...
+      </div>
     );
+
   if (error)
-    return <div className="text-center py-8 text-red-500">Error: {error}</div>;
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-red-500">
+        Error: {error}
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-300 font-sans p-6 flex flex-col">
@@ -203,7 +216,7 @@ const DashboardPage = () => {
 
           <StatsCard
             title="Total Hours Played"
-            value={stats ? `${stats.totalHoursPlayed}h` : "..."}
+            value={stats ? `${stats.totalHoursPlayed}h` : "0h"}
             color={{ bg: "bg-cyan-500/20" }}
             icon={
               <svg
@@ -225,7 +238,7 @@ const DashboardPage = () => {
 
           <StatsCard
             title="Average Rating"
-            value={stats ? stats.averageRating : "..."}
+            value={stats ? stats.averageRating : "0"}
             subtext="/10"
             color={{ bg: "bg-yellow-500/20" }}
             icon={

@@ -7,11 +7,14 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
+  const [authLoading, setAuthLoading] = useState(true);
+
   useEffect(() => {
     const token = Cookies.get("jwt_token");
     if (token) {
-      setIsAuthenticated(true);
       fetchUser(token);
+    } else {
+      setAuthLoading(false);
     }
   }, []);
 
@@ -25,18 +28,30 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
-      } else {
-        // Handle case where token is invalid
+        setIsAuthenticated(true);
+      } else if (response.status === 401 || response.status === 403) {
         logout();
+      } else {
+        console.error(
+          "Failed to fetch user due to server error:",
+          response.status
+        );
+        setIsAuthenticated(false);
       }
     } catch (error) {
-      console.error("Failed to fetch user", error);
-      logout();
+      console.error("Failed to fetch user due to network error:", error);
+      setIsAuthenticated(false);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
-  const login = (token) => {
-    Cookies.set("jwt_token", token, { expires: 4 });
+  const login = (token, rememberMe) => {
+    if (rememberMe) {
+      Cookies.set("jwt_token", token, { expires: 4 });
+    } else {
+      Cookies.set("jwt_token", token);
+    }
     setIsAuthenticated(true);
     fetchUser(token);
   };
@@ -46,6 +61,14 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setUser(null);
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
+        Wczytywanie sesji...
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
