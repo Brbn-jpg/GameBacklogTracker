@@ -6,12 +6,30 @@ const BlogPage = () => {
   const roadmapItems = [
     {
       id: 1,
-      title: 'Adding Polish Dataset',
-      description: 'We are working on adding a full Polish dataset to provide a better experience for our Polish-speaking users. This includes translating the UI and adding Polish descriptions for games.',
-      status: 'In Progress',
+      title: 'Friends and User Browsing',
+      description: 'Implement functionality to browse other users, send friend requests, and manage a friends list.',
+      status: 'Planned',
     },
     {
       id: 2,
+      title: 'Enhanced User Profile Management',
+      description: 'Add options for users to make their profile private, change their password, email, and username.',
+      status: 'Planned',
+    },
+    {
+      id: 3,
+      title: 'Forgot Password Functionality',
+      description: 'Introduce a "Forgot Password" feature to allow users to reset their password via email or other secure methods.',
+      status: 'Planned',
+    },
+    {
+      id: 4,
+      title: 'Secure Account Creation with 6-Digit Code',
+      description: 'Enhance account security by adding a 6-digit verification code step during new account creation.',
+      status: 'Planned',
+    },
+    {
+      id: 5,
       title: 'Making Categories, Genres, and Tags a Select with Options',
       description: 'To improve the filtering experience, we will be changing the text-based inputs for categories, genres, and tags into select dropdowns with predefined options. This will make it easier to discover and filter games.',
       status: 'Planned',

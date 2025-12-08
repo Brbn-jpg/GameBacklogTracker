@@ -22,7 +22,7 @@ const Sidebar = ({ setView, currentView }) => {
   };
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-slate-900/50 backdrop-blur-xl border-r border-white/10 text-white flex flex-col">
+    <aside className="hidden md:flex w-64 flex-shrink-0 bg-slate-900/50 backdrop-blur-xl border-r border-white/10 text-white flex-col">
       <div className="p-6">
         <Link to="/" className="flex items-center space-x-2">
           <img src={logo} alt="GameLog Logo" className="h-8 w-auto" />

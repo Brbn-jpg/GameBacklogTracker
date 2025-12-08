@@ -29,7 +29,7 @@ const KanbanColumn = ({
   return (
     <div
       ref={drop}
-      className={`flex flex-col w-full min-w-[300px] h-full max-h-full rounded-xl bg-slate-900/50 border ${colorClass} ${
+      className={`flex flex-col w-full h-96 md:h-full max-h-full rounded-xl bg-slate-900/50 border ${colorClass} ${
         isOver ? "bg-slate-700/50" : ""
       } overflow-hidden transition-colors duration-200`}
     >
@@ -50,7 +50,7 @@ const KanbanColumn = ({
 
       <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent min-h-0">
         {games.map((game) => (
-          <GameCard key={game.id} game={game} onRemove={onRemove} />
+          <GameCard key={game.id} game={game} onRemove={onRemove} onMove={onDrop} />
         ))}
       </div>
     </div>

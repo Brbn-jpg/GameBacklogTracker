@@ -144,13 +144,10 @@ const DashboardPage = () => {
     );
 
   return (
-    // 1. h-screen + overflow-hidden: Blokuje scrollowanie całej strony
-    <div className="h-screen w-full bg-slate-950 text-slate-300 font-sans p-6 flex flex-col overflow-hidden">
-      {/* shrink-0: Te elementy nie mogą się kurczyć */}
+    <div className="min-h-screen md:h-screen w-full bg-slate-950 text-slate-300 font-sans p-4 md:p-6 flex flex-col md:overflow-hidden">
       <div className="shrink-0">
         <UserProfile />
       </div>
-
       <section className="shrink-0 max-w-[1600px] mx-auto w-full mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatsCard
@@ -259,10 +256,8 @@ const DashboardPage = () => {
           />
         </div>
       </section>
-
-      {/* 2. min-h-0: Kluczowe! Pozwala gridowi nie rozpychać rodzica */}
-      <main className="flex-1 w-full max-w-[1600px] mx-auto min-h-0">
-        <div className="grid grid-flow-col auto-cols-fr gap-4 h-full lg:w-full">
+      <main className="flex-1 w-full max-w-[1600px] mx-auto md:min-h-0 lg:overflow-x-auto pb-6 md:pb-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-flow-col lg:auto-cols-fr gap-4 h-full lg:w-full">
           <KanbanColumn
             title="Ditched"
             statusId="DITCHED"
@@ -272,7 +267,6 @@ const DashboardPage = () => {
             onDrop={handleDrop}
             onRemove={handleRemove}
           />
-
           <KanbanColumn
             title="Not Played"
             statusId="NOT_PLAYED"
@@ -282,7 +276,6 @@ const DashboardPage = () => {
             onDrop={handleDrop}
             onRemove={handleRemove}
           />
-
           <KanbanColumn
             title="Playing"
             statusId="PLAYING"
@@ -292,7 +285,6 @@ const DashboardPage = () => {
             onDrop={handleDrop}
             onRemove={handleRemove}
           />
-
           <KanbanColumn
             title="Completed"
             statusId="COMPLETED"
