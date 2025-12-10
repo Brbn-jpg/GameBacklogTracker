@@ -3,8 +3,7 @@ package com.gametracker.tracker.dto.user;
 import lombok.Data;
 
 @Data
-public class UpdateUserDto {
-    private String username;
+public class UpdateUserEmailDto {
     private String email;
     private String password;
 }

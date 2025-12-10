@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gametracker.tracker.dto.user.UpdateUserDto;
+import com.gametracker.tracker.dto.user.UpdateUserEmailDto;
+import com.gametracker.tracker.dto.user.UpdateUserPasswordDto;
+import com.gametracker.tracker.dto.user.UpdateUserUsernameDto;
 import com.gametracker.tracker.dto.user.UserResponseDto;
 import com.gametracker.tracker.service.UserService;
 
@@ -50,9 +52,21 @@ public class UserController {
         return ResponseEntity.ok(dto);
     }
 
-    @PatchMapping("/me")
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto, @RequestHeader("Authorization") String token){
-        UserResponseDto userDto = this.userService.updateUser(token, dto);
+    @PatchMapping("/me/email")
+    public ResponseEntity<UserResponseDto> updateUserEmail(@RequestBody UpdateUserEmailDto dto, @RequestHeader("Authorization") String token){
+        UserResponseDto userDto = this.userService.updateUserEmail(token, dto);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @PatchMapping("/me/password")
+    public ResponseEntity<UserResponseDto> updateUserPassword(@RequestBody UpdateUserPasswordDto dto, @RequestHeader("Authorization") String token){
+        UserResponseDto userDto = this.userService.updateUserPassword(token, dto);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @PatchMapping("/me/username")
+    public ResponseEntity<UserResponseDto> updateUserPassword(@RequestBody UpdateUserUsernameDto dto, @RequestHeader("Authorization") String token){
+        UserResponseDto userDto = this.userService.updateUserUsername(token, dto);
         return ResponseEntity.ok(userDto);
     }
 

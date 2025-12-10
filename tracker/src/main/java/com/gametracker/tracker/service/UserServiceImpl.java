@@ -2,7 +2,9 @@ package com.gametracker.tracker.service;
 
 import com.gametracker.tracker.dto.auth.RegisterDto;
 import com.gametracker.tracker.dto.auth.TokenDto;
-import com.gametracker.tracker.dto.user.UpdateUserDto;
+import com.gametracker.tracker.dto.user.UpdateUserEmailDto;
+import com.gametracker.tracker.dto.user.UpdateUserPasswordDto;
+import com.gametracker.tracker.dto.user.UpdateUserUsernameDto;
 import com.gametracker.tracker.dto.user.UserResponseDto;
 import com.gametracker.tracker.dto.userGames.UserGameResponseDto;
 import com.gametracker.tracker.enums.Role;
@@ -63,29 +65,68 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto updateUser(String token, UpdateUserDto dto){
+    public UserResponseDto updateUserEmail(String token, UpdateUserEmailDto dto){
         long userId = findUser(token).getId();
         User foundUser = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id "+userId+" was not found"));
 
-        if(dto.getUsername() != null){
-            foundUser.setUsername(dto.getUsername());
-
+        if (dto.getPassword() == null || dto.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password is required to change email");
         }
 
-        if(dto.getEmail() != null){
+        if (!passwordEncoder.matches(dto.getPassword(), foundUser.getPassword())) {
+            throw new SecurityException("Incorrect password");
+        }
+
+        Optional<User> differentUserEmail = this.userRepository.findByEmail(dto.getEmail());
+        if(differentUserEmail.isPresent()){
+            throw new UserAlreadyExistsException("User with email "+dto.getEmail()+" already exists!");
+        }
+
+        if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
             foundUser.setEmail(dto.getEmail());
         }
 
-        if(dto.getPassword() != null){
-            foundUser.setPassword(dto.getPassword());
+        this.userRepository.save(foundUser);
+        return mapUserToDto(foundUser);
+    }
+    
+    @Override
+    @Transactional
+    public UserResponseDto updateUserPassword(String token, UpdateUserPasswordDto dto){
+        long userId = findUser(token).getId();
+        User foundUser = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id "+userId+" was not found"));
+
+        if(dto.getOldPassword() == null || dto.getPassword() == null) {
+            throw new IllegalArgumentException("Both old and new passwords are required");
         }
 
-        User updatedUser = this.userRepository.save(foundUser);
-        UserResponseDto userDto = new UserResponseDto();
-        userDto.setUsername(updatedUser.getUsername());
-        userDto.setUserGames(getUserGames(updatedUser));
+        if(!passwordEncoder.matches(dto.getOldPassword(), foundUser.getPassword())){
+            throw new SecurityException("Incorrect old password");
+        }
 
-        return userDto;
+        if(!dto.getPassword().equals(dto.getRepeatedPassword())){
+            throw new IllegalArgumentException("New passwords do not match");
+        }
+
+        foundUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        this.userRepository.save(foundUser);
+        return mapUserToDto(foundUser);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDto updateUserUsername(String token, UpdateUserUsernameDto dto){
+        long userId = findUser(token).getId();
+        User foundUser = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id "+userId+" was not found"));
+
+        if(dto.getUsername().equals(foundUser.getUsername())){
+            throw new IllegalArgumentException("New username has to be different");
+        }
+
+        foundUser.setUsername(dto.getUsername());
+        this.userRepository.save(foundUser);
+        return mapUserToDto(foundUser);
     }
 
     @Override
@@ -166,5 +207,12 @@ public class UserServiceImpl implements UserService {
                     dto.setUserGames(getUserGames(user));
                     return dto;
                 }).collect(Collectors.toList());
+    }
+
+    private UserResponseDto mapUserToDto(User user){
+        UserResponseDto dto = new UserResponseDto();
+        dto.setUsername(user.getUsername());
+        dto.setUserGames(getUserGames(user));
+        return dto;
     }
 }
