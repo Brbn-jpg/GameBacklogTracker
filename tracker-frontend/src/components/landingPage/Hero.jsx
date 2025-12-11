@@ -37,7 +37,7 @@ const Hero = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <section className="relative min-h-screen bg-slate-950 text-white py-32">
+      <section className="relative min-h-[90vh] md:min-h-screen bg-slate-950 text-white py-32">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-purple-500/20 rounded-full filter blur-3xl opacity-50 transform -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full filter blur-3xl opacity-50 transform -translate-x-1/4 -translate-y-1/4"></div>
@@ -68,7 +68,10 @@ const Hero = () => {
         </div>
 
         {/* Blurred Dashboard Mockup with 3D Perspective */}
-        <div className="mt-12" style={{ perspective: "1000px" }}>
+        <div
+          className="mt-12 hidden md:block"
+          style={{ perspective: "1000px" }}
+        >
           <div
             className="w-3/4 mx-auto h-[500px] rounded-lg shadow-2xl shadow-purple-500/20 transition-transform duration-700 ease-out hover:scale-105"
             style={{
@@ -100,7 +103,7 @@ const Hero = () => {
                   </div>
 
                   {/* Mock Stats Cards */}
-                  <div className="grid grid-cols-4 gap-4 w-full">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full">
                     <div className="h-24 bg-slate-800/50 rounded-lg p-3 space-y-2">
                       <div className="h-4 w-3/4 bg-slate-700/50 rounded"></div>
                       <div className="h-8 w-1/2 bg-slate-700/50 rounded"></div>
@@ -120,7 +123,7 @@ const Hero = () => {
                   </div>
 
                   {/* Mock Kanban Columns */}
-                  <div className="flex-1 flex overflow-x-auto space-x-4 pb-2">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {Object.entries(mockColumns).map(([statusId, cards]) => (
                       <MockKanbanColumn
                         key={statusId}
@@ -136,7 +139,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <p className="mt-12 text-center text-sm font-medium text-gray-400 animate-pulse">
+        <p className="mt-12 text-center text-sm font-medium text-gray-400 animate-pulse hidden md:block">
           Psst! Try dragging and dropping the cards below.
         </p>
       </section>

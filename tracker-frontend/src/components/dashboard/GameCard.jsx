@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDrag } from 'react-dnd';
-import { Link } from 'react-router-dom';
-import { FaEllipsisV } from 'react-icons/fa';
+import React, { useState, useRef, useEffect } from "react";
+import { useDrag } from "react-dnd";
+import { Link } from "react-router-dom";
+import { FaEllipsisV } from "react-icons/fa";
 
 const ItemTypes = {
-  GAME_CARD: 'gamecard',
+  GAME_CARD: "gamecard",
 };
 
 // --- Helper: Pobieranie kolorów na podstawie statusu ---
@@ -45,6 +45,7 @@ const getStatusColor = (status) => {
 
 const GameCard = React.memo(({ game, onRemove, onMove }) => {
   const [isMoveMenuOpen, setIsMoveMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const colors = getStatusColor(game.status);
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -57,6 +58,24 @@ const GameCard = React.memo(({ game, onRemove, onMove }) => {
     [game.id, game.status]
   );
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMoveMenuOpen(false);
+      }
+    };
+
+    if (isMoveMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMoveMenuOpen]);
+
   const handleRemove = (e) => {
     e.preventDefault();
     onRemove(game.id);
@@ -67,26 +86,46 @@ const GameCard = React.memo(({ game, onRemove, onMove }) => {
     setIsMoveMenuOpen(false);
   };
 
-  const availableStatuses = ["DITCHED", "NOT_PLAYED", "PLAYING", "COMPLETED"].filter(s => s !== game.status);
+  const availableStatuses = [
+    "DITCHED",
+    "NOT_PLAYED",
+    "PLAYING",
+    "COMPLETED",
+  ].filter((s) => s !== game.status);
 
   return (
     <div
       ref={drag}
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      className={`group bg-slate-800/80 hover:bg-slate-800 border border-white/5 ${colors.border} p-3 rounded-lg cursor-grab transition-all shadow-sm flex gap-3 relative`}
+      className={`group bg-slate-800/80 hover:bg-slate-800 border border-white/5 ${
+        colors.border
+      } p-3 rounded-lg cursor-grab transition-all shadow-sm flex gap-3 relative ${
+        isMoveMenuOpen ? "z-50" : "z-0"
+      }`}
     >
       <button
         onClick={handleRemove}
         className="absolute top-1 right-1 p-1 text-slate-500 hover:text-rose-500 opacity-50 md:opacity-0 group-hover:opacity-100 transition-opacity z-10"
         aria-label="Remove game"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
 
       {/* Mobile Move Menu Button */}
-      <div className="md:hidden absolute top-8 right-1 z-10">
+      <div className="md:hidden absolute top-8 right-1 z-10" ref={menuRef}>
         <button
           onClick={() => setIsMoveMenuOpen(!isMoveMenuOpen)}
           className="p-1 text-slate-400 hover:text-white"
@@ -95,15 +134,17 @@ const GameCard = React.memo(({ game, onRemove, onMove }) => {
           <FaEllipsisV />
         </button>
         {isMoveMenuOpen && (
-          <div className="absolute right-0 mt-2 w-40 bg-slate-700 border border-slate-600 rounded-md shadow-lg">
-            <p className="text-xs font-bold text-slate-300 p-2 border-b border-slate-600">Move to...</p>
-            {availableStatuses.map(status => (
+          <div className="absolute right-0 mt-2 w-40 bg-slate-700 border border-slate-600 rounded-md shadow-lg z-20">
+            <p className="text-xs font-bold text-slate-300 p-2 border-b border-slate-600">
+              Move to...
+            </p>
+            {availableStatuses.map((status) => (
               <button
                 key={status}
                 onClick={() => handleMove(status)}
                 className="block w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-slate-600"
               >
-                {status.replace('_', ' ')}
+                {status.replace("_", " ")}
               </button>
             ))}
           </div>

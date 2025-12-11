@@ -92,7 +92,7 @@ const LoginPage = () => {
       </div>
 
       <div
-        className="absolute w-[85vw] h-[85vh] z-0 transition-transform duration-700 ease-out hover:scale-105"
+        className="absolute w-[85vw] h-[85vh] z-0 transition-transform duration-700 ease-out hover:scale-105 hidden md:block"
         style={{
           transformStyle: "preserve-3d",
           transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${rotation.z}deg)`, // Dynamic transform
@@ -115,7 +115,7 @@ const LoginPage = () => {
         </div>
       </div>
 
-      <div className="relative z-10 w-full max-w-md p-8 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-[0_0_50px_-10px_rgba(0,0,0,0.6)]">
+      <div className="relative z-10 w-full max-w-md p-8 overflow-hidden rounded-2xl md:border md:border-white/10 md:bg-slate-900/60 md:backdrop-blur-xl md:shadow-[0_0_50px_-10px_rgba(0,0,0,0.6)]">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
 

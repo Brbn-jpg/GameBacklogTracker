@@ -17,8 +17,12 @@ const LibraryGameCard = ({ game }) => {
           </h3>
           <div className="mt-2 text-sm text-gray-300">
             <p><span className="font-semibold">Status:</span> {game.status}</p>
-            <p><span className="font-semibold">Hours:</span> {game.hoursPlayed}</p>
-            <p><span className="font-semibold">Rating:</span> {game.rating}/10</p>
+            {game.status !== 'WISHLIST' && (
+              <>
+                <p><span className="font-semibold">Hours:</span> {game.hoursPlayed}</p>
+                <p><span className="font-semibold">Rating:</span> {game.rating}/10</p>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ const MockKanbanColumn = ({ title, cards, statusId, onDrop }) => {
   return (
     <div
       ref={drop}
-      className={`w-64 flex-shrink-0 h-full bg-slate-800/50 rounded-lg p-3 flex flex-col space-y-3 transition-colors ${
+      className={`h-full bg-slate-800/50 rounded-lg p-3 flex flex-col space-y-3 transition-colors ${
         isOver ? "bg-slate-700/60" : ""
       }`}
     >

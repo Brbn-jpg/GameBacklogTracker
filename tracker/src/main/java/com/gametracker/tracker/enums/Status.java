@@ -4,7 +4,8 @@ public enum Status {
     PLAYING("Playing"),
     NOT_PLAYED("Not played"),
     COMPLETED("Completed"),
-    DITCHED("Ditched");
+    DITCHED("Ditched"),
+    WISHLIST("Wishlisted");
 
     private final String statusName;
 

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gametracker.tracker.dto.userGames.AddUserGameDto;
 import com.gametracker.tracker.dto.userGames.UpdateUserGameDto;
 import com.gametracker.tracker.dto.userGames.UserBacklogStatsDto;
 import com.gametracker.tracker.dto.userGames.UserGameResponseDto;
@@ -49,19 +50,28 @@ public class UserGameServiceImpl implements UserGameService{
     }
 
     @Override
-    public UserGameResponseDto addUserGame(long gameId, String token){
+    public UserGameResponseDto addUserGame(AddUserGameDto dto, String token){
         User foundUser = findUser(token);
-        Game foundGame = findGame(gameId);
+        Game foundGame = findGame(dto.getGameId());
 
         if(this.userGameRepository.existsByUserAndGame(foundUser, foundGame)){
-            throw new GameAlreadyInBacklogException("Game with id "+gameId+" already exists for user with id "+foundUser.getId());
+            throw new GameAlreadyInBacklogException("Game with id "+foundGame.getId()+" already exists for user with id "+foundUser.getId());
         }
 
         UserGame userGame = new UserGame();
 
         userGame.setUser(foundUser);
         userGame.setGame(foundGame);
-        userGame.setStatus(Status.NOT_PLAYED);
+        switch (dto.getStatus()) {
+            case NOT_PLAYED:
+                userGame.setStatus(dto.getStatus());
+                break;
+            case WISHLIST:
+                userGame.setStatus(dto.getStatus());
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong status");
+        }
         userGame.setHoursPlayed(0.0);
         userGame.setAddedAt(LocalDate.now());
         userGame.setRating(0);
@@ -91,6 +101,11 @@ public class UserGameServiceImpl implements UserGameService{
                     break;
                 case DITCHED:
                     foundUserGame.setStatus(dto.getStatus());
+                    break;
+                case WISHLIST:
+                    foundUserGame.setStatus(dto.getStatus());
+                    foundUserGame.setRating(0);
+                    foundUserGame.setHoursPlayed(0.0);
                     break;
                 default:
                     throw new IllegalArgumentException("Wrong status");
@@ -129,9 +144,10 @@ public class UserGameServiceImpl implements UserGameService{
         Map<Status, Long> gamesByStatus = userGames.stream().collect(Collectors.groupingBy(UserGame::getStatus, Collectors.counting()));
         double totalHoursPlayed = userGames.stream().mapToDouble(UserGame::getHoursPlayed).sum();
         double averageRating = userGames.stream().filter(ug -> ug.getRating() > 0).mapToInt(UserGame::getRating).average().orElse(0.0);
-        
+        long ownedGamesCount = userGames.stream().filter(ug -> ug.getStatus() != Status.WISHLIST).count();
+
         UserBacklogStatsDto backlog = new UserBacklogStatsDto();
-        backlog.setTotalGames(userGames.size());
+        backlog.setTotalGames(ownedGamesCount);
         backlog.setGamesByStatus(gamesByStatus);
         backlog.setTotalHoursPlayed(totalHoursPlayed);
         backlog.setAverageRating(averageRating);

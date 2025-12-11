@@ -240,7 +240,7 @@ const DashboardPage = () => {
 
           <StatsCard
             title="Average Rating"
-            value={stats ? stats.averageRating : "0"}
+            value={stats ? stats.averageRating.toFixed(2) : "0"}
             subtext="/10"
             color={{ bg: "bg-yellow-500/20" }}
             icon={

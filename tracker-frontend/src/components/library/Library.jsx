@@ -28,7 +28,7 @@ const Library = () => {
         }
 
         const data = await response.json();
-        setGames(data);
+        setGames(data.filter(game => game.status !== "WISHLIST"));
       } catch (e) {
         setError(e);
       } finally {

@@ -53,7 +53,7 @@ public class UserGameController {
 
     @PostMapping
     public ResponseEntity<UserGameResponseDto> addUserGame(@Valid @RequestBody AddUserGameDto dto, @RequestHeader("Authorization") String token){
-        UserGameResponseDto userGame = this.userGameService.addUserGame(dto.getGameId(), token);
+        UserGameResponseDto userGame = this.userGameService.addUserGame(dto, token);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

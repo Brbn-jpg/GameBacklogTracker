@@ -10,6 +10,7 @@ import {
   FaThList,
   FaHeart,
   FaSignOutAlt,
+  FaCog,
 } from "react-icons/fa";
 
 const Sidebar = ({ setView, currentView }) => {
@@ -26,7 +27,6 @@ const Sidebar = ({ setView, currentView }) => {
       <div className="p-6">
         <Link to="/" className="flex items-center space-x-2">
           <img src={logo} alt="GameLog Logo" className="h-8 w-auto" />
-          <span className="text-xl font-bold">GameLog</span>
         </Link>
       </div>
       <nav className="mt-8 flex-grow">
@@ -55,13 +55,15 @@ const Sidebar = ({ setView, currentView }) => {
             </button>
           </li>
           <li>
-            <Link
-              to="/wishlist"
-              className="flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300"
+            <button
+              onClick={() => setView("wishlist")}
+              className={`w-full flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300 ${
+                currentView === "wishlist" ? "text-neon-cyan" : ""
+              }`}
             >
               <FaHeart className="mr-3" />
               <span>Wishlist</span>
-            </Link>
+            </button>
           </li>
         </ul>
       </nav>
@@ -95,14 +97,24 @@ const Sidebar = ({ setView, currentView }) => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/"
+            <button
+              onClick={() => setView("settings")}
+              className={`w-full flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300 ${
+                currentView === "settings" ? "text-neon-cyan" : ""
+              }`}
+            >
+              <FaCog className="mr-3" />
+              <span>Settings</span>
+            </button>
+          </li>
+          <li>
+            <button
               onClick={handleLogout}
-              className="flex items-center px-6 py-3 transition-colors duration-300 text-white hover:bg-red-600/25"
+              className="w-full flex items-center px-6 py-3 text-red-500 hover:bg-red-500/20 transition-colors duration-300"
             >
               <FaSignOutAlt className="mr-3" />
               <span>Logout</span>
-            </Link>
+            </button>
           </li>
         </ul>
       </div>
