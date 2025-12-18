@@ -52,6 +52,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "friends")
+    @OneToMany
+    private List<UserFriend> friends = new ArrayList<>();
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore

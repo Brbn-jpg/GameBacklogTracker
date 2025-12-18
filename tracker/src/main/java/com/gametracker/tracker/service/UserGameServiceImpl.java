@@ -214,7 +214,7 @@ public class UserGameServiceImpl implements UserGameService{
         dto.setAddedAt(userGame.getAddedAt());
         dto.setHoursPlayed(userGame.getHoursPlayed());
 
-        if (userGame.getUser() != null) {
+        if (userGame.getUser() != null) { 
             dto.setUserId(userGame.getUser().getId());
             dto.setUsername(userGame.getUser().getUsername());
         }

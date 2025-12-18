@@ -47,4 +47,15 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<Error>(error, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(UserFriendNotFoundException.class)
+    public ResponseEntity<Error> handleUserFriendNotFoundException(UserFriendNotFoundException ex) {
+        Error error = new Error();
+
+        error.setStatusCode(HttpStatus.FORBIDDEN.value());
+        error.setMessage(ex.getMessage());
+        error.setTimestamp(new java.util.Date());
+
+        return new ResponseEntity<Error>(error, HttpStatus.FORBIDDEN);
+    }
 }

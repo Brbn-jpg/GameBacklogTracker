@@ -71,8 +71,8 @@ public class UserController {
     }
 
     @DeleteMapping("/me")
-    public ResponseEntity<Boolean> deleteUser(@RequestHeader("Authorization") String token){
-        boolean deleted = this.userService.deleteUser(token);
-        return ResponseEntity.ok(deleted);
+    public ResponseEntity<Void> deleteUser(@RequestHeader("Authorization") String token){
+        this.userService.deleteUser(token);
+        return ResponseEntity.noContent().build();
     }
 }
