@@ -1,15 +1,21 @@
 package com.gametracker.tracker.service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.gametracker.tracker.dto.user.ListUserResponseDto;
 import com.gametracker.tracker.dto.user.UserResponseDto;
 import com.gametracker.tracker.dto.userFriend.AddUserFriendDto;
 import com.gametracker.tracker.dto.userFriend.UserFriendDto;
+import com.gametracker.tracker.dto.userFriend.UserSearchResponseDto;
 import com.gametracker.tracker.dto.userGames.UserGameResponseDto;
 import com.gametracker.tracker.enums.FriendRequestStatus;
 import com.gametracker.tracker.exceptions.ForbiddenAccessException;
@@ -18,6 +24,7 @@ import com.gametracker.tracker.exceptions.UserNotFoundException;
 import com.gametracker.tracker.model.User;
 import com.gametracker.tracker.model.UserFriend;
 import com.gametracker.tracker.repository.UserFriendRepository;
+import com.gametracker.tracker.repository.UserFriendSpecification;
 import com.gametracker.tracker.repository.UserRepository;
 import com.gametracker.tracker.security.JwtService;
 
@@ -60,6 +67,42 @@ public class UserFriendServiceImpl implements UserFriendService{
 
         this.userFriendRepository.save(userFriend);
         return mapToDto(userFriend, requester.getId());
+    }
+
+    @Override
+    public Page<UserSearchResponseDto> browsePeople(String username, String token, Pageable pageable){
+        User currentUser = findUser(token);
+
+        Specification<User> spec = UserFriendSpecification.findByCriteria(username)
+                .and((root, query, cb) -> cb.notEqual(root.get("id"), currentUser.getId()));
+        
+        Page<User> usersPage = this.userRepository.findAll(spec, pageable);
+
+        if (usersPage.isEmpty()) {
+            return Page.empty(pageable);
+        }
+
+        List<UserFriend> relations = this.userFriendRepository.findByRequesterIdOrAddresseeId(currentUser.getId(), currentUser.getId());
+
+        Map<Long, FriendRequestStatus> relationMap = new HashMap<>();
+        relations.forEach(r -> relationMap.put(
+            r.getAddressee().getId().equals(currentUser.getId()) ? r.getRequester().getId() : r.getAddressee().getId(),
+            r.getFriendRequestStatus()
+        ));
+
+        return usersPage.map(u -> {
+            UserSearchResponseDto dto = new UserSearchResponseDto();
+            dto.setId(u.getId());
+            dto.setUsername(u.getUsername());
+
+            if (u.getId().equals(currentUser.getId())) {
+                 dto.setStatus(null); 
+            } else {
+                FriendRequestStatus relation = relationMap.get(u.getId());
+                dto.setStatus(relation);
+            }
+            return dto;
+        });
     }
 
     @Override
@@ -124,6 +167,7 @@ public class UserFriendServiceImpl implements UserFriendService{
         List<UserFriend> friends = this.userFriendRepository.findByRequesterIdOrAddresseeId(user.getId(), user.getId());
         return friends.stream()
                     .filter(f -> f.getFriendRequestStatus() == FriendRequestStatus.PENDING)
+                    .filter(f -> f.getAddressee().getId().equals(user.getId()))
                     .map(f -> mapFriendToDto(f, user.getId())).toList();
     }
 
@@ -168,6 +212,7 @@ public class UserFriendServiceImpl implements UserFriendService{
 
         ListUserResponseDto dto = new ListUserResponseDto();
         dto.setId(friend.getId());
+        dto.setUserId(friendEntity.getId());
         dto.setUsername(friendEntity.getUsername());
         return dto;
     }

@@ -51,7 +51,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public Page<Game> findGames(String name, Double price, LocalDate releaseDate, List<String> developers, List<String> publishers, Boolean windows, Boolean mac, Boolean linux, List<String> genres, List<String> categories, List<String> tags, Pageable pageable) {
         Specification<Game> spec = GameSpecification.findByCriteria(name, price, releaseDate, developers, publishers, windows, mac, linux, genres, categories, tags);
-        return gameRepository.findAll(spec, pageable);
+        return this.gameRepository.findAll(spec, pageable);
     }
 
     @Override
