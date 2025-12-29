@@ -9,5 +9,6 @@ import lombok.Data;
 @Data
 public class UserResponseDto {
     private String username;
+    private Boolean isPublic;
     private List<UserGameResponseDto> userGames;
 }

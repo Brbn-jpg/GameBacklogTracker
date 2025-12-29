@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gametracker.tracker.dto.user.UpdateUserEmailDto;
 import com.gametracker.tracker.dto.user.UpdateUserPasswordDto;
+import com.gametracker.tracker.dto.user.UpdateUserPublicDto;
 import com.gametracker.tracker.dto.user.UpdateUserUsernameDto;
 import com.gametracker.tracker.dto.user.UserResponseDto;
 import com.gametracker.tracker.service.UserService;
@@ -67,6 +68,12 @@ public class UserController {
     @PatchMapping("/me/username")
     public ResponseEntity<UserResponseDto> updateUserPassword(@RequestBody UpdateUserUsernameDto dto, @RequestHeader("Authorization") String token){
         UserResponseDto userDto = this.userService.updateUserUsername(token, dto);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @PatchMapping("me/public")
+    public ResponseEntity<UserResponseDto> updateUserPublic(@RequestBody UpdateUserPublicDto dto, @RequestHeader("Authorization") String token){
+        UserResponseDto userDto = this.userService.updateUserPublic(token, dto);
         return ResponseEntity.ok(userDto);
     }
 

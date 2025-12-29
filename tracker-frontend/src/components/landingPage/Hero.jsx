@@ -96,14 +96,14 @@ const Hero = () => {
                 </div>
 
                 {/* Mock Main Content Area */}
-                <div className="flex-1 p-4 flex flex-col space-y-4">
+                <div className="flex-1 p-2 flex flex-col space-y-4 overflow-hidden">
                   {/* Mock UserProfile */}
-                  <div className="h-16 bg-slate-800/50 rounded-lg w-full flex items-center justify-center p-3">
+                  <div className="h-16 bg-slate-800/50 rounded-lg w-full flex items-center justify-center p-3 shrink-0">
                     <div className="h-6 w-3/4 bg-slate-700/50 rounded"></div>
                   </div>
 
                   {/* Mock Stats Cards */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full shrink-0">
                     <div className="h-24 bg-slate-800/50 rounded-lg p-3 space-y-2">
                       <div className="h-4 w-3/4 bg-slate-700/50 rounded"></div>
                       <div className="h-8 w-1/2 bg-slate-700/50 rounded"></div>
@@ -122,17 +122,19 @@ const Hero = () => {
                     </div>
                   </div>
 
-                  {/* Mock Kanban Columns */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {Object.entries(mockColumns).map(([statusId, cards]) => (
-                      <MockKanbanColumn
-                        key={statusId}
-                        title={statusId.replace("_", " ")}
-                        statusId={statusId}
-                        cards={cards}
-                        onDrop={handleDrop}
-                      />
-                    ))}
+                  {/* Mock Kanban Columns - Scrollable Area */}
+                  <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                      {Object.entries(mockColumns).map(([statusId, cards]) => (
+                        <MockKanbanColumn
+                          key={statusId}
+                          title={statusId.replace("_", " ")}
+                          statusId={statusId}
+                          cards={cards}
+                          onDrop={handleDrop}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

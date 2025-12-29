@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import MultiSelect from "../common/MultiSelect";
 
 const GameFilter = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
@@ -10,10 +11,39 @@ const GameFilter = ({ onFilterChange }) => {
     windows: false,
     mac: false,
     linux: false,
-    genres: "",
-    categories: "",
-    tags: "",
+    genres: [],
+    categories: [],
+    tags: [],
   });
+
+  const [options, setOptions] = useState({
+    genres: [],
+    categories: [],
+    tags: [],
+  });
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const [genresRes, categoriesRes, tagsRes] = await Promise.all([
+          fetch("http://localhost:8080/v1/games/filters/genres"),
+          fetch("http://localhost:8080/v1/games/filters/categories"),
+          fetch("http://localhost:8080/v1/games/filters/tags"),
+        ]);
+
+        const genres = genresRes.ok ? await genresRes.json() : [];
+        const categories = categoriesRes.ok ? await categoriesRes.json() : [];
+        const tags = tagsRes.ok ? await tagsRes.json() : [];
+
+        setOptions({ genres, categories, tags });
+      } catch (error) {
+        console.error("Failed to fetch filter options", error);
+        // Fallback or empty options
+      }
+    };
+
+    fetchOptions();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,6 +52,13 @@ const GameFilter = ({ onFilterChange }) => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+  const handleMultiSelectChange = (field, value) => {
+      setFilters((prevFilters) => ({
+          ...prevFilters,
+          [field]: value
+      }));
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -182,61 +219,31 @@ const GameFilter = ({ onFilterChange }) => {
         </div>
 
         {/* Genres */}
-        <div>
-          <label
-            htmlFor="genres"
-            className="block text-gray-400 text-sm font-medium mb-1"
-          >
-            Genres (comma-separated)
-          </label>
-          <input
-            type="text"
-            id="genres"
-            name="genres"
-            value={filters.genres}
-            onChange={handleChange}
-            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            placeholder="e.g. RPG, Action, Adventure"
-          />
-        </div>
+        <MultiSelect 
+            label="Genres"
+            options={options.genres}
+            selectedValues={filters.genres}
+            onChange={(val) => handleMultiSelectChange("genres", val)}
+            placeholder="Select Genres..."
+        />
 
         {/* Categories */}
-        <div>
-          <label
-            htmlFor="categories"
-            className="block text-gray-400 text-sm font-medium mb-1"
-          >
-            Categories (comma-separated)
-          </label>
-          <input
-            type="text"
-            id="categories"
-            name="categories"
-            value={filters.categories}
-            onChange={handleChange}
-            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            placeholder="e.g. Single-player, Multiplayer"
-          />
-        </div>
+        <MultiSelect 
+            label="Categories"
+            options={options.categories}
+            selectedValues={filters.categories}
+            onChange={(val) => handleMultiSelectChange("categories", val)}
+            placeholder="Select Categories..."
+        />
 
         {/* Tags */}
-        <div>
-          <label
-            htmlFor="tags"
-            className="block text-gray-400 text-sm font-medium mb-1"
-          >
-            Tags (comma-separated)
-          </label>
-          <input
-            type="text"
-            id="tags"
-            name="tags"
-            value={filters.tags}
-            onChange={handleChange}
-            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            placeholder="e.g. Fantasy, Sci-Fi, Open World"
-          />
-        </div>
+        <MultiSelect 
+            label="Tags"
+            options={options.tags}
+            selectedValues={filters.tags}
+            onChange={(val) => handleMultiSelectChange("tags", val)}
+            placeholder="Select Tags..."
+        />
 
         <button
           type="submit"

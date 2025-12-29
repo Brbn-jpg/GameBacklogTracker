@@ -75,7 +75,7 @@ const Wishlist = () => {
   return (
     <div className="min-h-screen text-white">
       <div className="container mx-auto px-4 py-8">
-        <h2 className="text-4xl font-bold mb-8">My Wishlist</h2>
+        <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">My Wishlist</h2>
         {wishlist.length === 0 ? (
           <p className="text-slate-400">No games in wishlist</p>
         ) : (

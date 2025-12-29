@@ -67,6 +67,21 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public List<String> findDistinctGenres(){
+        return this.gameRepository.findDistinctGenres();
+    }
+
+    @Override
+    public List<String> findDistinctCategories(){
+        return this.gameRepository.findDistinctCategories();
+    }
+
+    @Override
+    public List<String> findDistinctTags(){
+        return this.gameRepository.findDistinctTags();
+    }
+
+    @Override
     @Transactional
     public Integer uploadCsv(MultipartFile file, String token) {
         findUser(token);

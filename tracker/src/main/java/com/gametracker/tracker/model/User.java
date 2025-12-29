@@ -52,6 +52,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "isPublic")
+    private Boolean isPublic = false;
+
     @Column(name = "friends")
     @OneToMany
     private List<UserFriend> friends = new ArrayList<>();

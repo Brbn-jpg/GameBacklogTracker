@@ -4,6 +4,7 @@ import com.gametracker.tracker.dto.auth.RegisterDto;
 import com.gametracker.tracker.dto.auth.TokenDto;
 import com.gametracker.tracker.dto.user.UpdateUserEmailDto;
 import com.gametracker.tracker.dto.user.UpdateUserPasswordDto;
+import com.gametracker.tracker.dto.user.UpdateUserPublicDto;
 import com.gametracker.tracker.dto.user.UpdateUserUsernameDto;
 import com.gametracker.tracker.dto.user.UserResponseDto;
 import com.gametracker.tracker.dto.userGames.UserGameResponseDto;
@@ -130,14 +131,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public UserResponseDto updateUserPublic(String token, UpdateUserPublicDto dto){
+        long userId = findUser(token).getId();
+        User foundUser = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id "+userId+" was not found"));
+
+        foundUser.setIsPublic(dto.getIsPublic());
+        this.userRepository.save(foundUser);
+        return mapUserToDto(foundUser);
+    }
+
+    @Override
     public UserResponseDto findUserById(Long id){
         User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with id: "+id+" was not found"));
-        UserResponseDto dto = new UserResponseDto();
-        dto.setUsername(user.getUsername());
+        UserResponseDto dto = mapUserToDto(user);
         
-
-        dto.setUserGames(getUserGames(user));
-
+        if (Boolean.FALSE.equals(user.getIsPublic())) {
+            dto.setUserGames(null);
+        }
+        
         return dto;
     }
 
@@ -145,7 +157,14 @@ public class UserServiceImpl implements UserService {
     public List<UserResponseDto> findUserByUsername(String username){
         if(username != null && !username.isEmpty()){
             List<User> users = this.userRepository.findByUsernameContaining(username);
-            return mapUserToDto(users);
+            return users.stream()
+                .map(user -> {
+                    UserResponseDto dto = mapUserToDto(user);
+                    if (Boolean.FALSE.equals(user.getIsPublic())) {
+                        dto.setUserGames(null);
+                    }
+                    return dto;
+                }).collect(Collectors.toList());
         }
 
         throw new IllegalArgumentException("Username cannot be null or empty");
@@ -164,7 +183,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDto> findAllUsers(){
         List<User> users = this.userRepository.findAll();
-        return mapUserToDto(users);
+        List<User> publicUsers = users.stream().filter(u -> Boolean.TRUE.equals(u.getIsPublic())).toList();
+        return mapUserToDto(publicUsers);
     }
 
     @Override
@@ -204,6 +224,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> {
                     UserResponseDto dto = new UserResponseDto();
                     dto.setUsername(user.getUsername());
+                    dto.setIsPublic(user.getIsPublic());
                     dto.setUserGames(getUserGames(user));
                     return dto;
                 }).collect(Collectors.toList());
@@ -212,6 +233,7 @@ public class UserServiceImpl implements UserService {
     private UserResponseDto mapUserToDto(User user){
         UserResponseDto dto = new UserResponseDto();
         dto.setUsername(user.getUsername());
+        dto.setIsPublic(user.getIsPublic());
         dto.setUserGames(getUserGames(user));
         return dto;
     }

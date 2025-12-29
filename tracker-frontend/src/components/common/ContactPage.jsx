@@ -8,7 +8,7 @@ const ContactPage = () => {
       <Navbar />
       <main className="flex-grow flex items-center justify-center text-white">
         <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 max-w-lg w-full text-center">
-          <h1 className="text-4xl font-bold mb-4">Contact Me</h1>
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">Contact Me</h1>
           <p className="text-slate-300 mb-8">
             You can reach me through the following channels:
           </p>

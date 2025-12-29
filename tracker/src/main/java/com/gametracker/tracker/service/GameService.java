@@ -13,5 +13,8 @@ public interface GameService {
     Page<Game> findGames(String name, Double price, LocalDate releaseDate, List<String> developers, List<String> publishers, Boolean windows, Boolean mac, Boolean linux, List<String> genres, List<String> categories, List<String> tags, Pageable pageable);
     Game getGameById(long id);
     void deleteGame(long id, String token);
+    List<String> findDistinctGenres();
+    List<String> findDistinctCategories();
+    List<String> findDistinctTags();
     Integer uploadCsv(MultipartFile file, String token);
 }

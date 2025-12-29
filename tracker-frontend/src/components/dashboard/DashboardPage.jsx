@@ -152,7 +152,7 @@ const DashboardPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatsCard
             title="Total Games"
-            value={games.length}
+            value={stats ? stats.totalGames : "0"}
             color={{ bg: "bg-purple-500/20" }}
             icon={
               <svg

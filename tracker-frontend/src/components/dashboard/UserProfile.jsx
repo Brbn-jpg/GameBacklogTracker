@@ -58,7 +58,7 @@ const UserProfile = () => {
 
   return (
     <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center shadow-lg mb-8">
-      <h2 className="text-3xl font-bold text-white mb-2">
+      <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2">
         Welcome, {username}!
       </h2>
       <p className="text-slate-400">Ready to dive into your backlog?</p>

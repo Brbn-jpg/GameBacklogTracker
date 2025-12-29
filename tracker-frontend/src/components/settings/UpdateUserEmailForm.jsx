@@ -15,7 +15,7 @@ const UpdateUserEmailForm = () => {
         setError('');
 
         try {
-            const response = await fetch('/api/v1/users/me/email', {
+            const response = await fetch('http://localhost:8080/v1/users/me/email', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,15 +40,16 @@ const UpdateUserEmailForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="p-4 rounded-lg">
-            <h2 className="text-xl font-bold mb-4">Update Email</h2>
-            {error && <p className="text-red-500 text-xs italic">{error}</p>}
+        <form onSubmit={handleSubmit} className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-lg p-6 shadow-lg h-full flex flex-col">
+            <h2 className="text-xl font-bold mb-6 text-white">Update Email</h2>
+            {error && <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-3 rounded mb-4 text-sm">{error}</div>}
+            
             <div className="mb-4">
-                <label className="block text-white text-sm font-bold mb-2" htmlFor="email">
+                <label className="block text-gray-400 text-sm font-medium mb-1" htmlFor="email">
                     New Email
                 </label>
                 <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-white bg-gray-800 leading-tight focus:outline-none focus:shadow-outline"
+                    className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all"
                     id="email"
                     type="email"
                     placeholder="New Email"
@@ -57,23 +58,25 @@ const UpdateUserEmailForm = () => {
                     required
                 />
             </div>
-            <div className="mb-4">
-                <label className="block text-white text-sm font-bold mb-2" htmlFor="password">
-                    Password
+            
+            <div className="mb-6">
+                <label className="block text-gray-400 text-sm font-medium mb-1" htmlFor="password">
+                    Current Password
                 </label>
                 <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-white bg-gray-800 leading-tight focus:outline-none focus:shadow-outline"
+                    className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all"
                     id="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="Current Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
             </div>
-            <div className="flex items-center justify-between">
+
+            <div className="mt-auto">
                 <button
-                    className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-cyan-300"
+                    className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-cyan-500/25 transform transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                     type="submit"
                     disabled={loading}
                 >

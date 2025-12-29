@@ -42,7 +42,7 @@ const Library = () => {
   return (
     <div className="bg-slate-950 min-h-screen text-white">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">My Library</h1>
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">My Library</h1>
         {loading && <p>Loading your library...</p>}
         {error && <p className="text-red-500">Error: {error.message}</p>}
         {!loading && !error && (

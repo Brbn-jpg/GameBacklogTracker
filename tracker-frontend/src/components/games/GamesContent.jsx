@@ -32,12 +32,26 @@ const GamesContent = ({ filters }) => {
         if (filters.windows) queryParams.append("windows", filters.windows);
         if (filters.mac) queryParams.append("mac", filters.mac);
         if (filters.linux) queryParams.append("linux", filters.linux);
-        if (filters.genres && filters.genres.length > 0)
+
+        if (filters.genres && Array.isArray(filters.genres)) {
+          filters.genres.forEach((g) => queryParams.append("genres", g));
+        } else if (filters.genres) {
           queryParams.append("genres", filters.genres);
-        if (filters.categories && filters.categories.length > 0)
+        }
+
+        if (filters.categories && Array.isArray(filters.categories)) {
+          filters.categories.forEach((c) =>
+            queryParams.append("categories", c)
+          );
+        } else if (filters.categories) {
           queryParams.append("categories", filters.categories);
-        if (filters.tags && filters.tags.length > 0)
+        }
+
+        if (filters.tags && Array.isArray(filters.tags)) {
+          filters.tags.forEach((t) => queryParams.append("tags", t));
+        } else if (filters.tags) {
           queryParams.append("tags", filters.tags);
+        }
 
         // Add pagination parameters
         queryParams.append("page", currentPage);
@@ -93,7 +107,6 @@ const GamesContent = ({ filters }) => {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="container mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Browse All Games</h1>
         {!loading && games.length === 0 && (
           <div className="text-center py-8 text-slate-400 text-xl">
             No games found matching your criteria.
