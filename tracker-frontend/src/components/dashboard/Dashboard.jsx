@@ -5,6 +5,7 @@ import DashboardPage from "./DashboardPage";
 import Library from "../library/Library";
 import Wishlist from "../wishlist/Wishlist";
 import SettingsPage from "../settings/SettingsPage";
+import FriendsPage from "../friends/FriendsPage";
 import BottomBar from "./BottomBar"; // Import BottomBar
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -21,6 +22,8 @@ const Dashboard = () => {
         return <Library />;
       case 'wishlist':
         return <Wishlist />;
+      case 'friends':
+        return <FriendsPage />;
       case 'settings':
         return <SettingsPage />;
       default:

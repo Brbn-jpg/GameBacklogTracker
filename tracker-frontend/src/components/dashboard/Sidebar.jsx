@@ -11,6 +11,7 @@ import {
   FaHeart,
   FaSignOutAlt,
   FaCog,
+  FaUserFriends,
 } from "react-icons/fa";
 
 const Sidebar = ({ setView, currentView }) => {
@@ -63,6 +64,17 @@ const Sidebar = ({ setView, currentView }) => {
             >
               <FaHeart className="mr-3" />
               <span>Wishlist</span>
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setView("friends")}
+              className={`w-full flex items-center px-6 py-3 hover:bg-white/5 transition-colors duration-300 ${
+                currentView === "friends" ? "text-neon-cyan" : ""
+              }`}
+            >
+              <FaUserFriends className="mr-3" />
+              <span>Friends</span>
             </button>
           </li>
         </ul>

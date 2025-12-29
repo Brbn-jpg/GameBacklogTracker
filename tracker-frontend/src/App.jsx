@@ -10,6 +10,7 @@ import GamePage from "./components/games/GamePage";
 import ContactPage from "./components/common/ContactPage";
 import BlogPage from "./components/common/BlogPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import FriendProfile from "./components/friends/FriendProfile";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile/:userId" element={<FriendProfile />} />
           </Route>
           <Route path="/games" element={<Games />} />
           <Route path="/games/:id" element={<GamePage />} />

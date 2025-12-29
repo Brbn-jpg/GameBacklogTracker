@@ -43,7 +43,7 @@ const getStatusColor = (status) => {
   }
 };
 
-const GameCard = React.memo(({ game, onRemove, onMove }) => {
+const GameCard = React.memo(({ game, onRemove, onMove, readOnly = false }) => {
   const [isMoveMenuOpen, setIsMoveMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const colors = getStatusColor(game.status);
@@ -51,11 +51,12 @@ const GameCard = React.memo(({ game, onRemove, onMove }) => {
     () => ({
       type: ItemTypes.GAME_CARD,
       item: { id: game.id, status: game.status },
+      canDrag: !readOnly,
       collect: (monitor) => ({
         isDragging: !!monitor.isDragging(),
       }),
     }),
-    [game.id, game.status]
+    [game.id, game.status, readOnly]
   );
 
   useEffect(() => {
@@ -95,61 +96,65 @@ const GameCard = React.memo(({ game, onRemove, onMove }) => {
 
   return (
     <div
-      ref={drag}
+      ref={!readOnly ? drag : null}
       style={{ opacity: isDragging ? 0.5 : 1 }}
       className={`group bg-slate-800/80 hover:bg-slate-800 border border-white/5 ${
         colors.border
-      } p-3 rounded-lg cursor-grab transition-all shadow-sm flex gap-3 relative ${
+      } p-3 rounded-lg ${readOnly ? 'cursor-default' : 'cursor-grab'} transition-all shadow-sm flex gap-3 relative ${
         isMoveMenuOpen ? "z-50" : "z-0"
       }`}
     >
-      <button
-        onClick={handleRemove}
-        className="absolute top-1 right-1 p-1 text-slate-500 hover:text-rose-500 opacity-50 md:opacity-0 group-hover:opacity-100 transition-opacity z-10"
-        aria-label="Remove game"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      {!readOnly && (
+        <button
+          onClick={handleRemove}
+          className="absolute top-1 right-1 p-1 text-slate-500 hover:text-rose-500 opacity-50 md:opacity-0 group-hover:opacity-100 transition-opacity z-10"
+          aria-label="Remove game"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      )}
 
       {/* Mobile Move Menu Button */}
-      <div className="md:hidden absolute top-8 right-1 z-10" ref={menuRef}>
-        <button
-          onClick={() => setIsMoveMenuOpen(!isMoveMenuOpen)}
-          className="p-1 text-slate-400 hover:text-white"
-          aria-label="Move game"
-        >
-          <FaEllipsisV />
-        </button>
-        {isMoveMenuOpen && (
-          <div className="absolute right-0 mt-2 w-40 bg-slate-700 border border-slate-600 rounded-md shadow-lg z-20">
-            <p className="text-xs font-bold text-slate-300 p-2 border-b border-slate-600">
-              Move to...
-            </p>
-            {availableStatuses.map((status) => (
-              <button
-                key={status}
-                onClick={() => handleMove(status)}
-                className="block w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-slate-600"
-              >
-                {status.replace("_", " ")}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+      {!readOnly && (
+        <div className="md:hidden absolute top-8 right-1 z-10" ref={menuRef}>
+          <button
+            onClick={() => setIsMoveMenuOpen(!isMoveMenuOpen)}
+            className="p-1 text-slate-400 hover:text-white"
+            aria-label="Move game"
+          >
+            <FaEllipsisV />
+          </button>
+          {isMoveMenuOpen && (
+            <div className="absolute right-0 mt-2 w-40 bg-slate-700 border border-slate-600 rounded-md shadow-lg z-20">
+              <p className="text-xs font-bold text-slate-300 p-2 border-b border-slate-600">
+                Move to...
+              </p>
+              {availableStatuses.map((status) => (
+                <button
+                  key={status}
+                  onClick={() => handleMove(status)}
+                  className="block w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-slate-600"
+                >
+                  {status.replace("_", " ")}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Cover Image */}
       <Link to={`/games/${game.gameId}`} className="shrink-0">
