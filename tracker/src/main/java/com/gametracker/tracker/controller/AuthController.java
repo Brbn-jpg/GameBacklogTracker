@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gametracker.tracker.dto.auth.LoginDto;
 import com.gametracker.tracker.dto.auth.RegisterDto;
 import com.gametracker.tracker.dto.auth.TokenDto;
+import com.gametracker.tracker.dto.auth.VerifyUserDto;
 import com.gametracker.tracker.exceptions.UserNotFoundException;
 import com.gametracker.tracker.security.JwtService;
 import com.gametracker.tracker.security.UserDetailService;
-import com.gametracker.tracker.service.UserService;
+import com.gametracker.tracker.service.user.UserService;
 
 import jakarta.validation.Valid;
 
@@ -46,7 +47,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public TokenDto register(@RequestBody RegisterDto dto){
-        return this.userService.registerUser(dto);
+    public void register(@RequestBody RegisterDto dto){
+        this.userService.registerUser(dto);
+    }
+
+    @PostMapping("/verify")
+    public TokenDto verify(@RequestBody @Valid VerifyUserDto dto){
+        return this.userService.verifyUser(dto);
     }
 }

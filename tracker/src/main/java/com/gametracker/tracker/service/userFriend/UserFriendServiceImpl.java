@@ -1,4 +1,4 @@
-package com.gametracker.tracker.service;
+package com.gametracker.tracker.service.userFriend;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -27,6 +27,7 @@ import com.gametracker.tracker.repository.UserFriendRepository;
 import com.gametracker.tracker.repository.UserFriendSpecification;
 import com.gametracker.tracker.repository.UserRepository;
 import com.gametracker.tracker.security.JwtService;
+import com.gametracker.tracker.service.userGame.UserGameServiceImpl;
 
 import jakarta.transaction.Transactional;
 

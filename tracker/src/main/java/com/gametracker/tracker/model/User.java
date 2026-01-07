@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gametracker.tracker.enums.RegisterStatus;
 import com.gametracker.tracker.enums.Role;
 
 import jakarta.persistence.CascadeType;
@@ -42,7 +43,6 @@ public class User {
     private String email;
 
     @Column(name = "password")
-    @JsonIgnore
     private String password;
 
     @Column(name = "createdAt")
@@ -51,6 +51,10 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "verified")
+    @Enumerated(EnumType.STRING)
+    private RegisterStatus registerStatus;
 
     @Column(name = "isPublic")
     private Boolean isPublic = false;

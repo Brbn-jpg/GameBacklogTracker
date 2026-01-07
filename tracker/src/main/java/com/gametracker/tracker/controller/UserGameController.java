@@ -19,7 +19,7 @@ import com.gametracker.tracker.dto.userGames.AddUserGameDto;
 import com.gametracker.tracker.dto.userGames.UpdateUserGameDto;
 import com.gametracker.tracker.dto.userGames.UserBacklogStatsDto;
 import com.gametracker.tracker.dto.userGames.UserGameResponseDto;
-import com.gametracker.tracker.service.UserGameService;
+import com.gametracker.tracker.service.userGame.UserGameService;
 
 import jakarta.validation.Valid;
 

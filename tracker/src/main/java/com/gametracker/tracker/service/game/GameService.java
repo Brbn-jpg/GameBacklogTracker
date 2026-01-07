@@ -1,4 +1,4 @@
-package com.gametracker.tracker.service;
+package com.gametracker.tracker.service.game;
 
 import java.util.List;
 

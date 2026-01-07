@@ -30,6 +30,8 @@ const RegisterPage = () => {
     password: "",
     retypePassword: "",
   });
+  const [verificationCode, setVerificationCode] = useState("");
+  const [step, setStep] = useState("register"); // 'register' or 'verify'
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -45,7 +47,7 @@ const RegisterPage = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.retypePassword) {
       setError("Passwords do not match");
@@ -63,9 +65,37 @@ const RegisterPage = () => {
           password: formData.password,
         }),
       });
+      
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Failed to register");
+      }
+      
+      // If registration successful, move to verification step
+      setStep("verify");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerify = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("http://localhost:8080/v1/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          code: verificationCode,
+        }),
+      });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Failed to register");
+        throw new Error(data.message || "Failed to verify");
       }
       login(data.token, rememberMe);
       navigate("/dashboard");
@@ -131,104 +161,144 @@ const RegisterPage = () => {
 
         <div className="mb-8 text-center">
           <h2 className="text-3xl font-bold text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-            Create an Account
+            {step === "register" ? "Create an Account" : "Verify Email"}
           </h2>
           <p className="text-slate-400 text-xs uppercase tracking-widest mt-2 font-medium">
-            Join the GameLog
+            {step === "register" ? "Join the GameLog" : `Code sent to ${formData.email}`}
           </p>
         </div>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          <div className="group">
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
-              placeholder="e.g. EldenLord"
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="group">
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
-              placeholder="name@example.com"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="group">
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-purple-400">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300"
-              placeholder="••••••••"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="group">
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-purple-400">
-              Retype Password
-            </label>
-            <input
-              type="password"
-              id="retypePassword"
-              className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300"
-              placeholder="••••••••"
-              value={formData.retypePassword}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex items-center justify-between mt-2">
-            <div className="flex items-center">
-              <input
-                id="rememberMe"
-                name="rememberMe"
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="rememberMe"
-                className="ml-2 block text-sm text-white"
-              >
-                Remember me
+        {step === "register" ? (
+          <form className="space-y-5" onSubmit={handleRegister}>
+            {error && <p className="text-red-500 text-center">{error}</p>}
+            <div className="group">
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
+                Username
               </label>
+              <input
+                type="text"
+                id="username"
+                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
+                placeholder="e.g. EldenLord"
+                value={formData.username}
+                onChange={handleChange}
+              />
             </div>
-            {/* Optionally add "Forgot password?" link here */}
-          </div>
 
-          <button
-            type="submit"
-            className="w-full mt-6 py-3.5 rounded-lg text-white font-bold tracking-wide
-                         bg-gradient-to-r from-cyan-600 to-purple-600 
-                         hover:from-cyan-500 hover:to-purple-500
-                         shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 
-                         border border-white/10
-                         transform transition-all duration-200 hover:-translate-y-0.5"
-            disabled={loading}
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
-        </form>
+            <div className="group">
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
+                placeholder="name@example.com"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="group">
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-purple-400">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="group">
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-purple-400">
+                Retype Password
+              </label>
+              <input
+                type="password"
+                id="retypePassword"
+                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300"
+                placeholder="••••••••"
+                value={formData.retypePassword}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="flex items-center justify-between mt-2">
+              <div className="flex items-center">
+                <input
+                  id="rememberMe"
+                  name="rememberMe"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="rememberMe"
+                  className="ml-2 block text-sm text-white"
+                >
+                  Remember me
+                </label>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full mt-6 py-3.5 rounded-lg text-white font-bold tracking-wide
+                           bg-gradient-to-r from-cyan-600 to-purple-600 
+                           hover:from-cyan-500 hover:to-purple-500
+                           shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 
+                           border border-white/10
+                           transform transition-all duration-200 hover:-translate-y-0.5"
+              disabled={loading}
+            >
+              {loading ? "Registering..." : "Register"}
+            </button>
+          </form>
+        ) : (
+          <form className="space-y-5" onSubmit={handleVerify}>
+            {error && <p className="text-red-500 text-center">{error}</p>}
+            <div className="group">
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
+                Verification Code
+              </label>
+              <input
+                type="text"
+                id="code"
+                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
+                placeholder="Enter the code sent to your email"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full mt-6 py-3.5 rounded-lg text-white font-bold tracking-wide
+                           bg-gradient-to-r from-cyan-600 to-purple-600 
+                           hover:from-cyan-500 hover:to-purple-500
+                           shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 
+                           border border-white/10
+                           transform transition-all duration-200 hover:-translate-y-0.5"
+              disabled={loading}
+            >
+              {loading ? "Verifying..." : "Verify & Login"}
+            </button>
+            <div className="text-center mt-4">
+              <button 
+                type="button"
+                onClick={() => setStep("register")}
+                className="text-xs text-slate-400 hover:text-white transition-colors"
+              >
+                Incorrect email? Go back
+              </button>
+            </div>
+          </form>
+        )}
 
         <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-4">
           <p className="text-sm text-slate-400">

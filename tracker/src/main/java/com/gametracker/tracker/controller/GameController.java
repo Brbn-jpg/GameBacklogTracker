@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gametracker.tracker.model.Game;
-import com.gametracker.tracker.service.GameService;
+import com.gametracker.tracker.service.game.GameService;
 
 import java.io.IOException;
 import java.time.LocalDate;

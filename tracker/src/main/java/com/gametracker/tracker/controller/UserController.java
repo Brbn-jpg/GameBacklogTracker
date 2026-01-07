@@ -18,7 +18,7 @@ import com.gametracker.tracker.dto.user.UpdateUserPasswordDto;
 import com.gametracker.tracker.dto.user.UpdateUserPublicDto;
 import com.gametracker.tracker.dto.user.UpdateUserUsernameDto;
 import com.gametracker.tracker.dto.user.UserResponseDto;
-import com.gametracker.tracker.service.UserService;
+import com.gametracker.tracker.service.user.UserService;
 
 @RestController
 @RequestMapping("/users")

@@ -1,4 +1,4 @@
-package com.gametracker.tracker.service;
+package com.gametracker.tracker.service.userGame;
 
 import java.time.LocalDate;
 import java.util.List;

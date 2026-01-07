@@ -14,6 +14,6 @@ public enum Status {
     }
 
     public String getStatusName() {
-        return statusName;
+        return this.statusName;
     }
 }

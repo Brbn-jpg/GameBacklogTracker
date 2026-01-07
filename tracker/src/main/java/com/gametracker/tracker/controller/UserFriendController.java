@@ -19,7 +19,7 @@ import com.gametracker.tracker.dto.user.ListUserResponseDto;
 import com.gametracker.tracker.dto.userFriend.AddUserFriendDto;
 import com.gametracker.tracker.dto.userFriend.UserFriendDto;
 import com.gametracker.tracker.dto.userFriend.UserSearchResponseDto;
-import com.gametracker.tracker.service.UserFriendService;
+import com.gametracker.tracker.service.userFriend.UserFriendService;
 
 @RestController
 @RequestMapping("/userfriend")

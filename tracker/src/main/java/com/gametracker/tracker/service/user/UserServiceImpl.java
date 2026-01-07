@@ -1,13 +1,17 @@
-package com.gametracker.tracker.service;
+package com.gametracker.tracker.service.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gametracker.tracker.dto.auth.RegisterDto;
 import com.gametracker.tracker.dto.auth.TokenDto;
+import com.gametracker.tracker.dto.auth.VerifyUserDto;
 import com.gametracker.tracker.dto.user.UpdateUserEmailDto;
 import com.gametracker.tracker.dto.user.UpdateUserPasswordDto;
 import com.gametracker.tracker.dto.user.UpdateUserPublicDto;
 import com.gametracker.tracker.dto.user.UpdateUserUsernameDto;
 import com.gametracker.tracker.dto.user.UserResponseDto;
 import com.gametracker.tracker.dto.userGames.UserGameResponseDto;
+import com.gametracker.tracker.enums.RegisterStatus;
 import com.gametracker.tracker.enums.Role;
 import com.gametracker.tracker.exceptions.ForbiddenAccessException;
 import com.gametracker.tracker.exceptions.UserAlreadyExistsException;
@@ -16,7 +20,10 @@ import com.gametracker.tracker.model.User;
 import com.gametracker.tracker.repository.UserRepository;
 import com.gametracker.tracker.security.JwtService;
 import com.gametracker.tracker.security.UserDetailService;
+import com.gametracker.tracker.service.email.EmailService;
+import com.gametracker.tracker.service.userGame.UserGameServiceImpl;
 
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +32,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,18 +42,24 @@ public class UserServiceImpl implements UserService {
     private final UserDetailService userDetailService;
     private final PasswordEncoder passwordEncoder;
     private final UserGameServiceImpl userGameServiceImpl;
+    private final EmailService emailService;
+    private final StringRedisTemplate redisTemplate;
+    private final ObjectMapper objectMapper;
 
-    public UserServiceImpl(UserRepository userRepository, JwtService jwtService, UserDetailService userDetailService, PasswordEncoder passwordEncoder, UserGameServiceImpl userGameServiceImpl){
+    public UserServiceImpl(UserRepository userRepository, JwtService jwtService, UserDetailService userDetailService, PasswordEncoder passwordEncoder, UserGameServiceImpl userGameServiceImpl, EmailService emailService, StringRedisTemplate redisTemplate, ObjectMapper objectMapper){
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.userDetailService = userDetailService;
         this.passwordEncoder = passwordEncoder;
         this.userGameServiceImpl = userGameServiceImpl;
+        this.emailService = emailService;
+        this.redisTemplate = redisTemplate;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     @Transactional
-    public TokenDto registerUser(RegisterDto dto){
+    public User registerUser(RegisterDto dto){
         Optional<User> foundUser = this.userRepository.findByEmail(dto.getEmail());
         if(foundUser.isPresent()){
             throw new UserAlreadyExistsException("User with email "+dto.getEmail()+" already exists!");
@@ -57,8 +71,54 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
         newUser.setCreatedAt(LocalDate.now());
         newUser.setRole(Role.USER);
+        newUser.setRegisterStatus(RegisterStatus.NOT_VERIFIED);
 
+        String redisKey = "verify_code:" + dto.getEmail();
+        String code = this.emailService.generateCode();
+
+        redisTemplate.opsForValue().set(redisKey, code, 15, TimeUnit.MINUTES);
+        this.emailService.sendVerificationEmail(dto.getEmail(), code);
+
+        try {
+            String userJson = objectMapper.writeValueAsString(newUser);
+            this.redisTemplate.opsForValue().set("pending_user:" + dto.getEmail(), userJson, 15, TimeUnit.MINUTES);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while processing user data", e);
+        }
+
+        return newUser;
+    }
+
+    @Override
+    @Transactional
+    public TokenDto verifyUser(VerifyUserDto dto){
+        String redisKey = "verify_code:" + dto.getEmail();
+        String redisUser = "pending_user:" + dto.getEmail();
+        String cachedCode = redisTemplate.opsForValue().get(redisKey);
+        
+        if(cachedCode == null || !cachedCode.equals(dto.getCode())){
+            throw new IllegalArgumentException("Wrong or expired code!");
+        }
+        
+        String userJson = redisTemplate.opsForValue().get(redisUser);
+        if (userJson == null) {
+            throw new RuntimeException("Registration expired or user data not found");
+        }
+   
+        User newUser;
+        try {
+            newUser = objectMapper.readValue(userJson, User.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while reading user data", e);
+        }
+
+        newUser.setRegisterStatus(RegisterStatus.VERIFIED);
         User savedUser = this.userRepository.save(newUser);
+        
+        // Clean up Redis
+        redisTemplate.delete(redisKey);
+        redisTemplate.delete(redisUser);
+
         TokenDto tokenDto = new TokenDto();
         tokenDto.setToken(this.jwtService.generateToken(userDetailService.loadUserByUsername(savedUser.getEmail())));
         return tokenDto;

@@ -12,10 +12,26 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  data:
+    redis:
+      host: ${REDIS_HOST:gamebacklog_redis_cache}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
   servlet:
     multipart:
       max-file-size: 400MB
       max-request-size: 400MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_SMTP_EMAIL}
+    password: ${GOOGLE_SMTP_KEY}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   servlet:
     context-path: /v1
