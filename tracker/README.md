@@ -1,280 +1,191 @@
-# Game Backlog Tracker
+# Game Backlog Tracker - Backend API
 
-Welcome to the Game Backlog Tracker API! This is a backend service built with Java and Spring Boot that allows users to manage their video game backlog. Users can register, log in, search for games, add them to their personal backlog, and track their status (e.g., Playing, Completed, Ditched), rating, and hours played.
+This repository contains the backend source code for the Game Backlog Tracker application. It is a RESTful API built with Java and Spring Boot, designed to help users manage their video game libraries, track gameplay progress, and interact with friends.
 
-## ✨ Features
+## Table of Contents
 
-- **User Authentication**: Secure registration and login using JWT (JSON Web Tokens).
-- **Game Database**: A comprehensive database of games that can be searched and filtered.
-- **CSV Import**: Admins can upload a CSV file to populate the game database.
-- **Personal Backlog Management**: Users can add games to their list, update their status, rating, and playtime.
-- **Profile Management**: Users can view and manage their own profiles.
-- **Backlog Statistics**: Get statistics about your backlog, such as total games, completion status, and average rating.
+- [Overview](#overview)
+- [Technologies](#technologies)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [Configuration](#configuration)
+- [Installation and Running](#installation-and-running)
+  - [Using Docker](#using-docker)
+  - [Manual Setup](#manual-setup)
+- [API Endpoints](#api-endpoints)
+  - [Authentication](#authentication)
+  - [Users](#users)
+  - [Games](#games)
+  - [User Library (Backlog)](#user-library-backlog)
+  - [Friends System](#friends-system)
+- [Database Schema](#database-schema)
+- [Testing](#testing)
 
-## 🛠️ Technologies Used
+## Overview
 
-- **Java 17**
-- **Spring Boot 3**: For building the REST API.
-- **Spring Security**: For handling authentication and authorization.
-- **Spring Data JPA (Hibernate)**: For data persistence.
-- **PostgreSQL**: As the relational database.
-- **Maven**: As the build tool and dependency manager.
-- **Lombok**: To reduce boilerplate code.
-- **jjwt**: For creating and parsing JSON Web Tokens.
-- **OpenCSV**: For parsing the game data from CSV files.
+The Game Backlog Tracker API provides functionalities for:
+- User registration and secure authentication using JWT (JSON Web Tokens).
+- Email verification and password reset flows.
+- Managing a personal backlog of games with statuses (e.g., Playing, Completed, Ditched).
+- Tracking hours played and rating games.
+- Searching and filtering a comprehensive database of games.
+- Social features including friend requests and viewing friends' profiles.
+- Bulk import of game data via CSV.
 
----
+## Technologies
 
-## 🚀 API Endpoints
+- **Language:** Java 21
+- **Framework:** Spring Boot 3.5.9
+- **Security:** Spring Security, JJWT (Java JWT)
+- **Database:** PostgreSQL 15
+- **Caching:** Redis 6.2
+- **Persistence:** Spring Data JPA (Hibernate)
+- **Build Tool:** Maven
+- **Utilities:** Lombok, OpenCSV
+- **Containerization:** Docker, Docker Compose
 
-Below is a detailed description of all available API endpoints.
+## Architecture
 
-**Authentication Required**: Endpoints marked with 🔐 require a valid JWT to be sent in the `Authorization` header.
+The application follows a standard layered architecture:
+1.  **Controller Layer**: Handles HTTP requests and responses (REST controllers).
+2.  **Service Layer**: Contains business logic and transaction management.
+3.  **Repository Layer**: Interacts with the database using Spring Data JPA interfaces.
+4.  **Model/Entity Layer**: Defines the data structure mapping to database tables.
+5.  **DTO (Data Transfer Object) Layer**: Defines the structure of data sent between the client and server.
 
-Format: `Authorization: Bearer <YOUR_JWT_TOKEN>`
+## Prerequisites
 
-### Authentication (`/auth`)
+Ensure you have the following installed on your system:
+- Java Development Kit (JDK) 21
+- Maven
+- Docker and Docker Compose
+- PostgreSQL (if running locally without Docker)
+- Redis (if running locally without Docker)
 
-#### 1. Register a New User
+## Configuration
 
-- **Endpoint**: `POST /auth/register`
-- **Description**: Creates a new user account.
-- **Request Body**:
-  ```json
-  {
-    "username": "your_username",
-    "email": "user@example.com",
-    "password": "your_password"
-  }
-  ```
-- **Success Response (200 OK)**:
-  ```json
-  {
-    "token": "ey..."
-  }
-  ```
+The application requires environment variables for database connections, security keys, and email services.
 
-#### 2. Log In
+Create a `.env` file in the `tracker` directory (or ensure your environment provides these variables).
 
-- **Endpoint**: `POST /auth/login`
-- **Description**: Authenticates a user and returns a JWT.
-- **Request Body**:
-  ```json
-  {
-    "email": "user@example.com",
-    "password": "your_password"
-  }
-  ```
-- **Success Response (200 OK)**:
-  ```json
-  {
-    "token": "ey..."
-  }
-  ```
+**Required Environment Variables:**
 
-### Users (`/users`)
+- `POSTGRES_DB`: Name of the PostgreSQL database.
+- `POSTGRES_USER`: PostgreSQL username.
+- `POSTGRES_PASSWORD`: PostgreSQL password.
+- `DB_URL`: JDBC URL for connecting to the database (e.g., `jdbc:postgresql://gamebacklog_db:5432/game_backlog` for Docker or `jdbc:postgresql://localhost:5432/game_backlog` for local).
+- `JWT_KEY`: A Base64-encoded 256-bit secret key for signing JWT tokens.
+- `REDIS_PASSWORD`: Password for the Redis instance.
+- `REDIS_HOST`: Hostname of the Redis server (defaults to `gamebacklog_redis_cache` in Docker).
+- `REDIS_PORT`: Port of the Redis server (defaults to `6379`).
+- `GOOGLE_SMTP_EMAIL`: Email address used for sending system emails (e.g., verification codes).
+- `GOOGLE_SMTP_KEY`: App password or API key for the SMTP service.
 
-#### 1. Get All Users
+## Installation and Running
 
-- **Endpoint**: `GET /users/all`
-- **Description**: Retrieves a list of all registered users and their game backlogs.
-- **Success Response (200 OK)**:
-  ```json
-  [
-    {
-      "username": "mirek",
-      "userGames": [
-        {
-          "id": 1,
-          "status": "PLAYING",
-          "rating": 8,
-          "hoursPlayed": 25.5,
-          "addedAt": "2023-10-27",
-          "gameName": "The Witcher 3: Wild Hunt"
-        }
-      ]
-    }
-  ]
-  ```
+### Using Docker
 
-#### 2. Get User by ID
+This is the recommended way to run the application as it sets up the database, Redis cache, and backend service automatically.
 
-- **Endpoint**: `GET /users/{userId}`
-- **Description**: Retrieves a single user by their unique ID.
-- **Success Response (200 OK)**:
-  ```json
-  {
-    "username": "mirek",
-    "userGames": []
-  }
-  ```
-
-#### 3. Search Users by Username
-
-- **Endpoint**: `GET /users?username={name}`
-- **Description**: Searches for users whose username contains the provided string.
-- **Success Response (200 OK)**: A list of user objects, similar to "Get All Users".
-
-#### 4. Update Current User 🔐
-
-- **Endpoint**: `PATCH /users/me`
-- **Description**: Updates the username, email, or password of the currently authenticated user.
-- **Request Body**:
-  ```json
-  {
-    "username": "new_username",
-    "email": "new_email@example.com",
-    "password": "new_strong_password"
-  }
-  ```
-- **Success Response (200 OK)**: The updated user object.
-
-#### 5. Delete Current User 🔐
-
-- **Endpoint**: `DELETE /users/me`
-- **Description**: Deletes the account of the currently authenticated user.
-- **Success Response (200 OK)**:
-  ```json
-  true
-  ```
-
-### Games (`/games`)
-
-#### 1. Get All Games (with filtering and pagination)
-
-- **Endpoint**: `GET /games`
-- **Description**: Retrieves a paginated list of games. Supports extensive filtering via query parameters.
-- **Query Parameters**: `page`, `size`, `name`, `price`, `releaseDate`, `developers`, `publishers`, `windows`, `mac`, `linux`, `genres`, `categories`, `tags`.
-- **Success Response (200 OK)**: A Spring Data `Page` object containing game details.
-
-#### 2. Get Game by ID
-
-- **Endpoint**: `GET /games/{id}`
-- **Description**: Retrieves a single game by its unique ID.
-- **Success Response (200 OK)**: A full game object.
-
-#### 3. Upload Games via CSV 🔐
-
-- **Endpoint**: `POST /games/upload`
-- **Description**: Allows an authenticated user (intended for admins) to upload a CSV file to bulk-add games to the database.
-- **Request**: `multipart/form-data` with a file part.
-- **Success Response (200 OK)**: The number of games successfully added.
-- **Games Dataset**:
-  - The pre-populated game data can be found at this [Google Drive link](https://drive.google.com/file/d/11-5uNB7viBReZskab1_ZqwBdMYHNcEqs/view?usp=drive_link).
-  - This is a cleaned version of the [93182 Steam Games dataset](https://www.kaggle.com/datasets/joebeachcapital/top-1000-steam-games) from Kaggle.
-  - Data cleaning was performed by [perp](https://github.com/Perpluu).
-
-#### 4. Delete a Game 🔐
-
-- **Endpoint**: `DELETE /games/{id}`
-- **Description**: Allows an authenticated user (intended for admins) to delete a game from the database.
-- **Success Response (200 OK)**: No content.
-
-### User-Game Library (`/usergames`)
-
-These endpoints manage the relationship between a user and a game in their backlog.
-
-#### 1. Get Current User's Backlog 🔐
-
-- **Endpoint**: `GET /usergames`
-- **Description**: Retrieves all games in the currently authenticated user's backlog.
-- **Success Response (200 OK)**: A list of `UserGame` objects.
-
-#### 2. Add a Game to Backlog 🔐
-
-- **Endpoint**: `POST /usergames/{gameId}`
-- **Description**: Adds a game (by its ID) to the current user's backlog.
-- **Success Response (200 OK)**: The newly created `UserGame` object.
-
-#### 3. Update a Game in Backlog 🔐
-
-- **Endpoint**: `PATCH /usergames/{userGameId}`
-- **Description**: Updates the status, rating, or hours played for a specific game in the user's backlog. The `userGameId` is the ID of the entry in the `usergame` table, not the game's ID.
-- **Request Body**:
-  ```json
-  {
-    "status": "PLAYING",
-    "rating": 9,
-    "hoursPlayed": 40.0
-  }
-  ```
-- **Success Response (200 OK)**: The updated `UserGame` object.
-
-#### 4. Remove a Game from Backlog 🔐
-
-- **Endpoint**: `DELETE /usergames/{userGameId}`
-- **Description**: Removes a game from the user's backlog.
-- **Success Response (200 OK)**:
-  ```json
-  true
-  ```
-
-#### 5. Get Backlog Statistics 🔐
-
-- **Endpoint**: `GET /usergames/stats`
-- **Description**: Retrieves statistics for the current user's backlog.
-- **Success Response (200 OK)**:
-  ```json
-  {
-    "totalGames": 15,
-    "gamesByStatus": {
-      "COMPLETED": 5,
-      "PLAYING": 2,
-      "DITCHED": 3,
-      "NOT_PLAYED": 5
-    },
-    "totalHoursPlayed": 350.5,
-    "averageRating": 7.8
-  }
-  ```
-
----
-
-## ⚙️ Setup and Installation
-
-1.  **Prerequisites**:
-
-    - Java 17 or later
-    - Maven
-    - Docker and Docker Compose
-
-2.  **Clone the repository**:
-
-    ```bash
-    git clone https://github.com/brbn-jpg/GameBacklogTracker.git
-    cd GameBacklogTracker/tracker
-    ```
-
-3.  **Configure the application**:
-
-    Create a `.env` file in the root directory of the `tracker` project by copying the example below. This file is used by Docker Compose to configure the application and database.
-
-    ```bash
-    # .env file
-
-    # PostgreSQL Database Settings
-    POSTGRES_DB="game_backlog"
-    POSTGRES_USER="gameuser"
-    POSTGRES_PASSWORD="gamepass"
-
-    # Spring Boot Database Connection URL (for use inside Docker)
-    DB_URL="jdbc:postgresql://gamebacklog_db:5432/game_backlog"
-
-    # JWT Secret Key (must be Base64 encoded and at least 256 bits)
-    JWT_KEY="YOUR_SECURE_BASE64_ENCODED_256_BIT_KEY"
-    ```
-
-    **How to generate a secure JWT_KEY?**
-    You can generate a secure, 256-bit (32-byte) key and encode it in Base64 using the following command in your terminal:
-    `python -c "import os, base64; print(base64.b64encode(os.urandom(32)).decode('utf-8'))"`
-    Will create generating key in future commits.
-
-4.  **Run the application**:
-
-    Use Docker Compose to build and run the application and the database containers.
+1.  Navigate to the `tracker` directory.
+2.  Ensure your `.env` file is configured.
+3.  Run the following command:
 
     ```bash
     docker-compose up --build
     ```
 
-The API will be available at `http://localhost:8080`.
+The API will be accessible at `http://localhost:8080/v1`.
+
+### Manual Setup
+
+1.  Start your local PostgreSQL and Redis servers.
+2.  Update `src/main/resources/application.yml` or set environment variables to point to your local database instances.
+3.  Build the project using Maven:
+
+    ```bash
+    ./mvnw clean install
+    ```
+
+4.  Run the application:
+
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+
+## API Endpoints
+
+All endpoints are prefixed with `/v1`.
+
+### Authentication
+
+- `POST /auth/register`: Register a new user account.
+- `POST /auth/login`: Authenticate and receive a JWT.
+- `POST /auth/verify`: Verify a user account using the code sent via email.
+- `POST /auth/forgot-password`: Request a password reset link.
+- `POST /auth/reset-password`: Reset password using a valid token.
+
+### Users
+
+- `GET /users/all`: Retrieve all users (public profiles).
+- `GET /users/{userId}`: Retrieve a specific user by ID.
+- `GET /users?username={name}`: Search for users by username.
+- `GET /users/me`: Get the currently authenticated user's profile.
+- `PATCH /users/me/email`: Update email.
+- `PATCH /users/me/password`: Update password.
+- `PATCH /users/me/username`: Update username.
+- `PATCH /users/me/public`: Update profile visibility (public/private).
+- `DELETE /users/me`: Delete the current user account.
+
+### Games
+
+- `GET /games`: Retrieve a paginated list of games. Supports filtering by:
+    - `page`, `size`
+    - `name`
+    - `price`
+    - `releaseDate`
+    - `developers`, `publishers`
+    - `genres`, `categories`, `tags`
+    - `windows`, `mac`, `linux` (OS support)
+- `GET /games/{id}`: Retrieve details for a specific game.
+- `GET /games/filters/genres`: Get a list of all available genres.
+- `GET /games/filters/categories`: Get a list of all available categories.
+- `GET /games/filters/tags`: Get a list of all available tags.
+- `POST /games/uploadCsv`: Upload a CSV file to bulk import games (Admin/Auth required).
+- `DELETE /games/{id}`: Delete a game (Admin/Auth required).
+
+### User Library (Backlog)
+
+- `GET /usergames`: Retrieve the current user's backlog.
+- `POST /usergames`: Add a game to the backlog.
+    - Body: `{ "gameId": 123, "status": "NOT_PLAYED" }`
+- `PATCH /usergames/{userGameId}`: Update a backlog entry (status, rating, hours played).
+- `DELETE /usergames/{userGameId}`: Remove a game from the backlog.
+- `GET /usergames/stats`: Get statistics for the current user's backlog.
+- `GET /usergames/allstats`: Get global statistics across all users.
+
+### Friends System
+
+- `POST /userfriend/add`: Send a friend request.
+    - Body: `{ "targetUserUsername": "friendName" }`
+- `POST /userfriend/accept/{id}`: Accept a friend request.
+- `POST /userfriend/decline/{id}`: Decline a friend request.
+- `DELETE /userfriend/remove`: Remove a friend.
+- `GET /userfriend/all`: List all accepted friends.
+- `GET /userfriend/friendRequests`: List all pending friend requests.
+- `GET /userfriend/search`: Search for users to add as friends, displaying request status.
+
+## Database Schema
+
+- **users**: Stores user account information (credentials, profile settings).
+- **games**: Stores static game data (title, description, metadata).
+- **usergame**: Junction table linking Users and Games, storing user-specific data (status, rating, playtime).
+- **userFriend**: Manages relationships between users (requests and accepted friendships).
+
+## Testing
+
+To run the unit and integration tests:
+
+```bash
+./mvnw test
+```

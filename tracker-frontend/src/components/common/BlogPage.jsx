@@ -20,19 +20,37 @@ const BlogPage = () => {
       id: 3,
       title: 'Forgot Password Functionality',
       description: 'Introduce a "Forgot Password" feature to allow users to reset their password via email or other secure methods.',
-      status: 'Planned',
+      status: 'Completed',
     },
     {
       id: 4,
       title: 'Secure Account Creation with 6-Digit Code',
       description: 'Enhance account security by adding a 6-digit verification code step during new account creation.',
-      status: 'Planned',
+      status: 'Completed',
     },
     {
       id: 5,
       title: 'Making Categories, Genres, and Tags a Select with Options',
       description: 'To improve the filtering experience, we will be changing the text-based inputs for categories, genres, and tags into select dropdowns with predefined options. This will make it easier to discover and filter games.',
       status: 'Completed',
+    },
+    {
+      id: 6,
+      title: 'IGDB API Integration',
+      description: 'Integrate with the Internet Game Database (IGDB) to automatically fetch rich game data, including covers, release dates, and developer info, replacing manual entry.',
+      status: 'Planned',
+    },
+    {
+      id: 7,
+      title: 'Steam Library Import',
+      description: 'Allow users to link their Steam account and automatically import their game library, playtime, and completion status directly into the tracker.',
+      status: 'Planned',
+    },
+    {
+      id: 8,
+      title: 'Gamification & Advanced Stats',
+      description: 'Introduce badges, achievements, and detailed visualization of gaming habits (e.g., genre breakdowns, completion rates) to increase user engagement.',
+      status: 'Planned',
     },
   ];
 

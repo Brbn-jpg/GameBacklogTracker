@@ -12,6 +12,8 @@ import com.gametracker.tracker.dto.auth.LoginDto;
 import com.gametracker.tracker.dto.auth.RegisterDto;
 import com.gametracker.tracker.dto.auth.TokenDto;
 import com.gametracker.tracker.dto.auth.VerifyUserDto;
+import com.gametracker.tracker.dto.auth.passwordReset.ForgotPasswordRequestDto;
+import com.gametracker.tracker.dto.auth.passwordReset.ResetPasswordRequestDto;
 import com.gametracker.tracker.exceptions.UserNotFoundException;
 import com.gametracker.tracker.security.JwtService;
 import com.gametracker.tracker.security.UserDetailService;
@@ -54,5 +56,15 @@ public class AuthController {
     @PostMapping("/verify")
     public TokenDto verify(@RequestBody @Valid VerifyUserDto dto){
         return this.userService.verifyUser(dto);
+    }
+
+    @PostMapping("/forgot-password")
+    public void forgotPasswordRequest(@RequestBody @Valid ForgotPasswordRequestDto dto){
+        this.userService.processForgotPassword(dto.getEmail());
+    }
+
+    @PostMapping("/reset-password")
+    public void resetPassword(@RequestBody @Valid ResetPasswordRequestDto dto){
+        this.userService.resetPassword(dto.getToken(), dto.getNewPassword());
     }
 }

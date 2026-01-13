@@ -166,16 +166,21 @@ const LoginPage = () => {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-gray-300 rounded"
+                className="h-4 w-4 bg-black/40 border-white/10 text-cyan-500 focus:ring-cyan-500/50 rounded transition-all duration-300"
               />
               <label
                 htmlFor="rememberMe"
-                className="ml-2 block text-sm text-white"
+                className="ml-2 block text-sm text-slate-300"
               >
                 Remember me
               </label>
             </div>
-            {/* Optionally add "Forgot password?" link here */}
+            <Link
+              to="/forgot-password"
+              className="text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-colors duration-300"
+            >
+              Forgot password?
+            </Link>
           </div>
 
           <button

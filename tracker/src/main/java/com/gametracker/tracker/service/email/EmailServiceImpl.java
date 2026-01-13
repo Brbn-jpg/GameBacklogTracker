@@ -21,7 +21,17 @@ public class EmailServiceImpl implements EmailService{
         message.setFrom("noreply@gamelog.com");
         message.setTo(to);
         message.setSubject("Verification code");
-        message.setText("Hello! Your verification code is: " + code + "\nCode will expire in 15 minutes");
+        message.setText("Hello! Your verification code is: " + code + "\nCode will expire in 15 minutes.");
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendPasswordResetEmail(String to, String token){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@gamelog.com");
+        message.setTo(to);
+        message.setSubject("Reset your password");
+        message.setText("Hello! Here is a link to reset your password: "+generateLink(token)+"\n Link will expire in 15 minutes.");
         mailSender.send(message);
     }
 
@@ -29,5 +39,9 @@ public class EmailServiceImpl implements EmailService{
     public String generateCode(){
         int code = secureRandom.nextInt(1000000);
         return String.format("%06d", code);
+    }
+
+    private String generateLink(String token){
+        return "http://localhost:3000/reset-password?token="+token;
     }
 }

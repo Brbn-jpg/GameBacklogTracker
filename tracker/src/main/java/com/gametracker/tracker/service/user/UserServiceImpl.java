@@ -32,6 +32,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -257,6 +258,36 @@ public class UserServiceImpl implements UserService {
         dto.setUserGames(getUserGames(foundUser));
 
         return dto;
+    }
+
+    @Override
+    public void processForgotPassword(String email){
+        Optional<User> user = this.userRepository.findByEmail(email);
+
+        if(user.isPresent()){
+            String generatedToken = UUID.randomUUID().toString();
+    
+            String redisKey = "resetToken:"+generatedToken;
+            redisTemplate.opsForValue().set(redisKey, email, 15, TimeUnit.MINUTES);
+    
+            this.emailService.sendPasswordResetEmail(email, generatedToken);
+        }
+    }
+
+    @Override
+    public void resetPassword(String token, String newPassword){
+        String redisKey = "resetToken:"+token;
+        String email = redisTemplate.opsForValue().get(redisKey);
+        if(email == null){
+            throw new RuntimeException("Token is invalid or expired");
+        }
+
+        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with email: "+email+"was not found"));
+        
+        user.setPassword(passwordEncoder.encode(newPassword));
+        this.userRepository.save(user);
+
+        redisTemplate.delete(redisKey);
     }
 
     // Helpers

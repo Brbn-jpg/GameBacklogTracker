@@ -1,167 +1,118 @@
-# GameBacklogTracker
+# Game Backlog Tracker
 
-The GameBacklogTracker is a full-stack application designed to help users manage their video game backlogs. It allows users to track games they own, games they want to play, their progress, ratings, and more. The application consists of a RESTful API backend built with Spring Boot and a dynamic frontend user interface built with React.
+Game Backlog Tracker is a full-stack web application designed to help users organize their video game libraries. It allows users to track their progress, rate games, manage a wishlist, and interact with friends.
 
-## Features
+This repository is a monorepo containing both the server-side API and the client-side user interface.
 
-### Backend (RESTful API)
+## Repository Structure
 
-- User Authentication and Authorization (JWT-based)
-- User Management
-- Game Data Management
-- User-specific Game Backlog Management
-- Search and Filtering Capabilities
-- Role-based Access Control
+The project is divided into two main directories:
 
-### Frontend (User Interface)
+*   **tracker/**: The backend API built with Java, Spring Boot, PostgreSQL, and Redis.
+*   **tracker-frontend/**: The frontend application built with React and Tailwind CSS.
 
-- Intuitive Dashboard with user statistics
-- Browse and discover games
-- Add, update, and remove games from your personal backlog
-- Filter and sort games in your library
-- Responsive design for various devices
+## Prerequisites
 
-## Technologies Used
+Before starting, ensure you have the following installed on your machine:
 
-### Backend
+*   **Docker & Docker Compose**: Required for running the backend API, database, and cache.
+*   **Node.js (v18 or higher) & npm**: Required for running the frontend application.
+*   **Git**: For cloning the repository.
 
-- **Java**: Programming language
-- **Spring Boot**: Framework for building the RESTful API
-- **Spring Security**: For authentication and authorization (JWT)
-- **Maven**: Dependency management and build automation
-- **JPA/Hibernate**: For database interaction and object-relational mapping
-- **H2 Database (Development)**: In-memory database for development
-- **PostgreSQL (Production/Docker)**: Relational database for production environments (or similar)
+## Quick Start Guide
 
-### Frontend
+To run the application locally, you will need to set up the backend and frontend separately. Follow the steps below.
 
-- **React**: JavaScript library for building user interfaces
-- **Tailwind CSS**: Utility-first CSS framework for styling
-- **React Router DOM**: For client-side routing
-- **Context API**: For global state management (e.g., authentication)
-- **Axios**: HTTP client for API requests
-- **React Icons**: Icon library
+### 1. Backend Setup (Docker)
 
-## Architecture
+The backend relies on environment variables for database and security configurations.
 
-The application follows a client-server architecture:
-
-- The **Frontend** (React application) communicates with the **Backend** (Spring Boot API) via RESTful HTTP requests.
-- The **Backend** handles business logic, data persistence, and security, interacting with a relational database.
-- JWT (JSON Web Tokens) are used for securing API endpoints and maintaining user sessions.
-
-## Getting Started
-
-To set up and run the entire GameBacklogTracker project locally, follow these steps.
-
-### Prerequisites
-
-- **Java Development Kit (JDK) 17+**
-- **Maven 3.6+**
-- **Node.js 18+**
-- **npm 9+ or Yarn 1.22+**
-- (Optional for Docker setup) **Docker and Docker Compose**
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/GameBacklogTracker.git
-cd GameBacklogTracker
-```
-
-### 2. Backend Setup
-
-Navigate to the `tracker` directory:
-
-```bash
-cd tracker
-```
-
-**a. Database Configuration:**
-The backend is configured to use an in-memory H2 database for development by default, which means you can run it directly without external database setup.
-For production or persistent data, you can configure `src/main/resources/application.yml` to connect to a PostgreSQL or other relational database.
-
-**b. Build the Backend:**
-
-```bash
-./mvnw clean install
-```
-
-**c. Run the Backend:**
-
-```bash
-./mvnw spring-boot:run
-```
-
-The backend API will start on `http://localhost:8080` (or configured port).
-
-### 3. Frontend Setup
-
-Open a **new terminal** and navigate to the `tracker-frontend` directory:
-
-```bash
-cd ../tracker-frontend
-```
-
-**a. Install Dependencies:**
-
-```bash
-npm install
-# or
-yarn install
-```
-
-**b. Environment Variables:**
-Create a `.env` file in the `tracker-frontend` directory. Ensure `REACT_APP_API_BASE_URL` points to your running backend.
-
-```
-REACT_APP_API_BASE_URL=http://localhost:8080/api
-```
-
-**c. Run the Frontend:**
-
-```bash
-npm start
-# or
-yarn start
-```
-
-The React application will open in your browser, typically at `http://localhost:3000`.
-
-### Running with Docker (Recommended)
-
-If you have Docker and Docker Compose installed, you can run both backend and database using the provided `docker-compose.yml` (located in the `tracker` directory).
-
-1.  **Build Docker images:**
+1.  Navigate to the backend directory:
     ```bash
-    docker-compose build
+    cd tracker
     ```
-2.  **Start services:**
+
+2.  Create a `.env` file in the `tracker` directory. You can use the following template:
+
+    ```env
+    # Database Configuration
+    POSTGRES_DB=game_backlog
+    POSTGRES_USER=gameuser
+    POSTGRES_PASSWORD=gamepass
+    
+    # JDBC URL for Docker internal network
+    DB_URL=jdbc:postgresql://gamebacklog_db:5432/game_backlog
+
+    # Redis Configuration
+    REDIS_HOST=gamebacklog_redis_cache
+    REDIS_PORT=6379
+    REDIS_PASSWORD=your_redis_password
+
+    # Security
+    # Generate a secure Base64 key (e.g., using Python: import secrets; print(secrets.token_urlsafe(32)))
+    JWT_KEY=YOUR_SECURE_BASE64_ENCODED_KEY
+
+    # Email Service (Gmail SMTP)
+    GOOGLE_SMTP_EMAIL=your_email@gmail.com
+    GOOGLE_SMTP_KEY=your_app_password
+    ```
+
+3.  Build and start the services using Docker Compose:
     ```bash
-    docker-compose up
+    docker-compose up --build
     ```
-    This will start both the backend and database, as defined in the `docker-compose.yml`.
-3.  **Start frontend**
+
+    *   The API will be available at `http://localhost:8080/v1`.
+    *   PostgreSQL will run on port `5433` (mapped from 5432).
+    *   Redis will run on port `6379`.
+
+### 2. Frontend Setup (React)
+
+Once the backend is running, open a new terminal window to set up the frontend.
+
+1.  Navigate to the frontend directory:
+    ```bash
+    cd tracker-frontend
+    ```
+
+2.  Install the dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Start the development server:
     ```bash
     npm start
     ```
-    Make sure you have installed dependencied before running frontend.
 
-## Project Structure (Monorepo)
+    *   The application will automatically open in your browser at `http://localhost:3000`.
+    *   The frontend is configured to proxy API requests to `http://localhost:8080`.
 
-```
-GameBacklogTracker/
-├── tracker/                    # Backend (Spring Boot API)
-│   ├── src/                    # Java source code, resources
-│   ├── pom.xml                 # Maven project file
-│   └── docker-compose.yml      # Docker Compose for backend and optional database
-└── tracker-frontend/           # Frontend (React Application)
-    ├── public/                 # Static assets
-    ├── src/                    # React components, styles, logic
-    ├── package.json            # Node.js dependencies
-    └── tailwind.config.js      # Tailwind CSS configuration
-```
+## Features
 
-## Contact
+*   **User Accounts**: Secure registration, login, and profile management with email verification.
+*   **Game Library**: Add games to your collection, categorize them by status (Playing, Completed, Ditched, Not Played), and track hours played.
+*   **Kanban Dashboard**: A visual board to manage your current gaming progress.
+*   **Advanced Search**: Filter games by platform, genre, developer, and release date.
+*   **Social**: Find other users, send friend requests, and view their libraries (if public).
+*   **Wishlist**: Keep track of games you want to play in the future.
 
-For any questions or suggestions, please open an issue in the GitHub repository.
+## Technology Stack
+
+### Backend
+*   **Java 21**
+*   **Spring Boot 3** (Web, Security, Data JPA, Mail)
+*   **PostgreSQL** (Primary Database)
+*   **Redis** (Caching)
+*   **Docker** (Containerization)
+
+### Frontend
+*   **React 19**
+*   **Tailwind CSS** (Styling)
+*   **React Router DOM** (Routing)
+*   **React DnD** (Drag and Drop functionality)
+
+## Development Notes
+
+*   **Database Access**: You can connect to the PostgreSQL database running in Docker using a tool like DBeaver or pgAdmin via `localhost:5433` using the credentials defined in your `.env` file.
+*   **API Documentation**: Refer to the `README.md` file inside the `tracker` directory for a detailed list of API endpoints.
