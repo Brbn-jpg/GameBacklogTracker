@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService {
         User foundUser = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id "+userId+" was not found"));
 
         this.userRepository.delete(foundUser);
-        return true;    
+        return true;
     }
 
     @Override
