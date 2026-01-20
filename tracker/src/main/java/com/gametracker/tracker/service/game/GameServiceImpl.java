@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,11 +33,15 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.enums.CSVReaderNullFieldIndicator;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 @Service
 public class GameServiceImpl implements GameService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
     private final GameRepository gameRepository;
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -81,25 +85,15 @@ public class GameServiceImpl implements GameService {
         return this.gameRepository.findDistinctTags();
     }
 
-    @Override
+@Override
     @Transactional
     public Integer uploadCsv(MultipartFile file, String token) {
         findUser(token);
+        System.out.println("Started uploading (Stream mode)");
 
-        System.out.println("Started uploading");
-        Set<Game> games;
-        try {
-            games = parseCsv(file);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to parse CSV file", e);
-        }
-        this.gameRepository.saveAll(games);
-        System.out.println("Finished uploading");
-        return games.size();
-    }
-
-    private Set<Game> parseCsv(MultipartFile file) throws IOException {
-        System.out.println("started parsing");
+        int batchSize = 500;
+        int totalSaved = 0;
+        List<Game> batch = new ArrayList<>();
 
         try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             HeaderColumnNameMappingStrategy<GameCsvDto> strategy = new HeaderColumnNameMappingStrategy<>();
@@ -112,29 +106,51 @@ public class GameServiceImpl implements GameService {
             CSVReader csvReader = new CSVReaderBuilder(reader)
                     .withCSVParser(parser)
                     .withFieldAsNull(CSVReaderNullFieldIndicator.BOTH)
-                    .withMultilineLimit(100) 
+                    .withMultilineLimit(100)
                     .build();
 
             CsvToBean<GameCsvDto> csvToBean = new CsvToBeanBuilder<GameCsvDto>(csvReader)
                     .withMappingStrategy(strategy)
                     .withIgnoreEmptyLine(true)
                     .withIgnoreLeadingWhiteSpace(true)
-                    .withThrowExceptions(false)
+                    .withThrowExceptions(false) 
                     .build();
 
-            List<GameCsvDto> parsedDtos = csvToBean.parse();
+            Iterator<GameCsvDto> csvIterator = csvToBean.iterator();
 
-            csvToBean.getCapturedExceptions().forEach(ex -> {
-                System.err.println("Line " + ex.getLineNumber() + ": " + ex.getMessage());
-            });
+            while (csvIterator.hasNext()) {
+                GameCsvDto dto = csvIterator.next();
+                
+                if (dto != null && dto.getAppId() != null) {
+                    batch.add(dto.toGameEntity());
+                }
 
-            System.out.println("Parsed DTOs: " + parsedDtos.size());
+                if (batch.size() >= batchSize) {
+                    saveBatch(batch);
+                    totalSaved += batch.size();
+                    batch.clear(); 
+                    System.out.println("Saved chunk. Progress: " + totalSaved);
+                }
+            }
 
-            return parsedDtos.stream()
-                    .filter(dto -> dto != null && dto.getAppId() != null)  
-                    .map(GameCsvDto::toGameEntity)
-                    .collect(Collectors.toSet());
+            // Zapisz końcówkę
+            if (!batch.isEmpty()) {
+                saveBatch(batch);
+                totalSaved += batch.size();
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to parse CSV file", e);
         }
+
+        System.out.println("Finished. Total: " + totalSaved);
+        return totalSaved;
+    }
+
+    private void saveBatch(List<Game> batch) {
+        gameRepository.saveAll(batch);
+        entityManager.flush();
+        entityManager.clear();
     }
 
     private User findUser(String token){
