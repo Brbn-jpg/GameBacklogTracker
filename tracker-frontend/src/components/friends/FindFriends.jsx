@@ -24,7 +24,7 @@ const FindFriends = () => {
     const token = Cookies.get("jwt_token");
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/userfriend/search?query=${debouncedQuery}&page=${page}&size=10`,
+        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/userfriend/search?query=${debouncedQuery}&page=${page}&size=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -21,7 +21,7 @@ const FriendProfile = () => {
       const token = Cookies.get("jwt_token");
 
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/users/${userId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/users/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
