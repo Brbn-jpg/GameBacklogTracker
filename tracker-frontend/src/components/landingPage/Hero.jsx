@@ -142,7 +142,7 @@ const Hero = () => {
           </div>
         </div>
         <p className="mt-12 text-center text-sm font-medium text-gray-400 animate-pulse hidden md:block">
-          Psst! Try dragging and dropping the cards below.
+          Psst! Try dragging and dropping the cards above.
         </p>
       </section>
     </DndProvider>
