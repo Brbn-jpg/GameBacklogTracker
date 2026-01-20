@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
 
     try {
       // Placeholder for backend endpoint
-      const response = await fetch("http://localhost:8080/v1/auth/forgot-password", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

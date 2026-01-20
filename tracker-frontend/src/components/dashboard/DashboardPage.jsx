@@ -28,8 +28,8 @@ const DashboardPage = () => {
 
       try {
         const [gamesResponse, statsResponse] = await Promise.all([
-          fetch(`http://localhost:8080/v1/usergames`, { headers }),
-          fetch(`http://localhost:8080/v1/usergames/stats`, { headers }),
+          fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames`, { headers }),
+          fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames/stats`, { headers }),
         ]);
 
         if (!gamesResponse.ok)
@@ -64,7 +64,7 @@ const DashboardPage = () => {
       const token = Cookies.get("jwt_token");
       try {
         const response = await fetch(
-          `http://localhost:8080/v1/usergames/${gameId}`,
+          `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames/${gameId}`,
           {
             method: "PATCH",
             headers: {
@@ -94,7 +94,7 @@ const DashboardPage = () => {
     const token = Cookies.get("jwt_token");
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/usergames/${gameId}`,
+        `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames/${gameId}`,
         {
           method: "DELETE",
           headers: {

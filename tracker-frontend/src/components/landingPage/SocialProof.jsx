@@ -9,7 +9,7 @@ const SocialProof = () => {
     const fetchStats = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/usergames/allstats"
+          `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/allstats`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

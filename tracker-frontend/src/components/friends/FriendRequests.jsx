@@ -9,7 +9,7 @@ const FriendRequests = ({ onActionSuccess }) => {
   const fetchRequests = async () => {
     const token = Cookies.get("jwt_token");
     try {
-      const response = await fetch("http://localhost:8080/v1/userfriend/friendRequests", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/userfriend/friendRequests`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,7 +31,7 @@ const FriendRequests = ({ onActionSuccess }) => {
   const handleRequest = async (id, action) => {
     const token = Cookies.get("jwt_token");
     try {
-      const response = await fetch(`http://localhost:8080/v1/userfriend/${action}/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/userfriend/${action}/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

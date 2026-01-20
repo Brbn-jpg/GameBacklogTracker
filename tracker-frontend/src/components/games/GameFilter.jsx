@@ -26,9 +26,9 @@ const GameFilter = ({ onFilterChange }) => {
     const fetchOptions = async () => {
       try {
         const [genresRes, categoriesRes, tagsRes] = await Promise.all([
-          fetch("http://localhost:8080/v1/games/filters/genres"),
-          fetch("http://localhost:8080/v1/games/filters/categories"),
-          fetch("http://localhost:8080/v1/games/filters/tags"),
+          fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/games/filters/genres`),
+          fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/games/filters/categories`),
+          fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/games/filters/tags`),
         ]);
 
         const genres = genresRes.ok ? await genresRes.json() : [];

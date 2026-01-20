@@ -24,7 +24,7 @@ const GamePage = () => {
     setLoading(true);
     setError(null);
     try {
-      const gameUrl = `http://localhost:8080/v1/games/${id}`;
+      const gameUrl = `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/games/${id}`;
       const gamePromise = fetch(gameUrl).then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -32,7 +32,7 @@ const GamePage = () => {
 
       let userGamePromise = Promise.resolve(null);
       if (isAuthenticated) {
-        const userGamesUrl = `http://localhost:8080/v1/usergames`;
+        const userGamesUrl = `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames`;
         userGamePromise = fetch(userGamesUrl, {
           headers: { Authorization: `Bearer ${token}` },
         }).then((res) => {
@@ -73,7 +73,7 @@ const GamePage = () => {
   const handleAddGame = async () => {
     setAddGameStatus("loading");
     try {
-      const response = await fetch("http://localhost:8080/v1/usergames", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +95,7 @@ const GamePage = () => {
   const addToWishlist = async () => {
     setWishlistStatus("loading");
     try {
-      const response = await fetch(`http://localhost:8080/v1/usergames`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -121,7 +121,7 @@ const GamePage = () => {
     setRemoveGameStatus("loading");
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/usergames/${game.id}`,
+        `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames/${game.id}`,
         {
           method: "DELETE",
           headers: {
@@ -144,7 +144,7 @@ const GamePage = () => {
     setUpdateGameStatus("loading");
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/usergames/${game.id}`,
+        `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames/${game.id}`,
         {
           method: "PATCH",
           headers: {
@@ -177,7 +177,7 @@ const GamePage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/usergames/${game.id}`,
+        `${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || "http://localhost:8080"}`}/v1/usergames/${game.id}`,
         {
           method: "PATCH",
           headers: {

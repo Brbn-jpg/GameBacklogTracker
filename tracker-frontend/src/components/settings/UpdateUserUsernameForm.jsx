@@ -14,7 +14,7 @@ const UpdateUserUsernameForm = () => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:8080/v1/users/me/username', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/users/me/username`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

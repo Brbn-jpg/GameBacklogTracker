@@ -20,7 +20,7 @@ const UserProfile = () => {
       const token = Cookies.get("jwt_token");
 
       try {
-        const response = await fetch("http://localhost:8080/v1/users/me", {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

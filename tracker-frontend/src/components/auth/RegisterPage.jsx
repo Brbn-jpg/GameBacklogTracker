@@ -56,7 +56,7 @@ const RegisterPage = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("http://localhost:8080/v1/auth/register", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -85,7 +85,7 @@ const RegisterPage = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("http://localhost:8080/v1/auth/verify", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

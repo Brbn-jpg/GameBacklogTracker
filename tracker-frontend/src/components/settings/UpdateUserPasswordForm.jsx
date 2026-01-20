@@ -23,7 +23,7 @@ const UpdateUserPasswordForm = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/v1/users/me/password', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/users/me/password`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

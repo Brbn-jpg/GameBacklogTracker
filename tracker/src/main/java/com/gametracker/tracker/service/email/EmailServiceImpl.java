@@ -11,6 +11,9 @@ public class EmailServiceImpl implements EmailService{
     private JavaMailSender mailSender;
     private static final SecureRandom secureRandom = new SecureRandom();
 
+    @org.springframework.beans.factory.annotation.Value("${app.frontend.url}")
+    private String frontendUrl;
+
     public EmailServiceImpl(JavaMailSender mailSender){
         this.mailSender = mailSender;
     }
@@ -42,6 +45,6 @@ public class EmailServiceImpl implements EmailService{
     }
 
     private String generateLink(String token){
-        return "http://localhost:3000/reset-password?token="+token;
+        return frontendUrl + "/reset-password?token=" + token;
     }
 }

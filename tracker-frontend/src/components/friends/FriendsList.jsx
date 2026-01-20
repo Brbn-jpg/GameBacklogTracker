@@ -15,7 +15,7 @@ const FriendsList = () => {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/userfriend/all",
+          `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/userfriend/all`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
