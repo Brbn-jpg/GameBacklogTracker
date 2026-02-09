@@ -9,6 +9,7 @@ import ResetPasswordPage from "./components/auth/ResetPasswordPage";
 import Dashboard from "./components/dashboard/Dashboard";
 import Games from "./components/games/Games";
 import GamePage from "./components/games/GamePage";
+import IgdbGamePage from "./components/games/IgdbGamePage";
 import ContactPage from "./components/common/ContactPage";
 import BlogPage from "./components/common/BlogPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -30,6 +31,7 @@ function App() {
           </Route>
           <Route path="/games" element={<Games />} />
           <Route path="/games/:id" element={<GamePage />} />
+          <Route path="/igdb-games/:id" element={<IgdbGamePage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
         </Routes>

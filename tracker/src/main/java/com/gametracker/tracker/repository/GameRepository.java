@@ -10,6 +10,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GameRepository extends JpaRepository<Game, Long>, JpaSpecificationExecutor<Game> {
+    Game findByAppId(Long appId);
+
     @Query("SELECT DISTINCT g FROM Game game JOIN game.genres g")
     List<String> findDistinctGenres();
 

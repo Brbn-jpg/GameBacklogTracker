@@ -55,6 +55,10 @@ The backend relies on environment variables for database and security configurat
     # Email Service (Gmail SMTP)
     GOOGLE_SMTP_EMAIL=your_email@gmail.com
     GOOGLE_SMTP_KEY=your_app_password
+
+    # IGDB API Configuration
+    IGDB_CLIENT_ID=your_igdb_client_id
+    IGDB_CLIENT_SECRET=your_igdb_client_secret
     ```
 
 3.  Build and start the services using Docker Compose:
@@ -93,7 +97,7 @@ Once the backend is running, open a new terminal window to set up the frontend.
 *   **User Accounts**: Secure registration, login, and profile management with email verification.
 *   **Game Library**: Add games to your collection, categorize them by status (Playing, Completed, Ditched, Not Played), and track hours played.
 *   **Kanban Dashboard**: A visual board to manage your current gaming progress.
-*   **Advanced Search**: Filter games by platform, genre, developer, and release date.
+*   **Global Game Search**: Search and browse thousands of games powered by the **IGDB API**. View detailed game information including summaries and screenshots.
 *   **Social**: Find other users, send friend requests, and view their libraries (if public).
 *   **Wishlist**: Keep track of games you want to play in the future.
 

@@ -28,7 +28,8 @@ The Game Backlog Tracker API provides functionalities for:
 - Email verification and password reset flows.
 - Managing a personal backlog of games with statuses (e.g., Playing, Completed, Ditched).
 - Tracking hours played and rating games.
-- Searching and filtering a comprehensive database of games.
+- **IGDB Integration**: Global search and browsing of thousands of games via the IGDB API.
+- **Dynamic Game Import**: Automatically import games from IGDB into the local database when users add them to their backlog.
 - Social features including friend requests and viewing friends' profiles.
 - Bulk import of game data via CSV.
 
@@ -80,6 +81,8 @@ Create a `.env` file in the `tracker` directory (or ensure your environment prov
 - `REDIS_PORT`: Port of the Redis server (defaults to `6379`).
 - `GOOGLE_SMTP_EMAIL`: Email address used for sending system emails (e.g., verification codes).
 - `GOOGLE_SMTP_KEY`: App password or API key for the SMTP service.
+- `IGDB_CLIENT_ID`: Your Twitch/IGDB Developer Client ID.
+- `IGDB_CLIENT_SECRET`: Your Twitch/IGDB Developer Client Secret.
 
 ## Installation and Running
 
@@ -153,6 +156,11 @@ All endpoints are prefixed with `/v1`.
 - `GET /games/filters/tags`: Get a list of all available tags.
 - `POST /games/uploadCsv`: Upload a CSV file to bulk import games (Admin/Auth required).
 - `DELETE /games/{id}`: Delete a game (Admin/Auth required).
+
+### IGDB (Global Game Database)
+
+- `GET /igdb/search?name={query}&page={n}`: Search for games in the global IGDB database.
+- `GET /igdb/{igdbId}`: Retrieve detailed information for a specific game from IGDB.
 
 ### User Library (Backlog)
 

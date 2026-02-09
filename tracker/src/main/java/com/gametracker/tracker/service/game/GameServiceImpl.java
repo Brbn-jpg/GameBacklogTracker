@@ -133,7 +133,6 @@ public class GameServiceImpl implements GameService {
                 }
             }
 
-            // Zapisz końcówkę
             if (!batch.isEmpty()) {
                 saveBatch(batch);
                 totalSaved += batch.size();

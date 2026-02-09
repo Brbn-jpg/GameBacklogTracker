@@ -40,6 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(req -> {
         req.requestMatchers("/auth/**").permitAll();
+        req.requestMatchers("/igdb/**").permitAll();
         req.requestMatchers(HttpMethod.GET, "/users/**").permitAll();
         req.requestMatchers(HttpMethod.POST, "/users/**").authenticated();
         req.requestMatchers(HttpMethod.PATCH, "/users/**").authenticated();
