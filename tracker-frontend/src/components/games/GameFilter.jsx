@@ -1,13 +1,38 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import MultiSelect from "../common/MultiSelect";
+
+const GENRES = [
+  "Action", "Adventure", "Role-playing (RPG)", "Shooter", "Strategy", "Sports", 
+  "Racing", "Simulation", "Puzzle", "Platform", "Fighting", "Indie", 
+  "Arcade", "Family", "Music", "Tactical", "Point-and-click", "Visual Novel"
+];
+
+const PLATFORMS = [
+  "PC (Microsoft Windows)", "Mac", "Linux", 
+  "PlayStation 5", "PlayStation 4", 
+  "Xbox Series X|S", "Xbox One", 
+  "Nintendo Switch", "iOS", "Android"
+];
 
 const GameFilter = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
     name: "",
+    genres: [],
+    platforms: [],
+    developers: "",
+    publishers: ""
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
+  const handleMultiSelectChange = (name, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value,
@@ -40,10 +65,77 @@ const GameFilter = ({ onFilterChange }) => {
               name="name"
               value={filters.name}
               onChange={handleChange}
-              className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+              className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder-gray-600"
               placeholder="e.g. Elden Ring..."
             />
           </div>
+        </div>
+
+        <div>
+          <label htmlFor="genre" className="block text-gray-400 text-sm font-medium mb-1">
+            Genre
+          </label>
+          <select
+            id="genre"
+            name="genre"
+            value={filters.genres[0] || ""}
+            onChange={(e) => {
+              const val = e.target.value;
+              setFilters((prev) => ({ ...prev, genres: val ? [val] : [] }));
+            }}
+            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all cursor-pointer"
+          >
+            <option value="">All Genres</option>
+            {GENRES.map((genre) => (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <MultiSelect
+          label="Platforms"
+          options={PLATFORMS}
+          selectedValues={filters.platforms}
+          onChange={(val) => handleMultiSelectChange("platforms", val)}
+          placeholder="Select platforms..."
+        />
+
+        <div>
+          <label htmlFor="developers" className="block text-gray-400 text-sm font-medium mb-1">
+            Developers
+          </label>
+          <input
+            type="text"
+            id="developers"
+            name="developers"
+            value={filters.developers}
+            onChange={handleChange}
+            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder-gray-600"
+            placeholder="e.g. FromSoftware, Valve"
+          />
+          <p className="text-xs text-gray-500 mt-1 italic">
+            Note: Search requires full company name (e.g. "FromSoftware")
+          </p>
+        </div>
+
+        <div>
+          <label htmlFor="publishers" className="block text-gray-400 text-sm font-medium mb-1">
+            Publishers
+          </label>
+          <input
+            type="text"
+            id="publishers"
+            name="publishers"
+            value={filters.publishers}
+            onChange={handleChange}
+            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder-gray-600"
+            placeholder="e.g. Bandai Namco, Electronic Arts"
+          />
+          <p className="text-xs text-gray-500 mt-1 italic">
+            Note: Search requires full company name (e.g. "Bandai Namco")
+          </p>
         </div>
 
         <button

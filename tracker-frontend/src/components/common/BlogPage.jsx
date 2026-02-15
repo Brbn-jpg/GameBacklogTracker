@@ -38,7 +38,7 @@ const BlogPage = () => {
       id: 6,
       title: 'IGDB API Integration',
       description: 'Integrate with the Internet Game Database (IGDB) to automatically fetch rich game data, including covers, release dates, and developer info, replacing manual entry.',
-      status: 'Planned',
+      status: 'Completed',
     },
     {
       id: 7,

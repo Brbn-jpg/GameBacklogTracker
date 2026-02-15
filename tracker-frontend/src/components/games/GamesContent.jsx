@@ -22,37 +22,39 @@ const GamesContent = ({ filters }) => {
       setError(null);
       try {
         const queryParams = new URLSearchParams();
-        
+
         if (filters.name) queryParams.append("name", filters.name);
-        
+
         if (filters.genres && filters.genres.length > 0) {
-          filters.genres.forEach(g => queryParams.append("genres", g));
+          filters.genres.forEach((g) => queryParams.append("genres", g));
         }
 
         if (filters.categories && filters.categories.length > 0) {
-          filters.categories.forEach(c => queryParams.append("categories", c));
+          filters.categories.forEach((c) =>
+            queryParams.append("categories", c),
+          );
         }
 
         if (filters.developers) {
-          const devs = filters.developers.split(",").map(d => d.trim());
-          devs.forEach(d => queryParams.append("developers", d));
+          const devs = filters.developers.split(",").map((d) => d.trim());
+          devs.forEach((d) => queryParams.append("developers", d));
         }
 
         if (filters.publishers) {
-          const pubs = filters.publishers.split(",").map(p => p.trim());
-          pubs.forEach(p => queryParams.append("publishers", p));
+          const pubs = filters.publishers.split(",").map((p) => p.trim());
+          pubs.forEach((p) => queryParams.append("publishers", p));
         }
 
-        if (filters.windows) queryParams.append("platforms", "PC (Microsoft Windows)");
-        if (filters.mac) queryParams.append("platforms", "Mac");
-        if (filters.linux) queryParams.append("platforms", "Linux");
+        if (filters.platforms && filters.platforms.length > 0) {
+          filters.platforms.forEach((p) => queryParams.append("platforms", p));
+        }
 
         // Add pagination
         queryParams.append("page", currentPage);
         queryParams.append("size", pageSize);
 
         const url = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/igdb/search?${queryParams.toString()}`;
-        
+
         const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -76,35 +78,41 @@ const GamesContent = ({ filters }) => {
   }, [filters, currentPage, token]);
 
   const handleNextPage = () => {
-    setCurrentPage(prev => prev + 1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage((prev) => prev + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePrevPage = () => {
-    setCurrentPage(prev => Math.max(0, prev - 1));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage((prev) => Math.max(0, prev - 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (loading && games.length === 0) return <div className="text-center py-12 text-xl text-slate-400">Searching IGDB...</div>;
-  
+  if (loading && games.length === 0)
+    return (
+      <div className="text-center py-12 text-xl text-slate-400">
+        Searching IGDB...
+      </div>
+    );
+
   if (error)
-    return <div className="text-center py-8 text-red-500 bg-red-500/10 rounded-xl border border-red-500/50">Error: {error}</div>;
+    return (
+      <div className="text-center py-8 text-red-500 bg-red-500/10 rounded-xl border border-red-500/50">
+        Error: {error}
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-slate-950 text-white pb-12">
       <div className="container mx-auto">
-        {/* Results Info */}
-        <div className="mb-6 text-slate-400 text-sm">
-          Showing results for page {currentPage + 1}
-        </div>
-
         {!loading && games.length === 0 && (
           <div className="text-center py-12 text-slate-400 text-xl border border-white/5 rounded-2xl bg-slate-900/20">
             No games found. Try adjusting your filters!
           </div>
         )}
 
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 ${loading ? 'opacity-50' : 'opacity-100'}`}>
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 ${loading ? "opacity-50" : "opacity-100"}`}
+        >
           {games.map((game) => (
             <IgdbGameCard key={game.appId || game.id} game={game} />
           ))}
@@ -119,8 +127,10 @@ const GamesContent = ({ filters }) => {
           >
             <FaChevronLeft /> Previous
           </button>
-          
-          <span className="text-slate-400 font-medium">Page {currentPage + 1}</span>
+
+          <span className="text-slate-400 font-medium">
+            Page {currentPage + 1}
+          </span>
 
           <button
             onClick={handleNextPage}

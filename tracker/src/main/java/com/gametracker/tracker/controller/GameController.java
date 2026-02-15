@@ -69,24 +69,28 @@ public class GameController {
         return ResponseEntity.noContent().build();
     }
 
+    @Deprecated
     @GetMapping("/filters/genres")
     public ResponseEntity<List<String>> getGenres(){
         List<String> genres = this.gameService.findDistinctGenres();
         return ResponseEntity.ok(genres);
     }
 
+    @Deprecated
     @GetMapping("/filters/categories")
     public ResponseEntity<List<String>> getCategories(){
         List<String> genres = this.gameService.findDistinctCategories();
         return ResponseEntity.ok(genres);
     }
 
+    @Deprecated
     @GetMapping("/filters/tags")
     public ResponseEntity<List<String>> getTags(){
         List<String> genres = this.gameService.findDistinctTags();
         return ResponseEntity.ok(genres);
     }
 
+    @Deprecated
     @PostMapping(value = "/uploadCsv", consumes = {"multipart/form-data"})
     public ResponseEntity<Integer> uploadCsvFile(@RequestPart("file") MultipartFile file, @RequestHeader("Authorization") String token) throws IOException {
         return ResponseEntity.ok(this.gameService.uploadCsv(file, token));

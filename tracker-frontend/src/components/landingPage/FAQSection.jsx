@@ -24,9 +24,7 @@ const FAQSection = () => {
               Where are you getting games data?
             </h3>
             <p className="text-gray-400">
-              Currently, we use a dataset from Kaggle. However, we have plans to
-              integrate with the IGDB API to provide more comprehensive and
-              up-to-date game information.
+              We source our comprehensive game data directly from the Internet Game Database (IGDB), ensuring you have access to the most accurate and up-to-date information available.
             </p>
           </div>
 

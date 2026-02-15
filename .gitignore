@@ -26,3 +26,5 @@ yarn-error.log*
 .project
 .settings/
 .factorypath
+
+.gemini/
