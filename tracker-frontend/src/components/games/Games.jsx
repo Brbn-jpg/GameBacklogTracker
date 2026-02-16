@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Footer from "../common/Footer";
-import Navbar from "../common/Navbar";
+import MainLayout from "../layout/MainLayout";
 import GameFilter from "./GameFilter";
 import GamesContent from "./GamesContent";
 
@@ -12,9 +11,8 @@ const Games = () => {
   };
 
   return (
-    <div className="bg-slate-950 flex flex-col min-h-screen">
-      <Navbar />
-      <div className="flex flex-col md:flex-row flex-grow container mx-auto p-4 md:p-8 text-white gap-6">
+    <MainLayout>
+      <div className="flex flex-col md:flex-row container mx-auto p-4 md:p-8 text-white gap-6">
         <div className="w-full md:w-1/4 md:pr-8">
           <GameFilter onFilterChange={handleFilterChange} />
         </div>
@@ -22,8 +20,7 @@ const Games = () => {
           <GamesContent filters={filters} />
         </div>
       </div>
-      <Footer />
-    </div>
+    </MainLayout>
   );
 };
 

@@ -1,12 +1,10 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import MainLayout from '../layout/MainLayout';
 
 const ContactPage = () => {
   return (
-    <div className="bg-slate-950 flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow flex items-center justify-center text-white">
+    <MainLayout>
+      <div className="flex items-center justify-center min-h-[calc(100vh-theme(spacing.32))] text-white p-4">
         <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 max-w-lg w-full text-center">
           <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">Contact Me</h1>
           <p className="text-slate-300 mb-8">
@@ -33,9 +31,8 @@ const ContactPage = () => {
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </MainLayout>
   );
 };
 

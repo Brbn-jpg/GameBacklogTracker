@@ -1,6 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import MainLayout from '../layout/MainLayout';
 
 const BlogPage = () => {
   const roadmapItems = [
@@ -86,17 +85,15 @@ const BlogPage = () => {
   );
 
   return (
-    <div className="bg-slate-950 flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow container mx-auto p-8 text-white">
+    <MainLayout>
+      <div className="container mx-auto p-8 text-white">
         <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">Our Roadmap</h1>
         
         <RoadmapSection title="Coming Soon" items={plannedItems} />
         <RoadmapSection title="Completed" items={completedItems} />
         
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </MainLayout>
   );
 };
 

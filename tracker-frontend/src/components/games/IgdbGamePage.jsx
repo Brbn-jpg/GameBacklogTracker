@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../common/Navbar";
-import Footer from "../common/Footer";
+import MainLayout from "../layout/MainLayout";
 import Lightbox from "../common/Lightbox";
 import { useAuth } from "../../context/AuthContext";
 
@@ -81,9 +80,8 @@ const IgdbGamePage = () => {
   if (!game) return null;
 
   return (
-    <div className="bg-slate-950 flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow container mx-auto p-8 text-white">
+    <MainLayout>
+      <div className="container mx-auto p-8 text-white">
         <div
           className="relative h-96 rounded-2xl bg-cover bg-center"
           style={{ backgroundImage: `url(${game.headerImage})` }}
@@ -140,8 +138,7 @@ const IgdbGamePage = () => {
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
+      </div>
       {isLightboxOpen && (
         <Lightbox
           imageUrl={game.screenshots?.[selectedImageIndex]}
@@ -150,7 +147,7 @@ const IgdbGamePage = () => {
           onPrev={() => setSelectedImageIndex((i) => (i - 1 + game.screenshots.length) % game.screenshots.length)}
         />
       )}
-    </div>
+    </MainLayout>
   );
 };
 
