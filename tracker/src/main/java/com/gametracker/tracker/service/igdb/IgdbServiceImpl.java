@@ -38,9 +38,6 @@ public class IgdbServiceImpl implements IgdbService {
         StringBuilder query = new StringBuilder(GAME_FIELDS);
 
         String name = searchRequest.getName();
-        if(name.isEmpty()){
-            throw new IllegalArgumentException("game with name " +name+ " was not found");
-        }
         boolean isSearch = name != null && !name.isBlank();
 
         if (isSearch) {
