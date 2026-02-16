@@ -12,6 +12,7 @@ public class UserGameResponseDto {
     private Long userId;
     private String username;
     private Long gameId;
+    private Long appId;
     private String gameTitle;
     private String headerImage;
     private Status status;

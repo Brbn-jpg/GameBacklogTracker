@@ -25,6 +25,11 @@ import com.gametracker.tracker.repository.UserGameRepository;
 import com.gametracker.tracker.repository.UserRepository;
 import com.gametracker.tracker.security.JwtService;
 
+import com.gametracker.tracker.dto.IGDB.IgdbGameDto;
+import com.gametracker.tracker.service.igdb.IgdbService;
+import java.time.Instant;
+import java.time.ZoneId;
+
 @Service
 public class UserGameServiceImpl implements UserGameService{
 
@@ -32,12 +37,14 @@ public class UserGameServiceImpl implements UserGameService{
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final JwtService jwtService;
+    private final IgdbService igdbService;
 
-    public UserGameServiceImpl(UserGameRepository userGameRepository, UserRepository userRepository, GameRepository gameRepository, JwtService jwtService){
+    public UserGameServiceImpl(UserGameRepository userGameRepository, UserRepository userRepository, GameRepository gameRepository, JwtService jwtService, IgdbService igdbService){
         this.userGameRepository = userGameRepository;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.jwtService = jwtService;
+        this.igdbService = igdbService;
     }
 
     @Override
@@ -50,32 +57,79 @@ public class UserGameServiceImpl implements UserGameService{
     }
 
     @Override
+    @Transactional
     public UserGameResponseDto addUserGame(AddUserGameDto dto, String token){
         User foundUser = findUser(token);
-        Game foundGame = findGame(dto.getGameId());
+        
+        // Try to find the game locally by appId (IGDB ID)
+        Game foundGame = this.gameRepository.findByAppId(dto.getGameId());
+        
+        // If not found, fetch from IGDB and save
+        if (foundGame == null) {
+            IgdbGameDto igdbGame = igdbService.getGameById(dto.getGameId());
+            if (igdbGame == null) {
+                throw new GameNotFoundException("Game with id " + dto.getGameId() + " not found in IGDB");
+            }
+            
+            foundGame = new Game();
+            // DO NOT set id manually if using GenerationType.IDENTITY
+            foundGame.setAppId(igdbGame.getId()); // Map IGDB ID to appId
+            foundGame.setName(igdbGame.getName());
+            foundGame.setAbout(igdbGame.getAbout());
+            foundGame.setHeaderImage(igdbGame.getCover() != null ? igdbGame.getCover().getUrl().replace("t_thumb", "t_cover_big") : null);
+            
+            if (igdbGame.getFirstReleaseDate() != null) {
+                foundGame.setReleaseDate(Instant.ofEpochSecond(igdbGame.getFirstReleaseDate())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate());
+            }
+            
+            if (igdbGame.getGenres() != null) {
+                foundGame.setGenres(igdbGame.getGenres().stream().map(IgdbGameDto.IgdbGenreDto::getName).collect(Collectors.toList()));
+            }
+            
+            if (igdbGame.getPlatforms() != null) {
+                List<String> platformNames = igdbGame.getPlatforms().stream()
+                        .map(p -> p.getName().toLowerCase())
+                        .collect(Collectors.toList());
+                foundGame.setWindows(platformNames.stream().anyMatch(p -> p.contains("windows") || p.contains("pc")));
+                foundGame.setMac(platformNames.stream().anyMatch(p -> p.contains("mac")));
+                foundGame.setLinux(platformNames.stream().anyMatch(p -> p.contains("linux")));
+            }
+            
+            if (igdbGame.getScreenshots() != null) {
+                foundGame.setScreenshots(igdbGame.getScreenshots().stream().map(s -> s.getUrl().replace("t_thumb", "t_screenshot_huge")).collect(Collectors.toList()));
+            }
+            
+            if (igdbGame.getInvolvedCompanies() != null) {
+                foundGame.setDevelopers(igdbGame.getInvolvedCompanies().stream()
+                        .filter(c -> c.getDeveloper() != null && c.getDeveloper())
+                        .map(c -> c.getCompany().getName())
+                        .collect(Collectors.toList()));
+                foundGame.setPublishers(igdbGame.getInvolvedCompanies().stream()
+                        .filter(c -> c.getPublisher() != null && c.getPublisher())
+                        .map(c -> c.getCompany().getName())
+                        .collect(Collectors.toList()));
+            }
+            
+            foundGame = this.gameRepository.save(foundGame);
+        }
 
         if(this.userGameRepository.existsByUserAndGame(foundUser, foundGame)){
             throw new GameAlreadyInBacklogException("Game with id "+foundGame.getId()+" already exists for user with id "+foundUser.getId());
         }
 
         UserGame userGame = new UserGame();
-
         userGame.setUser(foundUser);
         userGame.setGame(foundGame);
-        switch (dto.getStatus()) {
-            case NOT_PLAYED:
-                userGame.setStatus(dto.getStatus());
-                break;
-            case WISHLIST:
-                userGame.setStatus(dto.getStatus());
-                break;
-            default:
-                throw new IllegalArgumentException("Wrong status");
-        }
+        
+        Status status = dto.getStatus();
+        if (status == null) status = Status.NOT_PLAYED;
+        
+        userGame.setStatus(status);
         userGame.setHoursPlayed(0.0);
         userGame.setAddedAt(LocalDate.now());
         userGame.setRating(0);
-
 
         UserGame savedUserGame = this.userGameRepository.save(userGame);
         return mapToDto(savedUserGame);
@@ -185,10 +239,6 @@ public class UserGameServiceImpl implements UserGameService{
         return this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with userId "+userId+" was not found"));
     }
 
-    private Game findGame(long gameId){
-        return this.gameRepository.findById(gameId).orElseThrow(() -> new GameNotFoundException("Game with gameId "+gameId+" was not found"));
-    }
-
     private UserGame findUserGame(long userGameId){
         return this.userGameRepository.findById(userGameId).orElseThrow(() -> new GameNotFoundException("UserGame with id "+userGameId+" was not found"));
     }
@@ -221,6 +271,7 @@ public class UserGameServiceImpl implements UserGameService{
 
         if (userGame.getGame() != null) {
             dto.setGameId(userGame.getGame().getId());
+            dto.setAppId(userGame.getGame().getAppId());
             dto.setGameTitle(userGame.getGame().getName());
             dto.setHeaderImage(userGame.getGame().getHeaderImage());
         }
