@@ -23,7 +23,7 @@ const UpdateUserPublicForm = () => {
         }
 
         const data = await response.json();
-        setIsPublic(data.isPublic);
+        setIsPublic(data.isPublic ?? false);
       } catch (e) {
         console.error(e);
       } finally {

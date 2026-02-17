@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService {
         newUser.setCreatedAt(LocalDate.now());
         newUser.setRole(Role.USER);
         newUser.setRegisterStatus(RegisterStatus.NOT_VERIFIED);
+        newUser.setIsPublic(false);
 
         String redisKey = "verify_code:" + dto.getEmail();
         String code = this.emailService.generateCode();
@@ -255,6 +256,7 @@ public class UserServiceImpl implements UserService {
 
         UserResponseDto dto = new UserResponseDto();
         dto.setUsername(foundUser.getUsername());
+        dto.setIsPublic(foundUser.getIsPublic());
         dto.setUserGames(getUserGames(foundUser));
 
         return dto;
