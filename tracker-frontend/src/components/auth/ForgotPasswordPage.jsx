@@ -15,7 +15,6 @@ const ForgotPasswordPage = () => {
     setMessage("");
 
     try {
-      // Placeholder for backend endpoint
       const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,7 +26,7 @@ const ForgotPasswordPage = () => {
         throw new Error(data.message || "Failed to send reset link");
       }
 
-      setMessage("If an account exists with that email, we have sent a password reset link.");
+      setMessage("Transmission successful. Check your inbox for reset instructions.");
       setEmail("");
     } catch (err) {
       setError(err.message);
@@ -37,77 +36,81 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="bg-slate-950 flex flex-col min-h-screen">
-      <main className="flex-grow flex items-center justify-center overflow-hidden relative p-4">
-        {/* Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl opacity-50"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full filter blur-3xl opacity-50"></div>
+    <div className="bg-white flex flex-col min-h-screen">
+      <main className="flex-grow flex items-center justify-center p-4 md:p-8 relative overflow-hidden min-h-screen">
+        {/* Old Text Theme - High Opacity */}
+        <div className="absolute inset-0 z-0 opacity-25 pointer-events-none flex items-center justify-center">
+            <span className="text-[15rem] font-black uppercase -rotate-12 select-none">Recovery</span>
         </div>
 
-        <div className="relative z-10 w-full max-w-md p-8 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-[0_0_50px_-10px_rgba(0,0,0,0.6)]">
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-              Forgot Password
+        <div className="relative z-10 w-full max-w-lg bg-white neo-border-thick neo-shadow-lg p-8 md:p-12">
+          <div className="mb-10 text-center">
+            <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic">
+              Forgot <span className="bg-cyan-400 px-2 not-italic">Password?</span>
             </h2>
-            <p className="text-slate-400 text-sm mt-3">
-              Enter your email address and we'll send you a link to reset your password.
+            <p className="text-black font-bold uppercase tracking-widest text-sm">
+              Initialize access recovery.
             </p>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="p-3 rounded bg-red-500/10 border border-red-500/50 text-red-400 text-sm text-center">
-                {error}
-              </div>
-            )}
-            
-            {message && (
-              <div className="p-3 rounded bg-green-500/10 border border-green-500/50 text-green-400 text-sm text-center">
-                {message}
-              </div>
-            )}
+          {!message ? (
+            <form className="space-y-8" onSubmit={handleSubmit}>
+              {error && (
+                <div className="bg-red-500 text-white neo-border-thick p-3 font-black uppercase text-center text-sm">
+                  {error}
+                </div>
+              )}
 
-            <div className="group">
-              <label htmlFor="email" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                required
-                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-xl font-black uppercase tracking-tight">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  className="w-full bg-white neo-border-thick p-4 text-black font-bold placeholder-gray-400 focus:bg-yellow-50 outline-none transition-colors"
+                  placeholder="YOUR@EMAIL.COM"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick neo-shadow neo-transition disabled:opacity-50"
+              >
+                {loading ? "Sending..." : "Request Reset"}
+              </button>
+            </form>
+          ) : (
+            <div className="text-center py-8 space-y-6">
+              <div className="inline-block p-6 bg-emerald-400 neo-border-thick neo-shadow">
+                <svg className="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <h3 className="text-3xl font-black uppercase tracking-tight">Email Sent</h3>
+              <p className="text-xl font-bold uppercase leading-tight">{message}</p>
+              <div className="pt-4">
+                <Link 
+                  to="/login" 
+                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow neo-transition"
+                >
+                  Return to Login
+                </Link>
+              </div>
             </div>
+          )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3.5 rounded-lg text-white font-bold tracking-wide
-                           bg-gradient-to-r from-cyan-600 to-purple-600 
-                           hover:from-cyan-500 hover:to-purple-500
-                           shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 
-                           border border-white/10
-                           transform transition-all duration-200 hover:-translate-y-0.5
-                           disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Sending..." : "Send Reset Link"}
-            </button>
-          </form>
-
-          <div className="mt-8 pt-6 border-t border-white/5 text-center">
+          <div className="mt-12 pt-8 border-t-4 border-black text-center">
             <Link
               to="/login"
-              className="inline-flex items-center text-sm text-slate-400 hover:text-white transition-colors duration-300"
+              className="inline-flex items-center font-black uppercase text-sm hover:underline"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
               </svg>
               Back to Login
             </Link>

@@ -5,16 +5,35 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const GamesContent = ({ filters }) => {
   const [games, setGames] = useState([]);
+  const [userGames, setUserGames] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const { token } = useAuth();
+  const { token, isAuthenticated } = useAuth();
   const pageSize = 12;
 
-  // Reset page when filters change
   useEffect(() => {
     setCurrentPage(0);
   }, [filters]);
+
+  const fetchUserBacklog = async () => {
+    if (!isAuthenticated || !token) return;
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUserGames(data);
+      }
+    } catch (e) {
+      console.error("Failed to fetch user backlog", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserBacklog();
+  }, [isAuthenticated, token]);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -22,52 +41,30 @@ const GamesContent = ({ filters }) => {
       setError(null);
       try {
         const queryParams = new URLSearchParams();
-
         if (filters.name) queryParams.append("name", filters.name);
-
         if (filters.genres && filters.genres.length > 0) {
           filters.genres.forEach((g) => queryParams.append("genres", g));
         }
-
-        if (filters.categories && filters.categories.length > 0) {
-          filters.categories.forEach((c) =>
-            queryParams.append("categories", c),
-          );
-        }
-
         if (filters.developers) {
           const devs = filters.developers.split(",").map((d) => d.trim());
           devs.forEach((d) => queryParams.append("developers", d));
         }
-
-        if (filters.publishers) {
-          const pubs = filters.publishers.split(",").map((p) => p.trim());
-          pubs.forEach((p) => queryParams.append("publishers", p));
-        }
-
         if (filters.platforms && filters.platforms.length > 0) {
           filters.platforms.forEach((p) => queryParams.append("platforms", p));
         }
 
-        // Add pagination
         queryParams.append("page", currentPage);
         queryParams.append("size", pageSize);
 
         const url = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/igdb/search?${queryParams.toString()}`;
-
         const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setGames(data);
       } catch (e) {
-        console.error("Error fetching games from IGDB:", e);
         setError(e.message);
       } finally {
         setLoading(false);
@@ -89,57 +86,51 @@ const GamesContent = ({ filters }) => {
 
   if (loading && games.length === 0)
     return (
-      <div className="text-center py-12 text-xl text-slate-400">
-        Searching IGDB...
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className="text-center py-8 text-red-500 bg-red-500/10 rounded-xl border border-red-500/50">
-        Error: {error}
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="text-4xl font-black uppercase tracking-tighter mb-4 italic">Scanning IGDB...</div>
+        <div className="w-64 h-6 neo-border-thick overflow-hidden">
+          <div className="h-full bg-yellow-400 animate-[pulse_1s_infinite]"></div>
+        </div>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pb-12">
-      <div className="container mx-auto">
-        {!loading && games.length === 0 && (
-          <div className="text-center py-12 text-slate-400 text-xl border border-white/5 rounded-2xl bg-slate-900/20">
-            No games found. Try adjusting your filters!
-          </div>
-        )}
+    <div className="pb-12 bg-white">
+      <div className="mb-8 border-b-4 border-black pb-4 flex justify-between items-end">
+        <h2 className="text-4xl font-black uppercase tracking-tighter">Results</h2>
+        <span className="text-xl font-black uppercase bg-cyan-400 px-3 py-1 neo-border">Page {currentPage + 1}</span>
+      </div>
 
-        <div
-          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 ${loading ? "opacity-50" : "opacity-100"}`}
+      <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 transition-opacity duration-300 ${loading ? "opacity-50" : "opacity-100"}`}>
+        {games.map((game) => {
+          const matchedUserGame = userGames.find(ug => ug.appId === (game.appId || game.id));
+          return (
+            <IgdbGameCard 
+              key={game.appId || game.id} 
+              game={game} 
+              existingUserGameId={matchedUserGame?.id}
+              onActionSuccess={fetchUserBacklog}
+            />
+          );
+        })}
+      </div>
+
+      <div className="mt-20 flex justify-center items-center gap-8">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 0 || loading}
+          className="flex items-center gap-3 px-8 py-4 bg-white neo-border-thick neo-shadow neo-transition font-black uppercase text-xl disabled:opacity-30"
         >
-          {games.map((game) => (
-            <IgdbGameCard key={game.appId || game.id} game={game} />
-          ))}
-        </div>
+          <FaChevronLeft /> Prev
+        </button>
 
-        {/* Simple Pagination Controls */}
-        <div className="mt-12 flex justify-center items-center gap-6">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 0 || loading}
-            className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:hover:bg-slate-800 rounded-xl transition-all font-semibold border border-white/5"
-          >
-            <FaChevronLeft /> Previous
-          </button>
-
-          <span className="text-slate-400 font-medium">
-            Page {currentPage + 1}
-          </span>
-
-          <button
-            onClick={handleNextPage}
-            disabled={games.length < pageSize || loading}
-            className="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:opacity-30 rounded-xl transition-all font-semibold shadow-lg shadow-purple-500/20"
-          >
-            Next <FaChevronRight />
-          </button>
-        </div>
+        <button
+          onClick={handleNextPage}
+          disabled={games.length < pageSize || loading}
+          className="flex items-center gap-3 px-8 py-4 bg-yellow-400 neo-border-thick neo-shadow neo-transition font-black uppercase text-xl disabled:opacity-30"
+        >
+          Next <FaChevronRight />
+        </button>
       </div>
     </div>
   );

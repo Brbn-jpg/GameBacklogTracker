@@ -4,7 +4,6 @@ const MultiSelect = ({ label, options, selectedValues, onChange, placeholder = "
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -34,61 +33,63 @@ const MultiSelect = ({ label, options, selectedValues, onChange, placeholder = "
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="block text-gray-400 text-sm font-medium mb-1">
-        {label}
-      </label>
+      {label && (
+        <label className="block text-sm font-black uppercase tracking-widest mb-2">
+          {label}
+        </label>
+      )}
       <div
-        className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 cursor-pointer min-h-[42px] flex flex-wrap gap-2 items-center"
+        className="w-full bg-white neo-border-thick p-3 text-black font-bold focus-within:bg-yellow-50 cursor-pointer min-h-[52px] flex flex-wrap gap-2 items-center neo-transition"
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedValues.length === 0 ? (
-          <span className="text-gray-500">{placeholder}</span>
+          <span className="text-gray-400 uppercase text-xs">{placeholder}</span>
         ) : (
           selectedValues.map((value) => (
             <span
               key={value}
-              className="bg-cyan-900/50 text-cyan-200 text-xs px-2 py-1 rounded flex items-center gap-1"
+              className="bg-cyan-400 text-black text-xs font-black uppercase px-2 py-1 neo-border flex items-center gap-1"
             >
               {value}
               <button
                 type="button"
                 onClick={(e) => removeValue(e, value)}
-                className="hover:text-white"
+                className="hover:bg-black hover:text-white px-1 transition-colors"
               >
                 &times;
               </button>
             </span>
           ))
         )}
-        <div className="ml-auto text-gray-400">
+        <div className="ml-auto">
           <svg
-            className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+            className={`w-6 h-6 transition-transform ${isOpen ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
       </div>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-slate-800 border border-white/10 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+        <div className="absolute z-[100] w-full mt-2 bg-white neo-border-thick neo-shadow-lg max-h-64 overflow-y-auto">
           {options.length === 0 ? (
-             <div className="p-3 text-gray-500 text-center text-sm">No options available</div>
+             <div className="p-4 text-black font-black uppercase text-center text-sm italic">No options</div>
           ) : (
             options.map((option) => (
               <div
                 key={option}
-                className={`px-4 py-2 cursor-pointer text-sm flex items-center justify-between hover:bg-slate-700 ${
-                  selectedValues.includes(option) ? "text-cyan-400 bg-slate-700/50" : "text-gray-300"
+                className={`px-4 py-3 cursor-pointer text-sm font-black uppercase flex items-center justify-between border-b-2 border-black last:border-b-0 hover:bg-yellow-400 ${
+                  selectedValues.includes(option) ? "bg-yellow-400" : "bg-white"
                 }`}
                 onClick={() => toggleOption(option)}
               >
                 <span>{option}</span>
                 {selectedValues.includes(option) && (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="4" d="M5 13l4 4L19 7" />
                   </svg>
                 )}
               </div>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import logo from "../../assets/logo.png";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
@@ -16,40 +15,41 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-slate-950/50 backdrop-blur-md border-b border-white/10">
+      <nav className="sticky top-0 z-50 bg-white border-b-4 border-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Link to="/">
-                  <img src={logo} alt="GameLog Logo" className="h-8 w-auto" />
+                <Link to="/" className="flex items-center gap-0 group">
+                  <span className="text-3xl font-black uppercase tracking-tighter text-black">GAME</span>
+                  <span className="text-3xl font-black uppercase tracking-tighter text-white bg-yellow-400 px-1 border-2 border-black -ml-1 z-10 transform -rotate-2 group-hover:rotate-0 transition-transform">LOG</span>
                 </Link>
               </div>
             </div>
             <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
+              <div className="ml-10 flex items-baseline space-x-8">
                 <Link
                   to="/games"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                  className="text-black font-black uppercase hover:bg-yellow-400 px-3 py-1 transition-colors"
                 >
                   Games
                 </Link>
                 <Link
                   to="/blog"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                  className="text-black font-black uppercase hover:bg-yellow-400 px-3 py-1 transition-colors"
                 >
-                  Blog
+                  Roadmap
                 </Link>
                 <Link
                   to="/contact"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                  className="text-black font-black uppercase hover:bg-yellow-400 px-3 py-1 transition-colors"
                 >
                   Contact
                 </Link>
                 {isAuthenticated && (
                   <Link
                     to="/dashboard"
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                    className="text-black font-black uppercase hover:bg-yellow-400 px-3 py-1 transition-colors underline decoration-4 decoration-cyan-400 underline-offset-4"
                   >
                     Dashboard
                   </Link>
@@ -58,20 +58,19 @@ const Navbar = () => {
             </div>
             <div className="hidden md:block">
               {isAuthenticated ? (
-                <Link
-                  to="/"
+                <button
                   onClick={handleLogout}
-                  className="inline-block bg-red-600/50 hover:bg-red-700/75 text-white py-2 px-4 rounded-lg shadow-lg transition-colors duration-300"
+                  className="bg-rose-500 text-white font-black uppercase py-2 px-6 neo-border neo-shadow neo-transition"
                 >
                   Logout
-                </Link>
+                </button>
               ) : (
                 <div className="flex items-center space-x-4">
                   <Link
                     to="/register"
-                    className="inline-block bg-gradient-to-r from-purple-500 to-cyan-400 text-white py-2 px-4 rounded-lg shadow-lg transition-colors duration-300"
+                    className="bg-yellow-400 text-black font-black uppercase py-2 px-6 neo-border neo-shadow neo-transition"
                   >
-                    Get Started
+                    Start Tracking
                   </Link>
                 </div>
               )}
@@ -79,7 +78,7 @@ const Navbar = () => {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                className="inline-flex items-center justify-center p-2 text-black hover:bg-yellow-400 neo-border focus:outline-none"
               >
                 <span className="sr-only">Open main menu</span>
                 {isMenuOpen ? (
@@ -96,31 +95,31 @@ const Navbar = () => {
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 md:hidden"
+          className="fixed inset-0 bg-black/80 z-40 md:hidden"
           onClick={() => setIsMenuOpen(false)}
         >
           <div
-            className="absolute top-16 left-0 right-0 bg-slate-900 p-4"
+            className="absolute top-20 left-0 right-0 bg-white border-b-4 border-black p-6 shadow-xl animate-[slideDown_0.2s_ease-out]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="space-y-1">
+            <div className="space-y-4">
               <Link
                 to="/games"
-                className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="block neo-border-thick p-4 text-center font-black uppercase hover:bg-cyan-400 transition-colors bg-white neo-shadow"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Games
               </Link>
               <Link
                 to="/blog"
-                className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="block neo-border-thick p-4 text-center font-black uppercase hover:bg-yellow-400 transition-colors bg-white neo-shadow"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Blog
+                Roadmap
               </Link>
               <Link
                 to="/contact"
-                className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="block neo-border-thick p-4 text-center font-black uppercase hover:bg-emerald-400 transition-colors bg-white neo-shadow"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
@@ -128,37 +127,32 @@ const Navbar = () => {
               {isAuthenticated && (
                 <Link
                   to="/dashboard"
-                  className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  className="block neo-border-thick p-4 text-center font-black uppercase bg-black text-white hover:bg-gray-800 transition-colors neo-shadow"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Dashboard
                 </Link>
               )}
             </div>
-            <div className="pt-4 mt-4 border-t border-gray-700">
+            <div className="pt-8 mt-4 border-t-4 border-black">
               {isAuthenticated ? (
-                <div className="px-2">
-                  <Link
-                    to="/"
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full text-left block bg-red-600/50 hover:bg-red-700/75 text-white py-2 px-4 rounded-lg shadow-lg transition-colors duration-300"
-                  >
-                    Logout
-                  </Link>
-                </div>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full block bg-rose-500 text-white font-black uppercase py-4 px-4 neo-border-thick neo-shadow neo-transition"
+                >
+                  Logout
+                </button>
               ) : (
-                <div className="px-2">
-                  <Link
-                    to="/register"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-center block bg-gradient-to-r from-purple-500 to-cyan-400 text-white py-2 px-4 rounded-lg shadow-lg transition-colors duration-300"
-                  >
-                    Get Started
-                  </Link>
-                </div>
+                <Link
+                  to="/register"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full block text-center bg-yellow-400 text-black font-black uppercase py-4 px-4 neo-border-thick neo-shadow neo-transition"
+                >
+                  Start Tracking
+                </Link>
               )}
             </div>
           </div>

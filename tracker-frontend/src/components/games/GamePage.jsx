@@ -1,225 +1,161 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import Lightbox from "../common/Lightbox";
 import { useAuth } from "../../context/AuthContext";
 import StarRatingInput from "../common/StarRatingInput";
 
-const GamePage = () => {
+const GamePage = ({ source }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { isAuthenticated, token } = useAuth();
+  
   const [game, setGame] = useState(null);
+  const [userGame, setUserGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [addGameStatus, setAddGameStatus] = useState(null);
-  const [removeGameStatus, setRemoveGameStatus] = useState(null);
-  const [updateGameStatus, setUpdateGameStatus] = useState(null);
-  const [updateData, setUpdateData] = useState({ rating: "", hoursPlayed: "" });
-  const [wishlistStatus, setWishlistStatus] = useState(null);
+  
+  // Status states
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [actionStatus, setActionStatus] = useState("idle");
 
-  const fetchGameData = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const gameUrl = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/games/${id}`;
-      const gamePromise = fetch(gameUrl).then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-      });
+  // Form states
+  const [rating, setRating] = useState(0);
+  const [hoursPlayed, setHoursPlayed] = useState("");
 
-      let userGamePromise = Promise.resolve(null);
-      if (isAuthenticated) {
-        const userGamesUrl = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`;
-        userGamePromise = fetch(userGamesUrl, {
-          headers: { Authorization: `Bearer ${token}` },
-        }).then((res) => {
-          if (!res.ok) return null;
-          return res.json();
-        });
-      }
+  // Determine Game ID for UserGame check
+  // If source is 'igdb', 'id' is the IGDB ID (appId).
+  // If source is undefined (local), 'game.appId' will be the IGDB ID.
+  const targetGameId = source === "igdb" ? id : game?.appId;
 
-      const [gameData, userGamesData] = await Promise.all([
-        gamePromise,
-        userGamePromise,
-      ]);
-
-      let finalGameData = { ...gameData };
-      if (userGamesData) {
-        const userGame = userGamesData.find((ug) => ug.gameId === gameData.id);
-        if (userGame) {
-          finalGameData = { ...finalGameData, ...userGame };
-          setUpdateData({
-            rating: userGame.rating || "",
-            hoursPlayed: userGame.hoursPlayed || "",
-          });
-        }
-      }
-
-      setGame(finalGameData);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // 1. Fetch Game Data
   useEffect(() => {
-    fetchGameData();
-  }, [id, isAuthenticated, token]);
-
-  const handleAddGame = async () => {
-    setAddGameStatus("loading");
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ gameId: id, status: "NOT_PLAYED" }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add game to backlog");
-      }
-      setAddGameStatus("success");
-      fetchGameData();
-    } catch (error) {
-      setAddGameStatus("error");
-      console.error("Error adding game:", error);
-    }
-  };
-
-  const addToWishlist = async () => {
-    setWishlistStatus("loading");
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          gameId: id,
-          status: "WISHLIST",
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add game to wishlist");
-      }
-      setWishlistStatus("success");
-      fetchGameData();
-    } catch (error) {
-      setWishlistStatus("error");
-      console.error("Error adding to wishlist:", error);
-    }
-  };
-
-  const handleRemoveGame = async () => {
-    setRemoveGameStatus("loading");
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/${game.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const fetchGameData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        let url;
+        if (source === "igdb") {
+          url = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/igdb/${id}`;
+        } else {
+          url = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/games/${id}`;
         }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to remove game");
-      }
-      setRemoveGameStatus("success");
-      setGame({ ...game, status: null });
-    } catch (error) {
-      setRemoveGameStatus("error");
-      console.error("Error removing game:", error);
-    }
-  };
 
-  const handleMoveToBacklog = async () => {
-    setUpdateGameStatus("loading");
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/${game.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ status: "NOT_PLAYED" }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to move to backlog");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const response = await fetch(url, { headers });
+        
+        if (!response.ok) throw new Error(source === "igdb" ? "Game not found in IGDB" : "Game not found locally");
+        
+        const data = await response.json();
+        setGame(data);
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
       }
-      setUpdateGameStatus("success");
-      fetchGameData();
-    } catch (error) {
-      setUpdateGameStatus("error");
-      console.error("Error moving to backlog:", error);
-    }
-  };
-
-  const handleUpdateGame = async (e) => {
-    e.preventDefault();
-    setUpdateGameStatus("loading");
-    const parsedUpdateData = {
-      ...(updateData.rating && { rating: parseInt(updateData.rating, 10) }),
-      ...(updateData.hoursPlayed && {
-        hoursPlayed: parseFloat(updateData.hoursPlayed),
-      }),
     };
 
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/${game.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(parsedUpdateData),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to update game");
+    fetchGameData();
+  }, [id, source, token]);
+
+  // 2. Fetch User Game Status
+  useEffect(() => {
+    const fetchUserGameStatus = async () => {
+      if (!isAuthenticated || !game) { // Wait for game to be loaded to get appId if local
+        setLoadingUser(false);
+        return;
       }
-      setUpdateGameStatus("success");
-      fetchGameData();
-    } catch (error) {
-      setUpdateGameStatus("error");
-      console.error("Error updating game:", error);
+
+      // Determine ID to check against
+      const checkId = source === "igdb" ? id : game.appId;
+      if (!checkId) return;
+
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        if (response.ok) {
+          const userGames = await response.json();
+          const found = userGames.find((ug) => ug.appId.toString() === checkId.toString());
+          
+          if (found) {
+            setUserGame(found);
+            setRating(found.rating);
+            setHoursPlayed(found.hoursPlayed || "");
+          } else {
+            setUserGame(null);
+            setRating(0);
+            setHoursPlayed("");
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch user game status", e);
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    fetchUserGameStatus();
+  }, [isAuthenticated, token, id, source, game]);
+
+  const handleAction = async (actionType, payload = {}) => {
+    setActionStatus("loading");
+    try {
+      let url, method, body;
+      const gameIdentifier = source === "igdb" ? id : game.appId;
+
+      switch (actionType) {
+        case "ADD":
+          url = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`;
+          method = "POST";
+          body = JSON.stringify({ gameId: gameIdentifier, status: payload.status });
+          break;
+        case "UPDATE":
+          url = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/${userGame.id}`;
+          method = "PATCH";
+          body = JSON.stringify(payload);
+          break;
+        case "DELETE":
+          url = `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/${userGame.id}`;
+          method = "DELETE";
+          break;
+        default:
+          return;
+      }
+
+      const res = await fetch(url, {
+        method,
+        headers: { 
+          "Content-Type": "application/json", 
+          Authorization: `Bearer ${token}` 
+        },
+        body: body,
+      });
+
+      if (!res.ok) throw new Error("Action failed");
+
+      if (actionType === "DELETE") {
+        setUserGame(null);
+        setRating(0);
+        setHoursPlayed("");
+      } else {
+        // If we added via IGDB source, we might want to redirect to the local game page eventually,
+        // but for now staying here is fine as state updates.
+        // Actually, addUserGame returns the UserGameDTO.
+        const data = await res.json();
+        setUserGame(data);
+      }
+      
+      setActionStatus("success");
+      setTimeout(() => setActionStatus("idle"), 2000);
+
+    } catch (err) {
+      console.error(err);
+      setActionStatus("error");
     }
-  };
-
-  const handleChange = (eOrValue, nameOverride = null) => {
-    let name;
-    let value;
-
-    if (nameOverride) {
-      name = nameOverride;
-      value = eOrValue;
-    } else if (eOrValue && eOrValue.target) {
-      name = eOrValue.target.name;
-      value = eOrValue.target.value;
-    } else {
-      console.error(
-        "Invalid arguments to handleChange",
-        eOrValue,
-        nameOverride
-      );
-      return;
-    }
-
-    setUpdateData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
   const openLightbox = (index) => {
@@ -227,198 +163,180 @@ const GamePage = () => {
     setIsLightboxOpen(true);
   };
 
-  const closeLightbox = () => setIsLightboxOpen(false);
+  if (loading) return (
+    <MainLayout>
+      <div className="text-center py-20 text-4xl font-black uppercase italic">Retrieving Data...</div>
+    </MainLayout>
+  );
 
-  const goToNext = () => {
-    setSelectedImageIndex((prevIndex) =>
-      prevIndex === (game.screenshots?.length - 1 || 0) ? 0 : prevIndex + 1
-    );
-  };
+  if (error) return (
+    <MainLayout>
+      <div className="text-center py-20 text-red-600 text-4xl font-black uppercase">System Error: {error}</div>
+    </MainLayout>
+  );
 
-  const goToPrevious = () => {
-    setSelectedImageIndex((prevIndex) =>
-      prevIndex === 0 ? game.screenshots?.length - 1 || 0 : prevIndex - 1
-    );
-  };
-
-  if (loading)
-    return (
-      <div className="min-h-screen bg-slate-950 text-white text-center py-8">
-        Loading...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="min-h-screen bg-slate-950 text-center py-8 text-red-500">
-        Error: {error}
-      </div>
-    );
-  if (!game)
-    return (
-      <div className="min-h-screen bg-slate-950 text-white text-center py-8">
-        Game not found.
-      </div>
-    );
+  if (!game) return null;
 
   return (
     <MainLayout>
-      <div className="container mx-auto p-8 text-white">
-        <div
-          className="relative h-96 rounded-2xl bg-cover bg-center"
-          style={{ backgroundImage: `url(${game.headerImage})` }}
-        >
-          <div className="absolute inset-0 bg-black/50 rounded-2xl flex flex-col justify-end p-8">
-            <h1 className="text-5xl font-bold">{game.name}</h1>
-            <p className="text-xl text-slate-300">{game.developer}</p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-12 neo-border-thick bg-white neo-shadow-lg overflow-hidden flex flex-col md:flex-row">
+          <div className="md:w-1/3 neo-border-r h-80 md:h-auto">
+            <img src={game.headerImage} alt={game.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+          </div>
+          <div className="md:w-2/3 p-8 md:p-12 flex flex-col justify-center bg-white">
+            <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-4 italic">
+              {game.name}
+            </h1>
+            <div className="flex flex-wrap gap-4 mt-4">
+              {game.developers?.map((dev, i) => (
+                <span key={i} className="bg-yellow-400 px-4 py-2 neo-border-thick font-black uppercase text-xl">
+                  {dev}
+                </span>
+              ))}
+              {userGame && (
+                <span className="bg-cyan-400 px-4 py-2 neo-border-thick font-black uppercase text-xl">
+                  {userGame.status}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6">
-              <h2 className="text-2xl font-bold mb-4">About</h2>
-              <p className="text-slate-300 leading-relaxed">
-                {game.about || "No description."}
-              </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Main Info */}
+          <div className="lg:col-span-2 space-y-12">
+            <div className="bg-white neo-border-thick p-8 neo-shadow">
+              <h2 className="text-4xl font-black uppercase mb-6 tracking-tighter underline decoration-8 decoration-yellow-400 underline-offset-4">Intelligence</h2>
+              <p className="text-xl font-bold leading-relaxed">{game.about || "No intelligence data available."}</p>
             </div>
-            <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6">
-              <h2 className="text-2xl font-bold mb-4">Screenshots</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+            <div className="bg-white neo-border-thick p-8 neo-shadow">
+              <h2 className="text-4xl font-black uppercase mb-8 tracking-tighter underline decoration-8 decoration-cyan-400 underline-offset-4">Visual Evidence</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {game.screenshots?.map((url, index) => (
-                  <img
-                    key={index}
-                    src={url}
-                    alt={`Screenshot ${index + 1}`}
-                    onClick={() => openLightbox(index)}
-                    className="aspect-video object-cover rounded-lg cursor-pointer hover:scale-105"
-                  />
+                  <div key={index} className="neo-border-thick neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer overflow-hidden aspect-video">
+                    <img
+                      src={url}
+                      alt={`Evidence ${index + 1}`}
+                      onClick={() => openLightbox(index)}
+                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                  </div>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 self-start">
-            <h2 className="text-xl font-bold mb-4 mt">Details</h2>
-            <div className="space-y-3 text-slate-300">
-              <div>
-                <strong className="text-white">Status:</strong>{" "}
-                {game.status || "Not in library"}
+          <div className="space-y-8">
+            <div className="bg-white neo-border-thick p-8 neo-shadow sticky top-28">
+              <h2 className="text-3xl font-black uppercase mb-8 tracking-tight border-b-4 border-black pb-2">Operations</h2>
+              
+              <div className="space-y-6 text-xl font-bold uppercase mb-8">
+                <p><span className="text-black/60">Released:</span> {game.releaseDate || (game.first_release_date ? new Date(game.first_release_date * 1000).getFullYear() : "TBA")}</p>
+                <p><span className="text-black/60">Genre:</span> {game.genres?.join(", ") || "Unknown"}</p>
+                <p><span className="text-black/60">Pub:</span> {game.publishers?.join(", ") || "Unknown"}</p>
               </div>
-              {game.status && (
+
+              {isAuthenticated && !loadingUser && (
                 <>
-                  <div>
-                    <strong className="text-white">Rating:</strong>{" "}
-                    {game.rating || "N/A"}
-                  </div>
-                  <div>
-                    <strong className="text-white">Hours:</strong>{" "}
-                    {game.hoursPlayed || "0"}
-                  </div>
+                  {!userGame ? (
+                    <>
+                      <button
+                        onClick={() => handleAction("ADD", { status: "NOT_PLAYED" })}
+                        disabled={actionStatus === "loading"}
+                        className="w-full bg-emerald-400 text-black py-5 neo-border-thick neo-shadow font-black uppercase text-2xl neo-transition mb-4"
+                      >
+                        {actionStatus === "loading" ? "Adding..." : "Add to Backlog"}
+                      </button>
+                      <button
+                        onClick={() => handleAction("ADD", { status: "WISHLIST" })}
+                        disabled={actionStatus === "loading"}
+                        className="w-full bg-cyan-400 text-black py-5 neo-border-thick neo-shadow font-black uppercase text-2xl neo-transition"
+                      >
+                        {actionStatus === "loading" ? "Adding..." : "Add to Wishlist"}
+                      </button>
+                    </>
+                  ) : userGame.status === "WISHLIST" ? (
+                    <>
+                      <button
+                        onClick={() => handleAction("UPDATE", { status: "NOT_PLAYED" })}
+                        disabled={actionStatus === "loading"}
+                        className="w-full bg-green-500 text-white py-5 neo-border-thick neo-shadow font-black uppercase text-2xl neo-transition mb-4"
+                      >
+                        {actionStatus === "loading" ? "Moving..." : "Move to Backlog"}
+                      </button>
+                      <button
+                        onClick={() => handleAction("DELETE")}
+                        disabled={actionStatus === "loading"}
+                        className="w-full bg-red-500 text-white py-5 neo-border-thick neo-shadow font-black uppercase text-2xl neo-transition"
+                      >
+                        {actionStatus === "loading" ? "Removing..." : "Remove from Wishlist"}
+                      </button>
+                    </>
+                  ) : (
+                    <div className="neo-border-thick bg-yellow-50 p-6 space-y-6">
+                      <h3 className="text-xl font-black uppercase border-b-2 border-black pb-2">Your Data</h3>
+                      
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <label className="block text-sm font-black uppercase tracking-widest">Rating</label>
+                          <StarRatingInput
+                            rating={parseInt(rating)}
+                            onChange={(val) => setRating(val)}
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label className="block text-sm font-black uppercase tracking-widest">Hours Logged</label>
+                          <input
+                            type="number"
+                            value={hoursPlayed}
+                            onChange={(e) => setHoursPlayed(e.target.value)}
+                            className="w-full neo-border-thick p-2 font-bold outline-none focus:bg-white"
+                            placeholder="0"
+                          />
+                        </div>
+                        
+                        <button
+                          onClick={() => {
+                            const payload = {};
+                            if (rating > 0) payload.rating = parseInt(rating);
+                            const hours = parseFloat(hoursPlayed);
+                            if (!isNaN(hours)) payload.hoursPlayed = hours;
+                            handleAction("UPDATE", payload);
+                          }}
+                          disabled={actionStatus === "loading"}
+                          className={`w-full py-3 neo-border-thick font-black uppercase neo-transition ${
+                            actionStatus === "success" ? "bg-emerald-400" : "bg-black text-white hover:bg-gray-800"
+                          }`}
+                        >
+                          {actionStatus === "loading" ? "Saving..." : actionStatus === "success" ? "Saved!" : "Update Log"}
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => handleAction("DELETE")}
+                        disabled={actionStatus === "loading"}
+                        className="w-full bg-red-500 text-white py-3 neo-border-thick neo-shadow font-black uppercase text-sm neo-transition hover:bg-red-600"
+                      >
+                        {actionStatus === "loading" ? "Removing..." : "Eject from Library"}
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
             </div>
-
-            {isAuthenticated && (
-              <div className="mt-6">
-                {!game.status && (
-                  <>
-                    <button
-                      onClick={handleAddGame}
-                      disabled={addGameStatus === "loading"}
-                      className="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded-lg"
-                    >
-                      {addGameStatus === "loading"
-                        ? "Adding..."
-                        : "Add to Backlog"}
-                    </button>
-                    <button
-                      onClick={addToWishlist}
-                      disabled={wishlistStatus === "loading"}
-                      className="w-full bg-blue-500 hover:bg-blue-600 p-3 rounded-lg mt-2"
-                    >
-                      {wishlistStatus === "loading"
-                        ? "Adding..."
-                        : "Add to Wishlist"}
-                    </button>
-                  </>
-                )}
-
-                {game.status === "WISHLIST" && (
-                  <>
-                    <button
-                      onClick={handleMoveToBacklog}
-                      disabled={updateGameStatus === "loading"}
-                      className="w-full bg-green-600 hover:bg-green-700 p-3 rounded-lg"
-                    >
-                      {updateGameStatus === "loading"
-                        ? "Moving..."
-                        : "Move to Backlog"}
-                    </button>
-                    <button
-                      onClick={handleRemoveGame}
-                      disabled={removeGameStatus === "loading"}
-                      className="w-full bg-red-600 hover:bg-red-700 p-3 rounded-lg mt-2"
-                    >
-                      {removeGameStatus === "loading"
-                        ? "Removing..."
-                        : "Remove from Wishlist"}
-                    </button>
-                  </>
-                )}
-
-                {game.status && game.status !== "WISHLIST" && (
-                  <div className="mt-6 p-4 bg-slate-800/60 rounded-xl">
-                    <h3 className="text-xl font-bold mb-3">Manage Game</h3>
-                    <form onSubmit={handleUpdateGame} className="space-y-4">
-                      <div>
-                        <label className="block mb-2">Rating</label>
-                        <StarRatingInput
-                          rating={parseInt(updateData.rating)}
-                          onChange={(val) => handleChange(val, "rating")}
-                        />
-                      </div>
-                      <div>
-                        <label className="block mb-2">Hours Played</label>
-                        <input
-                          type="number"
-                          value={updateData.hoursPlayed}
-                          onChange={handleChange}
-                          name="hoursPlayed"
-                          className="w-full bg-slate-700 p-2 rounded-md"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        disabled={updateGameStatus === "loading"}
-                        className="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg"
-                      >
-                        {updateGameStatus === "loading"
-                          ? "Updating..."
-                          : "Update"}
-                      </button>
-                    </form>
-                    <button
-                      onClick={handleRemoveGame}
-                      disabled={removeGameStatus === "loading"}
-                      className="w-full bg-red-600 hover:bg-red-700 p-3 rounded-lg mt-2"
-                    >
-                      {removeGameStatus === "loading"
-                        ? "Removing..."
-                        : "Remove from Library"}
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </div>
       </div>
+
       {isLightboxOpen && (
         <Lightbox
           imageUrl={game.screenshots?.[selectedImageIndex]}
-          onClose={closeLightbox}
-          onNext={goToNext}
-          onPrev={goToPrevious}
+          onClose={() => setIsLightboxOpen(false)}
+          onNext={() => setSelectedImageIndex((i) => (i + 1) % game.screenshots.length)}
+          onPrev={() => setSelectedImageIndex((i) => (i - 1 + game.screenshots.length) % game.screenshots.length)}
         />
       )}
     </MainLayout>

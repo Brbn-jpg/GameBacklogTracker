@@ -1,41 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
 
 const WishlistGameCard = ({ game, onRemove }) => {
   return (
-    <div className="relative group bg-slate-800 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:-translate-y-2">
-      <Link to={`/games/${game.gameId}`} className="block">
-        <div className="aspect-w-16 aspect-h-9">
+    <div className="group relative bg-white neo-border-thick neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex flex-col h-full overflow-hidden">
+      <Link to={`/games/${game.gameId}`} className="block flex-grow">
+        <div className="relative aspect-video border-b-4 border-black overflow-hidden">
           <img
             src={game.headerImage}
             alt={game.gameTitle}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
           />
+          <div className="absolute top-2 left-2 bg-cyan-400 text-black px-2 py-1 neo-border text-[10px] font-black uppercase">
+            Wishlist
+          </div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-        <div className="p-4 relative">
-          <h3 className="text-white text-lg font-bold truncate group-hover:text-cyan-400 transition-colors">
+        <div className="p-4 bg-white">
+          <h3 className="text-xl font-black uppercase italic leading-tight tracking-tighter group-hover:text-yellow-500 transition-colors line-clamp-2">
             {game.gameTitle}
           </h3>
         </div>
       </Link>
+      
       <button
         onClick={() => onRemove(game.id)}
-        className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 bg-red-500 text-white p-2 neo-border opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         aria-label="Remove from wishlist"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-            clipRule="evenodd"
-          />
-        </svg>
+        <FaTrash size={14} />
       </button>
     </div>
   );

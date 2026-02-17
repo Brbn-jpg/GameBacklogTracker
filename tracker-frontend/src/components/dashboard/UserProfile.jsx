@@ -43,25 +43,32 @@ const UserProfile = () => {
   }, [isAuthenticated]);
 
   if (loading) {
-    return <div className="text-center text-slate-400">Loading profile...</div>;
+    return <div className="text-center py-4 font-black uppercase italic animate-pulse">Initializing Profile...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
-  }
-
-  if (!username) {
     return (
-      <div className="text-center text-slate-400">Profile not available.</div>
+      <div className="bg-red-100 neo-border-thick p-4 text-red-600 font-black uppercase text-center neo-shadow">
+        Protocol Error: {error}
+      </div>
     );
   }
 
+  if (!username) return null;
+
   return (
-    <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center shadow-lg mb-8">
-      <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2">
-        Welcome, {username}!
-      </h2>
-      <p className="text-slate-400">Ready to dive into your backlog?</p>
+    <div className="bg-white neo-border-thick p-8 mb-10 neo-shadow flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <h2 className="text-5xl font-black uppercase tracking-tighter italic">
+          Identity: <span className="bg-yellow-400 px-2 not-italic">{username}</span>
+        </h2>
+        <p className="text-xl font-bold uppercase text-black/60 mt-2 tracking-widest border-l-4 border-black pl-4">
+          Status: Online / Backlog Protocol Active
+        </p>
+      </div>
+      <div className="bg-black text-white px-6 py-3 font-black uppercase text-sm neo-shadow tracking-widest rotate-[-2deg]">
+        Standard Issue Operative
+      </div>
     </div>
   );
 };

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80">
+  <style>
+    .text { font-family: sans-serif; font-weight: 900; text-transform: uppercase; }
+  </style>
+  <!-- GAME text -->
+  <text x="10" y="60" class="text" font-size="60" fill="black">GAME</text>
+  
+  <!-- LOG box -->
+  <g transform="rotate(-2, 230, 40)">
+    <rect x="195" y="10" width="80" height="60" fill="#FACC15" stroke="black" stroke-width="4" />
+    <text x="235" y="55" class="text" font-size="40" fill="white" text-anchor="middle">LOG</text>
+  </g>
+</svg>

@@ -41,7 +41,6 @@ const ResetPasswordPage = () => {
     }
 
     try {
-      // Placeholder for backend endpoint
       const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,60 +64,56 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="bg-slate-950 flex flex-col min-h-screen">
-      <main className="flex-grow flex items-center justify-center overflow-hidden relative p-4">
-        {/* Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl opacity-50"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full filter blur-3xl opacity-50"></div>
+    <div className="bg-white flex flex-col min-h-screen">
+      <main className="flex-grow flex items-center justify-center p-4 md:p-8 relative min-h-screen overflow-hidden">
+        {/* Old Text Theme - High Opacity */}
+        <div className="absolute inset-0 z-0 opacity-25 pointer-events-none flex items-center justify-center overflow-hidden">
+            <span className="text-[20rem] font-black uppercase rotate-12 select-none">Security</span>
         </div>
 
-        <div className="relative z-10 w-full max-w-md p-8 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-[0_0_50px_-10px_rgba(0,0,0,0.6)]">
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-              Reset Password
+        <div className="relative z-10 w-full max-w-lg bg-white neo-border-thick neo-shadow-lg p-8 md:p-12 my-auto">
+          <div className="mb-10 text-center">
+            <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic">
+              Reset <span className="bg-yellow-400 px-2 not-italic">Access</span>
             </h2>
-            <p className="text-slate-400 text-sm mt-3">
-              Enter your new password below.
+            <p className="text-black font-bold uppercase tracking-widest text-sm">
+              Establish new credentials.
             </p>
           </div>
 
           {!message ? (
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-8" onSubmit={handleSubmit}>
               {error && (
-                <div className="p-3 rounded bg-red-500/10 border border-red-500/50 text-red-400 text-sm text-center">
+                <div className="bg-red-500 text-white neo-border-thick p-3 font-black uppercase text-center text-sm">
                   {error}
                 </div>
               )}
 
-              <div className="group">
-                <label htmlFor="password" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-purple-400">
+              <div className="space-y-2">
+                <label htmlFor="password" class="block text-xl font-black uppercase tracking-tight">
                   New Password
                 </label>
                 <input
                   type="password"
                   id="password"
                   required
-                  className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300"
-                  placeholder="••••••••"
+                  className="w-full bg-white neo-border-thick p-4 text-black font-bold placeholder-gray-400 focus:bg-yellow-50 outline-none transition-colors"
+                  placeholder="********"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
-              <div className="group">
-                <label htmlFor="confirmPassword" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
+              <div className="space-y-2">
+                <label htmlFor="confirmPassword" class="block text-xl font-black uppercase tracking-tight">
                   Confirm Password
                 </label>
                 <input
                   type="password"
                   id="confirmPassword"
                   required
-                  className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
-                  placeholder="••••••••"
+                  className="w-full bg-white neo-border-thick p-4 text-black font-bold placeholder-gray-400 focus:bg-cyan-50 outline-none transition-colors"
+                  placeholder="********"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -127,31 +122,42 @@ const ResetPasswordPage = () => {
               <button
                 type="submit"
                 disabled={loading || !token}
-                className="w-full py-3.5 rounded-lg text-white font-bold tracking-wide
-                             bg-gradient-to-r from-cyan-600 to-purple-600 
-                             hover:from-cyan-500 hover:to-purple-500
-                             shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 
-                             border border-white/10
-                             transform transition-all duration-200 hover:-translate-y-0.5
-                             disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick neo-shadow neo-transition disabled:opacity-50"
               >
-                {loading ? "Resetting..." : "Reset Password"}
+                {loading ? "Updating..." : "Secure Account"}
               </button>
             </form>
           ) : (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/50">
-                <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+            <div className="text-center py-8 space-y-6">
+              <div className="inline-block p-6 bg-emerald-400 neo-border-thick neo-shadow">
+                <svg className="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M5 13l4 4L19 7"></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Success!</h3>
-              <p className="text-slate-300 mb-6">{message}</p>
-              <Link to="/login" className="text-cyan-400 hover:text-cyan-300 font-medium">
-                Return to Login now
-              </Link>
+              <h3 className="text-3xl font-black uppercase tracking-tight">Success!</h3>
+              <p className="text-xl font-bold uppercase leading-tight">{message}</p>
+              <div className="pt-4">
+                <Link 
+                  to="/login" 
+                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow neo-transition"
+                >
+                  Go to Login
+                </Link>
+              </div>
             </div>
           )}
+
+          <div className="mt-12 pt-8 border-t-4 border-black text-center">
+            <Link
+              to="/login"
+              className="inline-flex items-center font-black uppercase text-sm hover:underline"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+              </svg>
+              Back to Login
+            </Link>
+          </div>
         </div>
       </main>
       <Footer />

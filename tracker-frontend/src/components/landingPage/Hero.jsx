@@ -1,151 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import MockKanbanColumn from "./MockKanbanColumn";
-
-const initialMockColumns = {
-  DITCHED: [{ id: "c1-1" }, { id: "c1-2" }, { id: "c1-3" }, { id: "c1-4" }],
-  NOT_PLAYED: [{ id: "c2-1" }, { id: "c2-2" }, { id: "c2-3" }],
-  PLAYING: [{ id: "c3-1" }, { id: "c3-2" }],
-  COMPLETED: [{ id: "c4-1" }],
-};
+import Cyberpunk from "../../assets/images/Cyberpunk-screenshot.jpg";
+import EldenRing from "../../assets/images/Elden-Ring-screenshot.jpg";
+import GOW from "../../assets/images/GodOfWar-screenshot.jpg";
 
 const Hero = () => {
-  const [mockColumns, setMockColumns] = useState(initialMockColumns);
-
-  const handleDrop = (cardId, toColumnId, fromColumnId) => {
-    if (toColumnId === fromColumnId) return;
-
-    setMockColumns((prevColumns) => {
-      const fromColumn = prevColumns[fromColumnId];
-      const toColumn = prevColumns[toColumnId];
-
-      const cardToMove = fromColumn.find((card) => card.id === cardId);
-      if (!cardToMove) return prevColumns;
-
-      const newFromColumn = fromColumn.filter((card) => card.id !== cardId);
-      const newToColumn = [...toColumn, cardToMove];
-
-      return {
-        ...prevColumns,
-        [fromColumnId]: newFromColumn,
-        [toColumnId]: newToColumn,
-      };
-    });
-  };
-
   return (
-    <DndProvider backend={HTML5Backend}>
-      <section className="relative min-h-[90vh] md:min-h-screen bg-slate-950 text-white py-32">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-purple-500/20 rounded-full filter blur-3xl opacity-50 transform -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full filter blur-3xl opacity-50 transform -translate-x-1/4 -translate-y-1/4"></div>
-        </div>
-
-        <div className="relative container mx-auto px-4 text-center">
-          <h1 className="text-5xl md::text-7xl font-extrabold bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text">
-            Never Lose Track of Your Backlog
-          </h1>
-          <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
-            GameLog helps you organize your game library, track your progress,
-            and conquer your backlog once and for all.
-          </p>
-          <div className="mt-10 flex justify-center space-x-4">
-            <Link
-              to="/register"
-              className="inline-block bg-gradient-to-r from-purple-500 to-cyan-400 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:-translate-y-1 transform transition-all duration-300"
-            >
-              Get Started Free
-            </Link>
-            <a
-              href="#features"
-              className="inline-block bg-white/10 border border-white/20 text-white font-bold py-3 px-8 rounded-lg backdrop-blur-md hover:-translate-y-1 transform transition-all duration-300"
-            >
-              Learn More
-            </a>
+    <section className="relative py-20 bg-white border-b-4 border-black overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-12 items-center">
+          {/* Text Content */}
+          <div className="lg:w-1/2 space-y-8">
+            <h1 className="text-6xl md:text-8xl font-black uppercase leading-none tracking-tighter">
+              Kill Your <br />
+              <span className="bg-yellow-400 px-4 neo-border-thick neo-shadow inline-block transform hover:scale-105 transition-transform">Backlog</span>
+            </h1>
+            <p className="text-2xl font-bold max-w-xl border-l-8 border-black pl-6 py-2">
+              Organize your library, track progress, and conquer your gaming debt with zero fluff.
+            </p>
+            <div className="flex flex-wrap gap-6 pt-4">
+              <Link
+                to="/register"
+                className="bg-cyan-400 text-black text-2xl font-black uppercase px-8 py-4 neo-border-thick neo-shadow neo-transition"
+              >
+                Join Squad
+              </Link>
+              <a
+                href="#features"
+                className="bg-white text-black text-2xl font-black uppercase px-8 py-4 neo-border-thick neo-shadow neo-transition"
+              >
+                Learn More
+              </a>
+            </div>
           </div>
-        </div>
 
-        {/* Blurred Dashboard Mockup with 3D Perspective */}
-        <div
-          className="mt-12 hidden md:block"
-          style={{ perspective: "1000px" }}
-        >
-          <div
-            className="w-3/4 mx-auto h-[500px] rounded-lg shadow-2xl shadow-purple-500/20 transition-transform duration-700 ease-out hover:scale-105"
-            style={{
-              transformStyle: "preserve-3d",
-              transform: "rotateX(1deg) rotateY(-8deg) rotateZ(0deg)",
-            }}
-          >
-            <div className="w-full h-full rounded-lg overflow-hidden border-2 border-white/10 p-4 bg-slate-900/60 backdrop-blur-sm">
-              {/* Mimic Dashboard.jsx structure: Sidebar + Main Content */}
-              <div className="flex h-full w-full">
-                {/* Mock Sidebar */}
-                <div className="w-48 bg-slate-800/50 rounded-lg p-2 mr-4">
-                  <div className="h-8 bg-slate-700/50 rounded mb-4"></div>{" "}
-                  {/* Logo/Title */}
-                  <div className="space-y-2 mt-4">
-                    <div className="h-6 bg-slate-700/50 rounded"></div>
-                    <div className="h-6 bg-slate-700/50 rounded"></div>
-                    <div className="h-6 bg-slate-700/50 rounded"></div>
-                    <div className="h-6 bg-slate-700/50 rounded"></div>
-                  </div>
-                  {/* Logout */}
-                </div>
-
-                {/* Mock Main Content Area */}
-                <div className="flex-1 p-2 flex flex-col space-y-4 overflow-hidden">
-                  {/* Mock UserProfile */}
-                  <div className="h-16 bg-slate-800/50 rounded-lg w-full flex items-center justify-center p-3 shrink-0">
-                    <div className="h-6 w-3/4 bg-slate-700/50 rounded"></div>
-                  </div>
-
-                  {/* Mock Stats Cards */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full shrink-0">
-                    <div className="h-24 bg-slate-800/50 rounded-lg p-3 space-y-2">
-                      <div className="h-4 w-3/4 bg-slate-700/50 rounded"></div>
-                      <div className="h-8 w-1/2 bg-slate-700/50 rounded"></div>
-                    </div>
-                    <div className="h-24 bg-slate-800/50 rounded-lg p-3 space-y-2">
-                      <div className="h-4 w-3/4 bg-slate-700/50 rounded"></div>
-                      <div className="h-8 w-1/2 bg-slate-700/50 rounded"></div>
-                    </div>
-                    <div className="h-24 bg-slate-800/50 rounded-lg p-3 space-y-2">
-                      <div className="h-4 w-3/4 bg-slate-700/50 rounded"></div>
-                      <div className="h-8 w-1/2 bg-slate-700/50 rounded"></div>
-                    </div>
-                    <div className="h-24 bg-slate-800/50 rounded-lg p-3 space-y-2">
-                      <div className="h-4 w-3/4 bg-slate-700/50 rounded"></div>
-                      <div className="h-8 w-1/2 bg-slate-700/50 rounded"></div>
-                    </div>
-                  </div>
-
-                  {/* Mock Kanban Columns - Scrollable Area */}
-                  <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                      {Object.entries(mockColumns).map(([statusId, cards]) => (
-                        <MockKanbanColumn
-                          key={statusId}
-                          title={statusId.replace("_", " ")}
-                          statusId={statusId}
-                          cards={cards}
-                          onDrop={handleDrop}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Visual Content - Raw Grid */}
+          <div className="lg:w-1/2 grid grid-cols-2 gap-4">
+            <div className="neo-border-thick neo-shadow-cyan overflow-hidden h-64 rotate-[-3deg] hover:rotate-0 transition-transform duration-300">
+              <img src={Cyberpunk} alt="Cyberpunk" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+            </div>
+            <div className="neo-border-thick neo-shadow-emerald overflow-hidden mt-8 h-64 rotate-[2deg] hover:rotate-0 transition-transform duration-300">
+              <img src={EldenRing} alt="Elden Ring" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+            </div>
+            <div className="col-span-2 neo-border-thick neo-shadow-lg overflow-hidden h-80 rotate-[1deg] hover:rotate-0 transition-transform duration-300">
+              <img src={GOW} alt="God of War" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
             </div>
           </div>
         </div>
-        <p className="mt-12 text-center text-sm font-medium text-gray-400 animate-pulse hidden md:block">
-          Psst! Try dragging and dropping the cards above.
-        </p>
-      </section>
-    </DndProvider>
+      </div>
+    </section>
   );
 };
 

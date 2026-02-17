@@ -35,7 +35,6 @@ const RegisterPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 }); // State for rotation
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -71,7 +70,6 @@ const RegisterPage = () => {
         throw new Error(data.message || "Failed to register");
       }
       
-      // If registration successful, move to verification step
       setStep("verify");
     } catch (err) {
       setError(err.message);
@@ -106,171 +104,137 @@ const RegisterPage = () => {
     }
   };
 
-  // Handle mouse movement for 3D effect
-  const handleMouseMove = (e) => {
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
-
-    const centerX = innerWidth / 2;
-    const centerY = innerHeight / 2;
-
-    const rotateY = ((clientX - centerX) / centerX) * -5; // Max -5 to 5 deg
-    const rotateX = ((clientY - centerY) / centerY) * 5; // Max -5 to 5 deg
-
-    setRotation({ x: rotateX, y: rotateY, z: 0 });
-  };
-
   return (
-    <main
-      className="flex-grow flex items-center justify-center overflow-hidden [perspective:2000px] min-h-screen"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setRotation({ x: 0, y: 0, z: 0 })}
-    >
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl opacity-50 animation-blob"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full filter blur-3xl opacity-50 animation-blob animation-delay-4000"></div>
+    <main className="flex-grow flex items-center justify-center relative p-4 md:p-8 bg-white min-h-screen">
+      {/* Background Hero Image - Subtle Grayscale */}
+      <div className="absolute inset-0 z-0 overflow-hidden opacity-25">
+        {randomImage && (
+          <img
+            src={randomImage}
+            alt="Game Background"
+            className="w-full h-full object-cover grayscale"
+          />
+        )}
       </div>
 
-      <div
-        className="absolute w-[85vw] h-[85vh] z-0 transition-transform duration-700 ease-out hover:scale-105 hidden md:block"
-        style={{
-          transformStyle: "preserve-3d",
-          transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${rotation.z}deg)`, // Dynamic transform
-        }}
-      >
-        <div className="w-full h-full bg-slate-900/40 backdrop-blur-sm border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden relative">
-          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_40px_rgba(6,182,212,0.1)] pointer-events-none"></div>
-
-          <div className="absolute inset-0 bg-slate-900/30 z-10"></div>
-
-          {randomImage && (
-            <img
-              src={randomImage}
-              alt="Game Background"
-              className="w-full h-full object-cover opacity-80"
-            />
-          )}
-
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent z-20 pointer-events-none"></div>
-        </div>
-      </div>
-
-      <div className="relative z-10 w-full max-w-md p-8 overflow-hidden rounded-2xl md:border md:border-white/10 md:bg-slate-900/60 md:backdrop-blur-xl md:shadow-[0_0_50px_-10px_rgba(0,0,0,0.6)]">
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-
-        <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-            {step === "register" ? "Create an Account" : "Verify Email"}
+      <div className="relative z-10 w-full max-w-lg bg-white neo-border-thick neo-shadow-lg p-8 md:p-12">
+        <div className="mb-10 text-center">
+          <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic">
+            {step === "register" ? "New" : "Verify"}{" "}
+            <span className="bg-emerald-400 px-2 not-italic">Operative</span>
           </h2>
-          <p className="text-slate-400 text-xs uppercase tracking-widest mt-2 font-medium">
-            {step === "register" ? "Join the GameLog" : `Code sent to ${formData.email}`}
+          <p className="text-black font-bold uppercase tracking-widest text-sm">
+            {step === "register" ? "Enlist in GameLog today." : `Transmission sent to ${formData.email}`}
           </p>
         </div>
 
         {step === "register" ? (
-          <form className="space-y-5" onSubmit={handleRegister}>
-            {error && <p className="text-red-500 text-center">{error}</p>}
-            <div className="group">
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
-                Username
-              </label>
+          <form className="space-y-6" onSubmit={handleRegister}>
+            {error && (
+              <div className="bg-red-500 text-white neo-border-thick p-3 font-black uppercase text-center text-sm">
+                {error}
+              </div>
+            )}
+            
+            <div className="space-y-2">
+              <label className="block text-lg font-black uppercase tracking-tight">Username</label>
               <input
                 type="text"
                 id="username"
-                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
-                placeholder="e.g. EldenLord"
+                required
+                className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                placeholder="PLAYER_ONE"
                 value={formData.username}
                 onChange={handleChange}
               />
             </div>
 
-            <div className="group">
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
-                Email
-              </label>
+            <div className="space-y-2">
+              <label className="block text-lg font-black uppercase tracking-tight">Email</label>
               <input
                 type="email"
                 id="email"
-                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
-                placeholder="name@example.com"
+                required
+                className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                placeholder="Gamer@Protocal.com"
                 value={formData.email}
                 onChange={handleChange}
               />
             </div>
 
-            <div className="group">
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-purple-400">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="group">
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-purple-400">
-                Retype Password
-              </label>
-              <input
-                type="password"
-                id="retypePassword"
-                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-purple-500/50 focus:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300"
-                placeholder="••••••••"
-                value={formData.retypePassword}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block text-lg font-black uppercase tracking-tight">Password</label>
                 <input
-                  id="rememberMe"
-                  name="rememberMe"
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-gray-300 rounded"
+                  type="password"
+                  id="password"
+                  required
+                  className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                  placeholder="*******"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
-                <label
-                  htmlFor="rememberMe"
-                  className="ml-2 block text-sm text-white"
-                >
-                  Remember me
-                </label>
               </div>
+              <div className="space-y-2">
+                <label className="block text-lg font-black uppercase tracking-tight">Retype</label>
+                <input
+                  type="password"
+                  id="retypePassword"
+                  required
+                  className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                  placeholder="*******"
+                  value={formData.retypePassword}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center mt-4">
+              <label className="flex items-center cursor-pointer">
+                <div className="relative">
+                  <input
+                    id="rememberMe"
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="sr-only"
+                  />
+                  <div className={`w-6 h-6 neo-border-thick ${rememberMe ? 'bg-emerald-400' : 'bg-white'} flex items-center justify-center`}>
+                    {rememberMe && (
+                      <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="4" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="ml-3 text-sm font-black uppercase">Remember Me</span>
+              </label>
             </div>
 
             <button
               type="submit"
-              className="w-full mt-6 py-3.5 rounded-lg text-white font-bold tracking-wide
-                           bg-gradient-to-r from-cyan-600 to-purple-600 
-                           hover:from-cyan-500 hover:to-purple-500
-                           shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 
-                           border border-white/10
-                           transform transition-all duration-200 hover:-translate-y-0.5"
               disabled={loading}
+              className="w-full py-5 bg-emerald-400 text-black font-black text-2xl uppercase neo-border-thick neo-shadow neo-transition disabled:opacity-50"
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? "Registering..." : "Enlist Now"}
             </button>
           </form>
         ) : (
-          <form className="space-y-5" onSubmit={handleVerify}>
-            {error && <p className="text-red-500 text-center">{error}</p>}
-            <div className="group">
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1 transition-colors group-focus-within:text-cyan-400">
-                Verification Code
-              </label>
+          <form className="space-y-8" onSubmit={handleVerify}>
+            {error && (
+              <div className="bg-red-500 text-white neo-border-thick p-3 font-black uppercase text-center text-sm">
+                {error}
+              </div>
+            )}
+            <div className="space-y-2">
+              <label className="block text-xl font-black uppercase tracking-tight">Code</label>
               <input
                 type="text"
                 id="code"
-                className="w-full bg-black/20 border border-white/10 rounded-lg py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:bg-black/40 focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300"
-                placeholder="Enter the code sent to your email"
+                required
+                className="w-full bg-white neo-border-thick p-6 text-4xl text-center font-black tracking-[1em] outline-none focus:bg-yellow-50"
+                placeholder="000000"
+                maxLength={6}
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
               />
@@ -278,60 +242,33 @@ const RegisterPage = () => {
 
             <button
               type="submit"
-              className="w-full mt-6 py-3.5 rounded-lg text-white font-bold tracking-wide
-                           bg-gradient-to-r from-cyan-600 to-purple-600 
-                           hover:from-cyan-500 hover:to-purple-500
-                           shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 
-                           border border-white/10
-                           transform transition-all duration-200 hover:-translate-y-0.5"
               disabled={loading}
+              className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick neo-shadow neo-transition"
             >
-              {loading ? "Verifying..." : "Verify & Login"}
+              {loading ? "Syncing..." : "Verify Identity"}
             </button>
-            <div className="text-center mt-4">
+            <div className="text-center">
               <button 
                 type="button"
                 onClick={() => setStep("register")}
-                className="text-xs text-slate-400 hover:text-white transition-colors"
+                className="text-sm font-black uppercase underline hover:bg-red-500 hover:text-white transition-colors p-1"
               >
-                Incorrect email? Go back
+                Incorrect Data? Go Back
               </button>
             </div>
           </form>
         )}
 
-        <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-4">
-          <p className="text-sm text-slate-400">
-            Already have an account?{" "}
+        <div className="mt-12 pt-8 border-t-4 border-black text-center">
+          <p className="font-bold uppercase">
+            Already Enlisted?{" "}
             <Link
               to="/login"
-              className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors duration-300"
+              className="bg-yellow-400 px-2 py-1 neo-border font-black hover:bg-yellow-300 transition-colors"
             >
-              Login here
+              Log In
             </Link>
           </p>
-          <div className="text-center">
-            <Link
-              to="/"
-              className="inline-flex items-center text-xs text-slate-500 hover:text-white transition-colors duration-300"
-            >
-              <svg
-                className="w-3 h-3 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                ></path>
-              </svg>
-              <span>Back to Home</span>
-            </Link>
-          </div>
         </div>
       </div>
     </main>

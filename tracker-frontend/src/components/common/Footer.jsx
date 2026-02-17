@@ -1,67 +1,77 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-950 border-t border-white/10 pt-12 pb-8">
+    <footer className="bg-black text-white py-16">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-evenly gap-8 text-center md:text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           <div>
-            <h3 className="text-white font-bold mb-4">GameLog</h3>
-            <p className="text-gray-400">Conquer your backlog.</p>
+            <h3 className="text-3xl font-black uppercase tracking-tighter mb-6 underline decoration-4 decoration-cyan-400">
+              GameLog
+            </h3>
+            <p className="text-xl font-bold italic opacity-80 uppercase leading-none">
+              Conquer your backlog.
+            </p>
           </div>
           <div>
-            <h3 className="text-white font-bold mb-4">Quick Links</h3>
-            <ul>
+            <h3 className="text-xl font-black uppercase mb-6 tracking-tight">
+              Navigation
+            </h3>
+            <ul className="space-y-3 font-bold uppercase">
               <li>
                 <a
                   href="#features"
-                  className="text-gray-400 hover:text-white transition-colors duration-300"
+                  className="hover:bg-yellow-400 hover:text-black px-2 transition-colors"
                 >
                   Games
                 </a>
               </li>
               <li>
-                <a
-                  href="#blog"
-                  className="text-gray-400 hover:text-white transition-colors duration-300"
+                <Link
+                  to="/blog"
+                  className="hover:bg-cyan-400 hover:text-black px-2 transition-colors"
                 >
-                  Blog
-                </a>
+                  Roadmap
+                </Link>
               </li>
               <li>
-                <a
-                  href="#contact"
-                  className="text-gray-400 hover:text-white transition-colors duration-300"
+                <Link
+                  to="/contact"
+                  className="hover:bg1-emerald-400 hover:text-black px-2 transition-colors"
                 >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="text-white font-bold mb-4">Legal</h3>
-            <ul>
+            <h3 className="text-xl font-black uppercase mb-6 tracking-tight">
+              Status
+            </h3>
+            <ul className="space-y-3 font-bold uppercase">
               <li>
-                <a
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors duration-300"
+                <Link
+                  to="/privacy"
+                  className="hover:bg-cyan-400 hover:text-black px-2 transition-colors"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors duration-300"
+                <Link
+                  to="/terms"
+                  className="hover:bg-emerald-400 hover:text-black px-2 transition-colors"
                 >
                   Terms of Service
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className="mt-8 border-t border-white/10 pt-8 text-center text-gray-400">
-          &copy; {new Date().getFullYear()} GameLog. All Rights Reserved.
+        <div className="mt-16 pt-8 border-t-2 border-white/20 text-center font-black uppercase tracking-widest text-sm">
+          &copy; {new Date().getFullYear()} GAMELOG PROTOCOL. ALL RIGHTS
+          RESERVED.
         </div>
       </div>
     </footer>

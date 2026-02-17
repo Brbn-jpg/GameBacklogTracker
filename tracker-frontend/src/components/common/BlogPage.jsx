@@ -29,26 +29,32 @@ const BlogPage = () => {
     },
     {
       id: 5,
-      title: 'Making Categories, Genres, and Tags a Select with Options',
-      description: 'To improve the filtering experience, we will be changing the text-based inputs for categories, genres, and tags into select dropdowns with predefined options. This will make it easier to discover and filter games.',
+      title: 'Select-based Categories & Genres',
+      description: 'Changing text-based inputs into select dropdowns with predefined options for better filtering.',
       status: 'Completed',
     },
     {
       id: 6,
       title: 'IGDB API Integration',
-      description: 'Integrate with the Internet Game Database (IGDB) to automatically fetch rich game data, including covers, release dates, and developer info, replacing manual entry.',
+      description: 'Integrate with the Internet Game Database (IGDB) to automatically fetch rich game data.',
       status: 'Completed',
     },
     {
       id: 7,
       title: 'Steam Library Import',
-      description: 'Allow users to link their Steam account and automatically import their game library, playtime, and completion status directly into the tracker.',
+      description: 'Allow users to link their Steam account and automatically import their game library.',
       status: 'Planned',
     },
     {
       id: 8,
-      title: 'Gamification & Advanced Stats',
-      description: 'Introduce badges, achievements, and detailed visualization of gaming habits (e.g., genre breakdowns, completion rates) to increase user engagement.',
+      title: 'Gamification & Stats',
+      description: 'Introduce badges, achievements, and detailed visualization of gaming habits.',
+      status: 'Planned',
+    },
+    {
+      id: 9,
+      title: 'Dark Mode Implementation',
+      description: 'Support for dark mode interface.',
       status: 'Planned',
     },
   ];
@@ -56,26 +62,23 @@ const BlogPage = () => {
   const plannedItems = roadmapItems.filter(item => item.status !== 'Completed');
   const completedItems = roadmapItems.filter(item => item.status === 'Completed');
 
-  const RoadmapSection = ({ title, items }) => (
-    <div className="mb-12">
-      <h2 className="text-2xl font-bold mb-6 text-slate-200 flex items-center">
+  const RoadmapSection = ({ title, items, colorClass }) => (
+    <div className="mb-20">
+      <h2 className={`text-4xl font-black uppercase mb-10 inline-block px-4 py-2 neo-border-thick neo-shadow ${colorClass}`}>
         {title}
-        <span className="ml-3 h-px flex-grow bg-white/10"></span>
       </h2>
-      <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {items.map((item) => (
-          <div key={item.id} className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6">
-            <div className="flex justify-between items-start">
-              <h3 className="text-xl font-bold">{item.title}</h3>
-              <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
-                item.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-400' :
-                item.status === 'In Progress' ? 'bg-cyan-500/20 text-cyan-400' : 
-                'bg-purple-500/20 text-purple-400'
+          <div key={item.id} className="bg-white neo-border-thick p-6 neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+            <div className="flex justify-between items-start mb-4 gap-4">
+              <h3 className="text-2xl font-black uppercase leading-tight tracking-tighter">{item.title}</h3>
+              <span className={`px-3 py-1 text-xs font-black uppercase neo-border whitespace-nowrap ${
+                item.status === 'Completed' ? 'bg-emerald-400' : 'bg-cyan-400'
               }`}>
                 {item.status}
               </span>
             </div>
-            <p className="text-slate-300 leading-relaxed mt-4">
+            <p className="text-lg font-bold leading-snug text-black/80">
               {item.description}
             </p>
           </div>
@@ -86,11 +89,16 @@ const BlogPage = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto p-8 text-white">
-        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">Our Roadmap</h1>
+      <div className="container mx-auto py-12 px-4">
+        <div className="mb-16 border-l-8 border-black pl-8">
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-4">
+            System <span className="bg-yellow-400 px-2">Roadmap</span>
+          </h1>
+          <p className="text-2xl font-black uppercase tracking-widest text-black/60">Deployment status & future updates.</p>
+        </div>
         
-        <RoadmapSection title="Coming Soon" items={plannedItems} />
-        <RoadmapSection title="Completed" items={completedItems} />
+        <RoadmapSection title="Incoming" items={plannedItems} colorClass="bg-cyan-400" />
+        <RoadmapSection title="Deployed" items={completedItems} colorClass="bg-emerald-400" />
         
       </div>
     </MainLayout>

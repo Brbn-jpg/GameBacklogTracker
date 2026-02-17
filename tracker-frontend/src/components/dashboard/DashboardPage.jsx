@@ -4,12 +4,23 @@ import StatsCard from "./StatsCard";
 import { useAuth } from "../../context/AuthContext";
 import Cookies from "js-cookie";
 import UserProfile from "./UserProfile";
+import {
+  FaThList,
+  FaSortAmountDown,
+  FaSortAmountUp,
+  FaFilter,
+} from "react-icons/fa";
 
 const DashboardPage = () => {
   const [games, setGames] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Sort & Filter State
+  const [sortBy, setSortBy] = useState("addedAt"); // 'rating', 'hoursPlayed', 'addedAt'
+  const [sortOrder, setSortOrder] = useState("desc"); // 'asc', 'desc'
+  const [filterStatus, setFilterStatus] = useState("ALL");
 
   const { user } = useAuth();
 
@@ -28,8 +39,14 @@ const DashboardPage = () => {
 
       try {
         const [gamesResponse, statsResponse] = await Promise.all([
-          fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`, { headers }),
-          fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/stats`, { headers }),
+          fetch(
+            `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`,
+            { headers },
+          ),
+          fetch(
+            `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/stats`,
+            { headers },
+          ),
         ]);
 
         if (!gamesResponse.ok)
@@ -57,7 +74,9 @@ const DashboardPage = () => {
     async (gameId, newStatus) => {
       const originalGames = [...games];
       const updatedGames = games.map((game) =>
-        game.id === gameId ? { ...game, status: newStatus.toUpperCase() } : game
+        game.id === gameId
+          ? { ...game, status: newStatus.toUpperCase() }
+          : game,
       );
       setGames(updatedGames);
 
@@ -72,7 +91,7 @@ const DashboardPage = () => {
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ status: newStatus.toUpperCase() }),
-          }
+          },
         );
 
         if (!response.ok) {
@@ -83,7 +102,7 @@ const DashboardPage = () => {
         setGames(originalGames);
       }
     },
-    [games]
+    [games],
   );
 
   const handleRemove = async (gameId) => {
@@ -100,7 +119,7 @@ const DashboardPage = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -112,190 +131,265 @@ const DashboardPage = () => {
     }
   };
 
+  // Processing Logic
+  const processedGames = useMemo(() => {
+    let result = [...games];
+
+    // Filter
+    if (filterStatus !== "ALL") {
+      result = result.filter((g) => g.status === filterStatus);
+    }
+
+    // Sort
+    result.sort((a, b) => {
+      let valA = a[sortBy];
+      let valB = b[sortBy];
+
+      // Handle nulls/undefined safely
+      if (valA === undefined || valA === null) valA = 0;
+      if (valB === undefined || valB === null) valB = 0;
+
+      // String comparison for dates if needed, but addedAt is usually string date
+      if (sortBy === "addedAt") {
+        valA = new Date(valA).getTime();
+        valB = new Date(valB).getTime();
+      }
+
+      if (valA < valB) return sortOrder === "asc" ? -1 : 1;
+      if (valA > valB) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    return result;
+  }, [games, filterStatus, sortBy, sortOrder]);
+
   const ditchedGames = useMemo(
-    () => games.filter((g) => g.status === "DITCHED"),
-    [games]
+    () => processedGames.filter((g) => g.status === "DITCHED"),
+    [processedGames],
   );
   const notPlayedGames = useMemo(
-    () => games.filter((g) => g.status === "NOT_PLAYED"),
-    [games]
+    () => processedGames.filter((g) => g.status === "NOT_PLAYED"),
+    [processedGames],
   );
   const playingGames = useMemo(
-    () => games.filter((g) => g.status === "PLAYING"),
-    [games]
+    () => processedGames.filter((g) => g.status === "PLAYING"),
+    [processedGames],
   );
   const completedGames = useMemo(
-    () => games.filter((g) => g.status === "COMPLETED"),
-    [games]
+    () => processedGames.filter((g) => g.status === "COMPLETED"),
+    [processedGames],
   );
+
+  // Handle Sort Toggle
+  const toggleSort = (field) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(field);
+      setSortOrder("desc"); // Default to desc for new field (usually higher is better/newer)
+    }
+  };
 
   if (loading)
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-300">
-        Loading dashboard...
+      <div className="flex flex-col items-center justify-center py-20 bg-white">
+        <div className="text-4xl font-black uppercase tracking-tighter mb-4 italic">
+          Loading Operations Hub...
+        </div>
+        <div className="w-64 h-6 neo-border-thick overflow-hidden">
+          <div className="h-full bg-emerald-400 animate-[pulse_1s_infinite]"></div>
+        </div>
       </div>
     );
 
   if (error)
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-red-500">
-        Error: {error}
+      <div className="p-12 neo-border-thick bg-red-100 text-red-600 text-center neo-shadow max-w-2xl mx-auto mt-20">
+        <h3 className="text-4xl font-black uppercase mb-4">Core Error</h3>
+        <p className="text-xl font-bold uppercase">{error}</p>
       </div>
     );
 
   return (
-    <div className="min-h-screen md:h-screen w-full bg-slate-950 text-slate-300 font-sans p-4 md:p-6 flex flex-col md:overflow-hidden">
-      <div className="shrink-0">
+    <div className="min-h-screen bg-white text-black font-sans p-4 md:p-8 flex flex-col">
+      <div className="max-w-[1600px] mx-auto w-full">
         <UserProfile />
-      </div>
-      <section className="shrink-0 max-w-[1600px] mx-auto w-full mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatsCard
-            title="Total Games"
-            value={stats ? stats.totalGames : "0"}
-            color={{ bg: "bg-purple-500/20" }}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-purple-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                />
-              </svg>
-            }
-          />
 
-          <div className="bg-slate-900/60 border border-white/5 rounded-xl p-5 backdrop-blur-sm flex flex-col justify-center">
-            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-3">
-              Games by Status
-            </p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-medium">
-              <div className="flex items-center justify-between">
-                <span className="flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mr-2"></span>
-                  Playing
-                </span>{" "}
-                <span className="text-white font-bold">
-                  {playingGames.length}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-2"></span>
-                  Completed
-                </span>{" "}
-                <span className="text-white font-bold">
-                  {completedGames.length}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-2"></span>
-                  Not Played
-                </span>{" "}
-                <span className="text-white font-bold">
-                  {notPlayedGames.length}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mr-2"></span>
-                  Ditched
-                </span>{" "}
-                <span className="text-white font-bold">
-                  {ditchedGames.length}
-                </span>
+        <section className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <StatsCard
+              title="Total Intelligence"
+              value={stats ? stats.totalGames : "0"}
+              color={{ bg: "bg-emerald-400" }}
+              icon={<FaThList className="text-2xl" />}
+            />
+
+            <div className="bg-white neo-border-thick p-6 neo-shadow flex flex-col justify-center">
+              <p className="text-sm font-black uppercase tracking-widest text-black/40 mb-4 border-b-2 border-black pb-2">
+                Status Breakdown
+              </p>
+              <div className="grid grid-cols-2 gap-4 text-xs font-black uppercase tracking-tighter">
+                <div className="flex items-center justify-between">
+                  <span>Ditched</span>
+                  <span className="bg-red-500 text-white px-1 neo-border">
+                    {games.filter((g) => g.status === "DITCHED").length}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Not Played</span>
+                  <span className="bg-yellow-400 px-1 neo-border">
+                    {games.filter((g) => g.status === "NOT_PLAYED").length}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Playing</span>
+                  <span className="bg-cyan-400 px-1 neo-border">
+                    {games.filter((g) => g.status === "PLAYING").length}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Completed</span>
+                  <span className="bg-emerald-400 px-1 neo-border">
+                    {games.filter((g) => g.status === "COMPLETED").length}
+                  </span>
+                </div>
               </div>
             </div>
+
+            <StatsCard
+              title="Logged Activity"
+              value={stats ? `${stats.totalHoursPlayed}H` : "0H"}
+              color={{ bg: "bg-cyan-400" }}
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="square"
+                    strokeLinejoin="miter"
+                    strokeWidth="3"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              }
+            />
+
+            <StatsCard
+              title="Avg Satisfaction"
+              value={stats ? stats.averageRating.toFixed(1) : "0"}
+              subtext="/10"
+              color={{ bg: "bg-yellow-400" }}
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              }
+            />
+          </div>
+        </section>
+
+        {/* Toolbar */}
+        <div className="mb-8 flex flex-wrap gap-4 items-center">
+          <div className="flex gap-2 bg-white neo-border-thick p-1 neo-shadow">
+            <span className="px-3 py-2 font-black uppercase text-xs flex items-center gap-2 bg-black text-white">
+              <FaFilter /> Filter
+            </span>
+            {["ALL", "DITCHED", "NOT_PLAYED", "PLAYING", "COMPLETED"].map(
+              (status) => (
+                <button
+                  key={status}
+                  onClick={() => setFilterStatus(status)}
+                  className={`px-3 py-2 text-xs font-black uppercase transition-colors ${
+                    filterStatus === status
+                      ? "bg-yellow-400 text-black neo-border"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {status.replace("_", " ")}
+                </button>
+              ),
+            )}
           </div>
 
-          <StatsCard
-            title="Total Hours Played"
-            value={stats ? `${stats.totalHoursPlayed}h` : "0h"}
-            color={{ bg: "bg-cyan-500/20" }}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-cyan-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+          <div className="flex gap-2 bg-white neo-border-thick p-1 neo-shadow">
+            <span className="px-3 py-2 font-black uppercase text-xs flex items-center gap-2 bg-black text-white">
+              {sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />}{" "}
+              Sort
+            </span>
+            {[
+              { label: "Date", key: "addedAt" },
+              { label: "Rating", key: "rating" },
+              { label: "Time", key: "hoursPlayed" },
+            ].map((item) => (
+              <button
+                key={item.key}
+                onClick={() => toggleSort(item.key)}
+                className={`px-3 py-2 text-xs font-black uppercase transition-colors ${
+                  sortBy === item.key
+                    ? "bg-cyan-400 text-black neo-border"
+                    : "hover:bg-gray-100"
+                }`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            }
-          />
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-          <StatsCard
-            title="Average Rating"
-            value={stats ? stats.averageRating.toFixed(2) : "0"}
-            subtext="/10"
-            color={{ bg: "bg-yellow-500/20" }}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-yellow-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            }
-          />
-        </div>
-      </section>
-      <main className="flex-1 w-full max-w-[1600px] mx-auto md:min-h-0 lg:overflow-x-auto pb-6 md:pb-0">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-flow-col lg:auto-cols-fr gap-4 h-full lg:w-full">
-          <KanbanColumn
-            title="Ditched"
-            statusId="DITCHED"
-            games={ditchedGames}
-            colorClass="border-rose-900/30"
-            badgeColor="text-rose-400"
-            onDrop={handleDrop}
-            onRemove={handleRemove}
-          />
-          <KanbanColumn
-            title="Not Played"
-            statusId="NOT_PLAYED"
-            games={notPlayedGames}
-            colorClass="border-slate-700/30"
-            badgeColor="text-slate-300"
-            onDrop={handleDrop}
-            onRemove={handleRemove}
-          />
-          <KanbanColumn
-            title="Playing"
-            statusId="PLAYING"
-            games={playingGames}
-            colorClass="border-cyan-900/30"
-            badgeColor="text-cyan-400"
-            onDrop={handleDrop}
-            onRemove={handleRemove}
-          />
-          <KanbanColumn
-            title="Completed"
-            statusId="COMPLETED"
-            games={completedGames}
-            colorClass="border-emerald-900/30"
-            badgeColor="text-emerald-400"
-            onDrop={handleDrop}
-            onRemove={handleRemove}
-          />
-        </div>
-      </main>
+        <main className="w-full overflow-x-auto pb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 min-w-[1000px] lg:min-w-0">
+            {/* If a filter is active (not ALL), we might want to show only that column or handle it differently.
+                Currently, it filters cards inside columns. So 'Playing' column will be empty if filter is 'COMPLETED'.
+                This is standard Kanban behavior when filtering.
+            */}
+            <KanbanColumn
+              title="Ditched"
+              statusId="DITCHED"
+              games={ditchedGames}
+              colorClass="neo-border-thick"
+              badgeColor="bg-red-500 text-white"
+              onDrop={handleDrop}
+              onRemove={handleRemove}
+            />
+            <KanbanColumn
+              title="Not Played"
+              statusId="NOT_PLAYED"
+              games={notPlayedGames}
+              colorClass="neo-border-thick"
+              badgeColor="bg-yellow-400 text-black"
+              onDrop={handleDrop}
+              onRemove={handleRemove}
+            />
+            <KanbanColumn
+              title="Playing"
+              statusId="PLAYING"
+              games={playingGames}
+              colorClass="neo-border-thick"
+              badgeColor="bg-cyan-400 text-black"
+              onDrop={handleDrop}
+              onRemove={handleRemove}
+            />
+            <KanbanColumn
+              title="Completed"
+              statusId="COMPLETED"
+              games={completedGames}
+              colorClass="neo-border-thick"
+              badgeColor="bg-emerald-400 text-black"
+              onDrop={handleDrop}
+              onRemove={handleRemove}
+            />
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

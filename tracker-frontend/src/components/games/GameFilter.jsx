@@ -45,35 +45,31 @@ const GameFilter = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-lg p-6 space-y-4">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-white flex items-center gap-2">
-          <FaSearch className="text-purple-500 text-sm" />
-          Search Games
-        </h3>
+    <div className="bg-white neo-border-thick p-6 space-y-6 neo-shadow">
+      <div className="flex items-center gap-3 border-b-4 border-black pb-4 mb-2">
+        <FaSearch className="text-2xl" />
+        <h3 className="text-2xl font-black uppercase tracking-tighter">Filter Data</h3>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block text-gray-400 text-sm font-medium mb-1">
-            Game Title
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="name" className="block text-sm font-black uppercase tracking-widest">
+            Title Query
           </label>
-          <div className="relative">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={filters.name}
-              onChange={handleChange}
-              className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder-gray-600"
-              placeholder="e.g. Elden Ring..."
-            />
-          </div>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={filters.name}
+            onChange={handleChange}
+            className="w-full bg-white neo-border-thick p-3 text-black font-bold outline-none focus:bg-yellow-50 placeholder-gray-400"
+            placeholder="E.G. ELDEN RING"
+          />
         </div>
 
-        <div>
-          <label htmlFor="genre" className="block text-gray-400 text-sm font-medium mb-1">
-            Genre
+        <div className="space-y-2">
+          <label htmlFor="genre" className="block text-sm font-black uppercase tracking-widest">
+            Primary Genre
           </label>
           <select
             id="genre"
@@ -83,27 +79,29 @@ const GameFilter = ({ onFilterChange }) => {
               const val = e.target.value;
               setFilters((prev) => ({ ...prev, genres: val ? [val] : [] }));
             }}
-            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all cursor-pointer"
+            className="w-full bg-white neo-border-thick p-3 text-black font-bold outline-none cursor-pointer focus:bg-cyan-50 appearance-none"
           >
-            <option value="">All Genres</option>
+            <option value="">ALL GENRES</option>
             {GENRES.map((genre) => (
               <option key={genre} value={genre}>
-                {genre}
+                {genre.toUpperCase()}
               </option>
             ))}
           </select>
         </div>
 
-        <MultiSelect
-          label="Platforms"
-          options={PLATFORMS}
-          selectedValues={filters.platforms}
-          onChange={(val) => handleMultiSelectChange("platforms", val)}
-          placeholder="Select platforms..."
-        />
+        <div className="space-y-2">
+          <label className="block text-sm font-black uppercase tracking-widest">Target Platforms</label>
+          <MultiSelect
+            options={PLATFORMS}
+            selectedValues={filters.platforms}
+            onChange={(val) => handleMultiSelectChange("platforms", val)}
+            placeholder="CHOOSE SYSTEMS"
+          />
+        </div>
 
-        <div>
-          <label htmlFor="developers" className="block text-gray-400 text-sm font-medium mb-1">
+        <div className="space-y-2">
+          <label htmlFor="developers" className="block text-sm font-black uppercase tracking-widest">
             Developers
           </label>
           <input
@@ -112,37 +110,16 @@ const GameFilter = ({ onFilterChange }) => {
             name="developers"
             value={filters.developers}
             onChange={handleChange}
-            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder-gray-600"
-            placeholder="e.g. FromSoftware, Valve"
+            className="w-full bg-white neo-border-thick p-3 text-black font-bold outline-none focus:bg-emerald-50 placeholder-gray-400"
+            placeholder="E.G. FROMSOFTWARE"
           />
-          <p className="text-xs text-gray-500 mt-1 italic">
-            Note: Search requires full company name (e.g. "FromSoftware")
-          </p>
-        </div>
-
-        <div>
-          <label htmlFor="publishers" className="block text-gray-400 text-sm font-medium mb-1">
-            Publishers
-          </label>
-          <input
-            type="text"
-            id="publishers"
-            name="publishers"
-            value={filters.publishers}
-            onChange={handleChange}
-            className="w-full bg-slate-800/50 border border-white/10 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder-gray-600"
-            placeholder="e.g. Bandai Namco, Electronic Arts"
-          />
-          <p className="text-xs text-gray-500 mt-1 italic">
-            Note: Search requires full company name (e.g. "Bandai Namco")
-          </p>
         </div>
 
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transform transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
+          className="w-full bg-yellow-400 text-black font-black py-4 px-4 neo-border-thick neo-shadow-lg uppercase text-xl neo-transition tracking-tighter"
         >
-          Search IGDB
+          Execute Search
         </button>
       </form>
     </div>

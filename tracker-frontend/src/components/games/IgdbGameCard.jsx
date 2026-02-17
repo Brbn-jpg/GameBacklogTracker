@@ -2,37 +2,24 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-const IgdbGameCard = ({ game }) => {
-  const { token } = useAuth();
-  const [status, setStatus] = useState("idle"); // idle, loading, success, error
+const IgdbGameCard = ({ game, existingUserGameId, onActionSuccess }) => {
+  const { token, isAuthenticated } = useAuth();
+  const [status, setStatus] = useState("idle");
 
-  const handleAddGame = (e) => {
-    e.preventDefault(); // Prevent navigating when clicking add button
+  const handleAction = (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    performAdd();
+    if (existingUserGameId) {
+      performRemove();
+    } else {
+      performAdd();
+    }
   };
 
   const performAdd = async () => {
     setStatus("loading");
     try {
-      // Step 1: Save the game to our backend database
-      const gameResponse = await fetch(
-        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/games`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(game),
-        }
-      );
-
-      if (!gameResponse.ok) throw new Error("Failed to save game to database");
-      const savedGame = await gameResponse.json();
-
-      // Step 2: Add the saved game to user's backlog
-      const userGameResponse = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames`,
         {
           method: "POST",
@@ -41,61 +28,92 @@ const IgdbGameCard = ({ game }) => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            gameId: savedGame.id,
+            gameId: game.appId || game.id,
             status: "NOT_PLAYED",
           }),
-        }
+        },
       );
 
-      if (!userGameResponse.ok) throw new Error("Failed to add game to backlog");
-
+      if (!response.ok) throw new Error("Failed to add game");
       setStatus("success");
+      if (onActionSuccess) onActionSuccess();
     } catch (err) {
-      console.error(err);
+      setStatus("error");
+    }
+  };
+
+  const performRemove = async () => {
+    setStatus("loading");
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/usergames/${existingUserGameId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      if (!response.ok) throw new Error("Failed to remove game");
+      setStatus("success");
+      if (onActionSuccess) onActionSuccess();
+    } catch (err) {
       setStatus("error");
     }
   };
 
   return (
-    <Link 
-      to={`/igdb-games/${game.appId}`}
-      className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:scale-[1.02] transition-transform duration-300 flex flex-col group"
-    >
-      <div className="relative aspect-video">
+    <div className="bg-white neo-border-thick neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex flex-col group overflow-hidden">
+      <Link
+        to={`/igdb-games/${game.appId || game.id}`}
+        className="relative aspect-video border-b-4 border-black block"
+      >
         <img
-          src={game.headerImage || "https://via.placeholder.com/460x215?text=No+Image"}
+          src={
+            game.headerImage ||
+            "https://via.placeholder.com/460x215?text=NO+IMAGE"
+          }
           alt={game.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60"></div>
-      </div>
-      <div className="p-5 flex flex-col flex-grow">
-        <h3 className="text-xl font-bold mb-2 line-clamp-1 group-hover:text-purple-400 transition-colors">{game.name}</h3>
-        <p className="text-slate-400 text-sm mb-4 line-clamp-2">
-          {game.developers?.join(", ") || "Unknown Developer"}
+      </Link>
+      <div className="p-6 flex flex-col flex-grow bg-white">
+        <Link to={`/igdb-games/${game.appId || game.id}`}>
+          <h3 className="text-2xl font-black uppercase mb-2 line-clamp-1 italic tracking-tighter group-hover:text-yellow-500 transition-colors">
+            {game.name}
+          </h3>
+        </Link>
+        <p className="text-black/60 font-black uppercase text-xs mb-6 tracking-widest">
+          {game.developers?.join(", ") || "Unknown Studio"}
         </p>
-        
+
         <div className="mt-auto">
-          {status === "success" ? (
-            <div className="w-full bg-green-600/20 text-green-400 border border-green-600/50 py-2 rounded-xl text-center font-semibold">
-              Added to Library!
-            </div>
+          {!isAuthenticated ? (
+            <Link
+              to="/login"
+              className="w-full block py-3 bg-white neo-border-thick text-center font-black uppercase text-lg hover:bg-yellow-400 transition-colors"
+            >
+              Enlist to Add
+            </Link>
           ) : (
             <button
-              onClick={handleAddGame}
+              onClick={handleAction}
               disabled={status === "loading"}
-              className={`w-full py-2 rounded-xl font-semibold transition-colors ${
-                status === "error"
-                  ? "bg-red-600 hover:bg-red-700"
-                  : "bg-purple-600 hover:bg-purple-700"
-              }`}
+              className={`w-full py-3 neo-border-thick font-black uppercase text-lg neo-transition ${
+                existingUserGameId
+                  ? "bg-red-500 text-white hover:bg-red-600"
+                  : "bg-yellow-400 text-black hover:bg-yellow-300"
+              } ${status === "error" ? "bg-black text-white" : ""}`}
             >
-              {status === "loading" ? "Adding..." : status === "error" ? "Try Again" : "Add to Library"}
+              {status === "loading"
+                ? "Syncing..."
+                : existingUserGameId
+                  ? "Remove from Library"
+                  : "Add to Library"}
             </button>
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

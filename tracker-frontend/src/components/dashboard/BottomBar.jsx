@@ -7,7 +7,6 @@ import {
   FaTimes,
   FaGamepad,
   FaRss,
-  FaEnvelope,
   FaSignOutAlt,
   FaCog,
   FaHome,
@@ -25,132 +24,97 @@ const BottomBar = ({ setView, currentView }) => {
     navigate("/");
   };
 
+  const NavButton = ({ view, icon: Icon, label }) => (
+    <button
+      onClick={() => setView(view)}
+      className={`flex flex-col items-center justify-center gap-1 transition-all ${
+        currentView === view ? "text-black scale-110" : "text-black/40"
+      }`}
+    >
+      <Icon className="text-xl" />
+      <span className="text-[10px] font-black uppercase tracking-tighter">
+        {label}
+      </span>
+      {currentView === view && (
+        <div className="w-4 h-1 bg-yellow-400 neo-border mt-0.5"></div>
+      )}
+    </button>
+  );
+
   return (
     <>
-      {/* Main Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/80 backdrop-blur-md border-t border-white/10 z-50 md:hidden">
-        <div className="flex justify-around items-center h-16">
-          <button
-            onClick={() => setView("dashboard")}
-            className={`flex flex-col items-center justify-center text-xs space-y-1 ${
-              currentView === "dashboard" ? "text-neon-cyan" : "text-gray-400"
-            }`}
-          >
-            <FaTachometerAlt className="h-6 w-6" />
-            <span>Dashboard</span>
-          </button>
-          <button
-            onClick={() => setView("library")}
-            className={`flex flex-col items-center justify-center text-xs space-y-1 ${
-              currentView === "library" ? "text-neon-cyan" : "text-gray-400"
-            }`}
-          >
-            <FaThList className="h-6 w-6" />
-            <span>Library</span>
-          </button>
-          <button
-            onClick={() => setView("wishlist")}
-            className={`flex flex-col items-center justify-center text-xs space-y-1 ${
-              currentView === "wishlist" ? "text-neon-cyan" : "text-gray-400"
-            }`}
-          >
-            <FaHeart className="h-6 w-6" />
-            <span>Wishlist</span>
-          </button>
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            className="flex flex-col items-center justify-center text-xs space-y-1 text-gray-400"
-          >
-            <FaBars className="h-6 w-6" />
-            <span>More</span>
-          </button>
-        </div>
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-black z-50 md:hidden h-20 flex items-center justify-around px-2">
+        <NavButton view="dashboard" icon={FaTachometerAlt} label="Dash" />
+        <NavButton view="library" icon={FaThList} label="Lib" />
+        <NavButton view="wishlist" icon={FaHeart} label="Wish" />
+        <button
+          onClick={() => setIsMenuOpen(true)}
+          className="flex flex-col items-center justify-center gap-1 text-black"
+        >
+          <FaBars className="text-xl" />
+          <span className="text-[10px] font-black uppercase tracking-tighter">
+            More
+          </span>
+        </button>
       </div>
 
-      {/* "More" Menu Overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-[60] md:hidden"
+          className="fixed inset-0 bg-black/80 z-[60] md:hidden p-4 flex items-end"
           onClick={() => setIsMenuOpen(false)}
         >
           <div
-            className="absolute bottom-0 left-0 right-0 bg-slate-900 rounded-t-2xl p-4 transition-transform duration-300 ease-in-out"
+            className="w-full bg-white neo-border-thick p-6 space-y-6 animate-[slideUp_0.3s_ease-out]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-white">More Options</h3>
+            <div className="flex justify-between items-center border-b-4 border-black pb-4">
+              <h3 className="text-2xl font-black uppercase tracking-tighter">
+                Command Menu
+              </h3>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="text-gray-400"
+                className="bg-black text-white p-2 neo-border"
               >
-                <FaTimes className="h-6 w-6" />
+                <FaTimes />
               </button>
             </div>
-            <nav>
-              <ul>
-                <li>
-                  <Link
-                    to="/games"
-                    className="flex items-center p-3 text-white hover:bg-white/5 rounded-lg"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <FaGamepad className="mr-3" />
-                    <span>Games</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/"
-                    className="flex items-center p-3 text-white hover:bg-white/5 rounded-lg"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <FaHome className="mr-3" />
-                    <span>Landing Page</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/blog"
-                    className="flex items-center p-3 text-white hover:bg-white/5 rounded-lg"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <FaRss className="mr-3" />
-                    <span>Blog</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/contact"
-                    className="flex items-center p-3 text-white hover:bg-white/5 rounded-lg"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <FaEnvelope className="mr-3" />
-                    <span>Contact</span>
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      setView("settings");
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full flex items-center p-3 text-white hover:bg-white/5 rounded-lg"
-                  >
-                    <FaCog className="mr-3" />
-                    <span>Settings</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center p-3 text-red-500 hover:bg-red-500/10 rounded-lg"
-                  >
-                    <FaSignOutAlt className="mr-3" />
-                    <span>Logout</span>
-                  </button>
-                </li>
-              </ul>
+
+            <nav className="grid grid-cols-2 gap-4">
+              <Link
+                to="/games"
+                className="flex items-center p-4 bg-cyan-400 neo-border font-black uppercase text-xs gap-3"
+              >
+                <FaGamepad /> Games
+              </Link>
+              <Link
+                to="/"
+                className="flex items-center p-4 bg-white neo-border font-black uppercase text-xs gap-3"
+              >
+                <FaHome /> Home
+              </Link>
+              <Link
+                to="/blog"
+                className="flex items-center p-4 bg-white neo-border font-black uppercase text-xs gap-3"
+              >
+                <FaRss /> Roadmap
+              </Link>
+              <button
+                onClick={() => {
+                  setView("settings");
+                  setIsMenuOpen(false);
+                }}
+                className="flex items-center p-4 bg-white neo-border font-black uppercase text-xs gap-3 text-left"
+              >
+                <FaCog /> Settings
+              </button>
             </nav>
+
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center p-4 bg-red-500 text-white neo-border font-black uppercase text-xs gap-3"
+            >
+              <FaSignOutAlt /> Logout
+            </button>
           </div>
         </div>
       )}

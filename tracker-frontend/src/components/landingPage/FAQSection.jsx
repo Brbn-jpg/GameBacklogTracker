@@ -2,41 +2,39 @@ import React from "react";
 
 const FAQSection = () => {
   return (
-    <section id="faq" className="mt-10 py-20 bg-slate-950">
+    <section id="faq" className="py-24 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center text-white mb-12">
-          Frequently Asked Questions
+        <h2 className="text-5xl md:text-7xl font-black text-center uppercase mb-20 tracking-tighter">
+          <span className="bg-yellow-400 px-4">FAQ</span>
         </h2>
-        <div className="max-w-3xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-12">
           {/* FAQ Item 1 */}
-          <div className="bg-white/5 border border-white/10 rounded-lg p-6 hover:shadow-xl hover:shadow-purple-500/10 transition-shadow duration-300">
-            <h3 className="text-white font-bold text-2xl mb-2">
-              Is GameLog free to use?
+          <div className="bg-white neo-border-thick p-8 neo-shadow-lg rotate-[0.5deg]">
+            <h3 className="text-3xl font-black uppercase mb-4 tracking-tight">
+              Is it free?
             </h3>
-            <p className="text-cyan-400 text-lg font-semibold">
-              Yes, GameLog is completely free!
+            <p className="text-xl font-bold bg-cyan-400 inline-block px-2 neo-border">
+              Yes. Zero cost. Full power.
             </p>
           </div>
 
           {/* FAQ Item 2 */}
-          <div className="bg-white/5 border border-white/10 rounded-lg p-6 hover:shadow-xl hover:shadow-purple-500/10 transition-shadow duration-300">
-            <h3 className="text-white font-bold text-xl mb-2">
-              Where are you getting games data?
+          <div className="bg-white neo-border-thick p-8 neo-shadow-lg rotate-[-0.5deg]">
+            <h3 className="text-3xl font-black uppercase mb-4 tracking-tight">
+              Data source?
             </h3>
-            <p className="text-gray-400">
-              We source our comprehensive game data directly from the Internet Game Database (IGDB), ensuring you have access to the most accurate and up-to-date information available.
+            <p className="text-xl font-bold leading-snug">
+              We sync directly with <span className="underline decoration-4 decoration-yellow-400">IGDB</span>. Accurate dates, covers, and details. No fake entries.
             </p>
           </div>
 
           {/* FAQ Item 3 */}
-          <div className="bg-white/5 border border-white/10 rounded-lg p-6 hover:shadow-xl hover:shadow-purple-500/10 transition-shadow duration-300">
-            <h3 className="text-white font-bold text-xl mb-2">
-              Can I import my game data from Steam?
+          <div className="bg-white neo-border-thick p-8 neo-shadow-lg rotate-[0.3deg]">
+            <h3 className="text-3xl font-black uppercase mb-4 tracking-tight">
+              Steam Import?
             </h3>
-            <p className="text-gray-400">
-              As of now, we do not support direct import of game data from
-              platforms like Steam. This is a highly requested feature, and we
-              plan to implement it in future updates.
+            <p className="text-xl font-bold leading-snug">
+              Planned. We're working on the pipes. For now, manual entry keeps you disciplined.
             </p>
           </div>
         </div>

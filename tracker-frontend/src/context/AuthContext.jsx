@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, useCallback } from "react";
 import Cookies from "js-cookie";
 
 const AuthContext = createContext();
@@ -9,16 +9,13 @@ export const AuthProvider = ({ children }) => {
 
   const [authLoading, setAuthLoading] = useState(true);
 
-  useEffect(() => {
-    const token = Cookies.get("jwt_token");
-    if (token) {
-      fetchUser(token);
-    } else {
-      setAuthLoading(false);
-    }
+  const logout = useCallback(() => {
+    Cookies.remove("jwt_token");
+    setIsAuthenticated(false);
+    setUser(null);
   }, []);
 
-  const fetchUser = async (token) => {
+  const fetchUser = useCallback(async (token) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/users/me`, {
         headers: {
@@ -44,7 +41,16 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setAuthLoading(false);
     }
-  };
+  }, [logout]);
+
+  useEffect(() => {
+    const token = Cookies.get("jwt_token");
+    if (token) {
+      fetchUser(token);
+    } else {
+      setAuthLoading(false);
+    }
+  }, [fetchUser]);
 
   const login = (token, rememberMe) => {
     if (rememberMe) {
@@ -54,12 +60,6 @@ export const AuthProvider = ({ children }) => {
     }
     setIsAuthenticated(true);
     fetchUser(token);
-  };
-
-  const logout = () => {
-    Cookies.remove("jwt_token");
-    setIsAuthenticated(false);
-    setUser(null);
   };
 
   if (authLoading) {

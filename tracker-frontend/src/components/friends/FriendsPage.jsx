@@ -12,88 +12,74 @@ const FriendsPage = () => {
   };
 
   return (
-    <div className="p-6 max-w-[1600px] mx-auto w-full text-slate-300 font-sans min-h-screen">
-      <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between">
-        <div>
-            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2">
-            Friends
+    <div className="bg-white min-h-screen text-black p-4 md:p-8">
+      <div className="max-w-[1600px] mx-auto">
+        <div className="mb-12 border-l-8 border-black pl-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none italic">
+              Friends <span className="bg-yellow-400 px-2 not-italic">List</span>
             </h1>
-            <p className="text-slate-400 text-lg">
-            Connect with other gamers and see what they are playing.
-            </p>
-        </div>
-        
-        {/* Tabs */}
-        <div className="flex space-x-2 mt-4 md:mt-0 bg-slate-900/40 p-1 rounded-xl border border-white/5">
+            <p className="text-2xl font-black uppercase tracking-widest text-black/40 mt-4">Connect with gamers</p>
+          </div>
+          
+          {/* Brutalist Tabs */}
+          <div className="flex bg-white neo-border-thick p-1 gap-2 neo-shadow">
             <button
-                onClick={() => setActiveTab("list")}
-                className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                    activeTab === "list"
-                    ? "bg-gradient-to-r from-cyan-500/20 to-cyan-600/20 text-cyan-400 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]"
-                    : "text-slate-400 hover:text-white hover:bg-white/5"
-                }`}
+              onClick={() => setActiveTab("list")}
+              className={`px-6 py-2 font-black uppercase text-sm transition-all ${
+                activeTab === "list"
+                  ? "bg-black text-white neo-shadow-none translate-x-[2px] translate-y-[2px]"
+                  : "bg-white text-black hover:bg-gray-100"
+              }`}
             >
-                My Friends
+              My Friends
             </button>
             <button
-                onClick={() => setActiveTab("find")}
-                className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                    activeTab === "find"
-                    ? "bg-gradient-to-r from-purple-500/20 to-purple-600/20 text-purple-400 border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)]"
-                    : "text-slate-400 hover:text-white hover:bg-white/5"
-                }`}
+              onClick={() => setActiveTab("find")}
+              className={`px-6 py-2 font-black uppercase text-sm transition-all ${
+                activeTab === "find"
+                  ? "bg-black text-white neo-shadow-none translate-x-[2px] translate-y-[2px]"
+                  : "bg-white text-black hover:bg-gray-100"
+              }`}
             >
-                Find Friends
+              Find Friends
             </button>
-        </div>
-      </header>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Content Area */}
-        <div className="lg:col-span-2 space-y-6">
-           <div className="bg-slate-900/60 backdrop-blur-md border border-white/5 rounded-2xl p-6 shadow-xl min-h-[500px]">
-              {activeTab === "list" ? (
-                  <>
-                    <h2 className="text-xl font-bold text-white mb-6 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        Your Friends
-                    </h2>
-                    <FriendsList key={refreshKey} />
-                  </>
-              ) : (
-                  <>
-                     <h2 className="text-xl font-bold text-white mb-6 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        Find New Friends
-                    </h2>
-                    <FindFriends />
-                  </>
-              )}
-           </div>
+          </div>
         </div>
 
-        {/* Sidebar Area */}
-        <div className="lg:col-span-1 space-y-6">
-           {/* Only show "Add Friend" widget if we are NOT on the find tab */}
-           {activeTab !== 'find' && (
-                <div className="bg-gradient-to-br from-slate-900/60 to-purple-900/20 backdrop-blur-md border border-white/5 rounded-2xl p-6 shadow-xl">
-                    <h2 className="text-lg font-bold text-white mb-3">Expand Your Squad</h2>
-                    <p className="text-slate-400 text-sm mb-4">Looking for new gaming buddies? Search for users and send requests.</p>
-                    <button 
-                        onClick={() => setActiveTab('find')}
-                        className="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-medium transition-colors shadow-lg shadow-purple-900/50"
-                    >
-                        Find Friends
-                    </button>
-                </div>
-           )}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Main Content Area */}
+          <div className="lg:col-span-2 space-y-8">
+             <div className="bg-white neo-border-thick p-8 neo-shadow min-h-[600px]">
+                <h2 className="text-3xl font-black uppercase mb-8 border-b-4 border-black pb-2 italic">
+                  {activeTab === "list" ? "Your Friends" : "Search Users"}
+                </h2>
+                {activeTab === "list" ? (
+                  <FriendsList key={refreshKey} />
+                ) : (
+                  <FindFriends />
+                )}
+             </div>
+          </div>
 
-           <div className="bg-slate-900/60 backdrop-blur-md border border-white/5 rounded-2xl p-6 shadow-xl">
-             <FriendRequests onActionSuccess={handleActionSuccess} />
+          {/* Sidebar Area */}
+          <div className="lg:col-span-1 space-y-8">
+             {activeTab !== 'find' && (
+                  <div className="bg-yellow-400 neo-border-thick p-8 neo-shadow">
+                      <h2 className="text-2xl font-black uppercase mb-4 tracking-tighter">Add Friends</h2>
+                      <p className="font-bold text-sm mb-6 leading-tight">Looking for new gaming buddies? Search for users and send requests.</p>
+                      <button 
+                          onClick={() => setActiveTab('find')}
+                          className="w-full py-4 bg-white text-black neo-border-thick font-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none neo-shadow transition-all"
+                      >
+                          Find Friends
+                      </button>
+                  </div>
+             )}
+
+             <div className="bg-white neo-border-thick p-6 neo-shadow sticky top-8">
+               <FriendRequests onActionSuccess={handleActionSuccess} />
+            </div>
           </div>
         </div>
       </div>

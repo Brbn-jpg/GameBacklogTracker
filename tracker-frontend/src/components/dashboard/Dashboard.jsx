@@ -33,14 +33,52 @@ const Dashboard = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="bg-slate-950 flex flex-col min-h-screen pb-16 md:pb-0">
-        <Toaster />
-        <div className="flex flex-1">
+      <div className="bg-white flex flex-col h-screen overflow-hidden">
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            className: 'neo-border-thick neo-shadow !rounded-none !bg-white !text-black font-black uppercase tracking-tight',
+            duration: 4000,
+            style: {
+              border: '4px solid black',
+              padding: '16px',
+              color: 'black',
+              borderRadius: '0px',
+              boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)',
+            },
+            success: {
+              style: {
+                background: '#34D399', // emerald-400
+              },
+              iconTheme: {
+                primary: 'black',
+                secondary: 'white',
+              },
+            },
+            error: {
+              style: {
+                background: '#EF4444', // red-500
+                color: 'white',
+              },
+              iconTheme: {
+                primary: 'white',
+                secondary: '#EF4444',
+              },
+            },
+          }}
+        />
+        <div className="flex flex-1 overflow-hidden">
           <Sidebar setView={setView} currentView={view} />
-          <main className="flex-1 md:p-6">{renderView()}</main>
+          <main className="flex-1 flex flex-col h-full overflow-hidden bg-white">
+            <div className="flex-grow overflow-y-auto custom-scrollbar relative">
+              {renderView()}
+              <div className="shrink-0 z-10 relative pb-24 md:pb-0 bg-black">
+                <Footer />
+              </div>
+            </div>
+          </main>
         </div>
         <BottomBar setView={setView} currentView={view} />
-        <Footer />
       </div>
     </DndProvider>
   );

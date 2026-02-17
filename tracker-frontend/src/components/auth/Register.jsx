@@ -4,7 +4,7 @@ import RegisterPage from "./RegisterPage";
 
 const Register = () => {
   return (
-    <div className="bg-slate-950 flex flex-col">
+    <div className="bg-white flex flex-col min-h-screen">
       <RegisterPage />
       <Footer />
     </div>

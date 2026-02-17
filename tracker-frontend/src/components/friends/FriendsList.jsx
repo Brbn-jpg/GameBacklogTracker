@@ -40,19 +40,19 @@ const FriendsList = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-slate-400 py-4">Loading friends...</div>;
+    return <div className="text-center py-8 font-black uppercase italic">Loading Friends...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500 py-4">Error: {error}</div>;
+    return <div className="bg-red-100 text-red-600 p-4 neo-border font-bold text-center">{error}</div>;
   }
 
   if (friends.length === 0) {
     return (
-      <div className="text-center py-12 bg-white/5 rounded-xl border border-dashed border-slate-700">
-        <p className="text-slate-400 text-lg mb-2">No friends found.</p>
-        <p className="text-slate-500 text-sm">
-          Use the search to find and add new friends!
+      <div className="p-12 neo-border border-dashed border-black/20 text-center">
+        <p className="text-xl font-black uppercase mb-2">No Friends</p>
+        <p className="text-xs font-bold uppercase text-black/40">
+          Use search to find new friends.
         </p>
       </div>
     );
@@ -63,63 +63,36 @@ const FriendsList = () => {
       {friends.map((friend, index) => (
         <div
           key={index}
-          className="bg-slate-800/50 hover:bg-slate-800/80 border border-white/5 rounded-xl p-4 flex items-center justify-between transition-all group"
+          className="bg-white neo-border-thick p-4 flex items-center justify-between group hover:shadow-none neo-shadow transition-all"
         >
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
+            <div className="w-12 h-12 bg-black text-white flex items-center justify-center font-black text-xl neo-border">
               {friend.username.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h3 className="text-white font-semibold text-lg">
+              <h3 className="font-black uppercase text-lg leading-none">
                 {friend.username}
               </h3>
             </div>
           </div>
 
-          <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="flex space-x-2">
             <Link
               to={`/profile/${friend.userId}`}
-              className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center"
+              className="p-2 bg-white neo-border hover:bg-black hover:text-white transition-colors"
               title="View Profile"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={3} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={3} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
             </Link>
             <button
-              className="p-2 text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors"
+              className="p-2 bg-white neo-border text-red-500 hover:bg-red-500 hover:text-white transition-colors"
               title="Remove Friend"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={3} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </button>
           </div>

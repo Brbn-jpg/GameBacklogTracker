@@ -11,12 +11,14 @@ const Games = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="flex flex-col md:flex-row container mx-auto p-4 md:p-8 text-white gap-6">
-        <div className="w-full md:w-1/4 md:pr-8">
-          <GameFilter onFilterChange={handleFilterChange} />
-        </div>
-        <div className="w-full md:w-3/4">
+    <MainLayout className="bg-white">
+      <div className="container mx-auto py-12 px-4 flex flex-col lg:flex-row gap-12">
+        <aside className="w-full lg:w-1/4 shrink-0">
+          <div className="sticky top-28">
+            <GameFilter onFilterChange={handleFilterChange} />
+          </div>
+        </aside>
+        <div className="w-full lg:w-3/4">
           <GamesContent filters={filters} />
         </div>
       </div>

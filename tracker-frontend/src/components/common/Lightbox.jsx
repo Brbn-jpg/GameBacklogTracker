@@ -4,7 +4,6 @@ const Lightbox = ({ imageUrl, onClose, onNext, onPrev }) => {
   if (!imageUrl) return null;
 
   const handleOverlayClick = (e) => {
-    // Close only if the overlay itself is clicked, not its children
     if (e.target === e.currentTarget) {
       onClose();
     }
@@ -12,46 +11,53 @@ const Lightbox = ({ imageUrl, onClose, onNext, onPrev }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center backdrop-blur-md"
+      className="fixed inset-0 bg-white/90 z-[200] flex items-center justify-center p-4 md:p-8"
       onClick={handleOverlayClick}
     >
-      {/* Close Button */}
+      {/* Brutalist Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-white text-3xl hover:text-cyan-400 transition-colors"
+        className="absolute top-8 right-8 bg-red-500 text-white p-4 neo-border-thick neo-shadow neo-transition z-[210] hover:bg-red-600"
         aria-label="Close"
       >
-        &times;
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="4" d="M6 18L18 6M6 6l12 12" />
+        </svg>
       </button>
 
-      {/* Image and Navigation Container */}
-      <div className="relative flex items-center justify-center w-full max-w-6xl">
-        {/* Previous Button */}
-        <button
-          onClick={onPrev}
-          className="absolute -left-16 p-4 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors"
-          aria-label="Previous"
-        >
-          &#10094;
-        </button>
+      {/* Main Container */}
+      <div className="relative flex items-center justify-center w-full max-w-7xl h-full">
+        {/* Navigation Buttons */}
+        <div className="absolute inset-x-0 flex justify-between px-4 md:px-0 z-[210] pointer-events-none">
+          <button
+            onClick={(e) => { e.stopPropagation(); onPrev(); }}
+            className="pointer-events-auto bg-white text-black p-6 neo-border-thick neo-shadow neo-transition hover:bg-yellow-400"
+            aria-label="Previous"
+          >
+            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="4" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-        {/* Image */}
-        <div className="max-w-4xl max-h-[90vh]">
+          <button
+            onClick={(e) => { e.stopPropagation(); onNext(); }}
+            className="pointer-events-auto bg-white text-black p-6 neo-border-thick neo-shadow neo-transition hover:bg-yellow-400"
+            aria-label="Next"
+          >
+            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="4" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Image Display */}
+        <div className="bg-white neo-border-thick neo-shadow-lg p-2 md:p-4 max-h-[85vh] flex items-center justify-center overflow-hidden rotate-[-0.5deg]">
           <img 
             src={imageUrl} 
             alt="Enlarged screenshot" 
-            className="w-full h-full object-contain border-4 border-white/10 rounded-lg shadow-2xl" 
+            className="max-w-full max-h-[80vh] object-contain block" 
           />
         </div>
-
-        {/* Next Button */}
-        <button
-          onClick={onNext}
-          className="absolute -right-16 p-4 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors"
-          aria-label="Next"
-        >
-          &#10095;
-        </button>
       </div>
     </div>
   );
