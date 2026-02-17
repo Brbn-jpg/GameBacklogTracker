@@ -52,7 +52,7 @@ const KanbanColumn = ({
       ref={!readOnly ? drop : null}
       className={`flex flex-col w-full bg-white neo-border-thick transition-all duration-300 ${
         isOver && !readOnly && !isCollapsed ? "bg-yellow-50" : ""
-      } ${isCollapsed ? "h-auto md:h-full" : "min-h-[500px] h-full"}`}
+      } ${isCollapsed ? "h-auto md:h-full" : "min-h-[150px] md:min-h-[500px] h-full"}`}
     >
       <div 
         className={`p-4 border-b-4 border-black flex items-center justify-between ${badgeColor} md:cursor-default cursor-pointer hover:opacity-90 md:hover:opacity-100 transition-opacity`}

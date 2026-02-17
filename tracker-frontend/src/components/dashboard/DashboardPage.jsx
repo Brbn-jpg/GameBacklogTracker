@@ -298,9 +298,9 @@ const DashboardPage = () => {
         </section>
 
         {/* Toolbar */}
-        <div className="mb-8 flex flex-wrap gap-4 items-center">
-          <div className="flex gap-2 bg-white neo-border-thick p-1 neo-shadow">
-            <span className="px-3 py-2 font-black uppercase text-xs flex items-center gap-2 bg-black text-white">
+        <div className="mb-8 flex flex-col md:flex-row gap-4 items-start md:items-center">
+          <div className="flex flex-wrap gap-2 bg-white neo-border-thick p-1 neo-shadow w-full md:w-auto">
+            <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black text-white shrink-0">
               <FaFilter /> Filter
             </span>
             {["ALL", "DITCHED", "NOT_PLAYED", "PLAYING", "COMPLETED"].map(
@@ -308,7 +308,7 @@ const DashboardPage = () => {
                 <button
                   key={status}
                   onClick={() => setFilterStatus(status)}
-                  className={`px-3 py-2 text-xs font-black uppercase transition-colors ${
+                  className={`px-2 py-1 md:px-3 md:py-2 text-[10px] md:text-xs font-black uppercase transition-colors ${
                     filterStatus === status
                       ? "bg-yellow-400 text-black neo-border"
                       : "hover:bg-gray-100"
@@ -320,8 +320,8 @@ const DashboardPage = () => {
             )}
           </div>
 
-          <div className="flex gap-2 bg-white neo-border-thick p-1 neo-shadow">
-            <span className="px-3 py-2 font-black uppercase text-xs flex items-center gap-2 bg-black text-white">
+          <div className="flex flex-wrap gap-2 bg-white neo-border-thick p-1 neo-shadow w-full md:w-auto">
+            <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black text-white shrink-0">
               {sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />}{" "}
               Sort
             </span>
@@ -333,7 +333,7 @@ const DashboardPage = () => {
               <button
                 key={item.key}
                 onClick={() => toggleSort(item.key)}
-                className={`px-3 py-2 text-xs font-black uppercase transition-colors ${
+                className={`px-2 py-1 md:px-3 md:py-2 text-[10px] md:text-xs font-black uppercase transition-colors ${
                   sortBy === item.key
                     ? "bg-cyan-400 text-black neo-border"
                     : "hover:bg-gray-100"
@@ -345,8 +345,8 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        <main className="w-full overflow-x-auto pb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 min-w-[1000px] lg:min-w-0">
+        <main className="w-full pb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* If a filter is active (not ALL), we might want to show only that column or handle it differently.
                 Currently, it filters cards inside columns. So 'Playing' column will be empty if filter is 'COMPLETED'.
                 This is standard Kanban behavior when filtering.
