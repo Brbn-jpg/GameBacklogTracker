@@ -64,8 +64,13 @@ export const AuthProvider = ({ children }) => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
-        Wczytywanie sesji...
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8 italic animate-pulse">
+          Initializing...
+        </h1>
+        <div className="w-full max-w-md h-8 border-4 border-black p-1">
+          <div className="h-full bg-yellow-400 w-full animate-[loading_1.5s_ease-in-out_infinite_alternate]"></div>
+        </div>
       </div>
     );
   }
