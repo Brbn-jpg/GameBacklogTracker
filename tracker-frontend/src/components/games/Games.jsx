@@ -11,7 +11,7 @@ const Games = () => {
   };
 
   return (
-    <MainLayout className="bg-white">
+    <MainLayout className="bg-white dark:bg-black transition-colors">
       <div className="container mx-auto py-12 px-4 flex flex-col lg:flex-row gap-12">
         <aside className="w-full lg:w-1/4 shrink-0">
           <div className="sticky top-28">

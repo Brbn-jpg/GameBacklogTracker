@@ -48,18 +48,18 @@ const UpdateUserPasswordForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white neo-border-thick p-8 neo-shadow h-full flex flex-col">
-            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 border-b-4 border-black pb-2 italic">Update Password</h2>
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:neo-shadow-white h-full flex flex-col transition-colors duration-300">
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 border-b-4 border-black dark:border-white pb-2 italic text-black dark:text-white">Update Password</h2>
             
-            {error && <div className="bg-red-500 text-white neo-border p-3 font-black uppercase text-sm mb-6">{error}</div>}
+            {error && <div className="bg-red-500 text-white neo-border dark:border-white p-3 font-black uppercase text-sm mb-6">{error}</div>}
             
             <div className="space-y-6 flex-grow">
                 <div className="space-y-2">
-                    <label className="block text-sm font-black uppercase tracking-widest" htmlFor="oldPassword">
+                    <label className="block text-sm font-black uppercase tracking-widest text-black dark:text-white" htmlFor="oldPassword">
                         Current Password
                     </label>
                     <input
-                        className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-cyan-50 placeholder-gray-400"
+                        className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold outline-none focus:bg-cyan-50 dark:focus:bg-yellow-400 dark:focus:text-black placeholder-black/40 dark:placeholder-white/60"
                         id="oldPassword"
                         type="password"
                         placeholder="********"
@@ -70,11 +70,11 @@ const UpdateUserPasswordForm = () => {
                 </div>
                 
                 <div className="space-y-2">
-                    <label className="block text-sm font-black uppercase tracking-widest" htmlFor="newPassword">
+                    <label className="block text-sm font-black uppercase tracking-widest text-black dark:text-white" htmlFor="newPassword">
                         New Password
                     </label>
                     <input
-                        className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-cyan-50 placeholder-gray-400"
+                        className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold outline-none focus:bg-cyan-50 dark:focus:bg-yellow-400 dark:focus:text-black placeholder-black/40 dark:placeholder-white/60"
                         id="newPassword"
                         type="password"
                         placeholder="********"
@@ -85,11 +85,11 @@ const UpdateUserPasswordForm = () => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="block text-sm font-black uppercase tracking-widest" htmlFor="confirmPassword">
+                    <label className="block text-sm font-black uppercase tracking-widest text-black dark:text-white" htmlFor="confirmPassword">
                         Confirm Password
                     </label>
                     <input
-                        className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-cyan-50 placeholder-gray-400"
+                        className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold outline-none focus:bg-cyan-50 dark:focus:bg-yellow-400 dark:focus:text-black placeholder-black/40 dark:placeholder-white/60"
                         id="confirmPassword"
                         type="password"
                         placeholder="********"
@@ -101,7 +101,7 @@ const UpdateUserPasswordForm = () => {
             </div>
 
             <button
-                className="w-full bg-cyan-400 text-black font-black py-4 px-4 mt-8 neo-border-thick neo-shadow uppercase text-xl neo-transition tracking-tighter"
+                className="w-full bg-cyan-400 dark:bg-cyan-500 text-black font-black py-4 px-4 mt-8 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white uppercase text-xl neo-transition tracking-tighter"
                 type="submit"
                 disabled={loading}
             >

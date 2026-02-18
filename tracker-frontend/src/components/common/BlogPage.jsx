@@ -55,7 +55,7 @@ const BlogPage = () => {
       id: 9,
       title: 'Dark Mode Implementation',
       description: 'Support for dark mode interface.',
-      status: 'Planned',
+      status: 'Completed',
     },
   ];
 
@@ -64,21 +64,21 @@ const BlogPage = () => {
 
   const RoadmapSection = ({ title, items, colorClass }) => (
     <div className="mb-20">
-      <h2 className={`text-4xl font-black uppercase mb-10 inline-block px-4 py-2 neo-border-thick neo-shadow ${colorClass}`}>
+      <h2 className={`text-4xl font-black uppercase mb-10 inline-block px-4 py-2 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white ${colorClass} text-black`}>
         {title}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {items.map((item) => (
-          <div key={item.id} className="bg-white neo-border-thick p-6 neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+          <div key={item.id} className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
             <div className="flex justify-between items-start mb-4 gap-4">
-              <h3 className="text-2xl font-black uppercase leading-tight tracking-tighter">{item.title}</h3>
-              <span className={`px-3 py-1 text-xs font-black uppercase neo-border whitespace-nowrap ${
+              <h3 className="text-2xl font-black uppercase leading-tight tracking-tighter text-black dark:text-white">{item.title}</h3>
+              <span className={`px-3 py-1 text-xs font-black uppercase neo-border dark:border-white whitespace-nowrap ${
                 item.status === 'Completed' ? 'bg-emerald-400' : 'bg-cyan-400'
-              }`}>
+              } text-black`}>
                 {item.status}
               </span>
             </div>
-            <p className="text-lg font-bold leading-snug text-black/80">
+            <p className="text-lg font-bold leading-snug text-black/80 dark:text-white">
               {item.description}
             </p>
           </div>
@@ -89,12 +89,12 @@ const BlogPage = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto py-12 px-4">
-        <div className="mb-16 border-l-8 border-black pl-8">
-          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-4">
-            System <span className="bg-yellow-400 px-2">Roadmap</span>
+      <div className="container mx-auto py-12 px-4 transition-colors duration-300">
+        <div className="mb-16 border-l-8 border-black dark:border-white pl-8">
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-4 text-black dark:text-white">
+            System <span className="bg-yellow-400 dark:bg-yellow-500 px-2 text-black">Roadmap</span>
           </h1>
-          <p className="text-2xl font-black uppercase tracking-widest text-black/60">Deployment status & future updates.</p>
+          <p className="text-2xl font-black uppercase tracking-widest text-black/60 dark:text-white/80">Deployment status & future updates.</p>
         </div>
         
         <RoadmapSection title="Incoming" items={plannedItems} colorClass="bg-cyan-400" />

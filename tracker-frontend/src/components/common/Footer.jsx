@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-16">
+    <footer className="bg-black dark:bg-black text-white py-16 transition-colors duration-300">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           <div>
-            <h3 className="text-3xl font-black uppercase tracking-tighter mb-6 underline decoration-4 decoration-cyan-400">
+            <h3 className="text-3xl font-black uppercase tracking-tighter mb-6 underline decoration-4 decoration-cyan-400 dark:decoration-cyan-500">
               GameLog
             </h3>
             <p className="text-xl font-bold italic opacity-80 uppercase leading-none">
@@ -22,7 +22,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#features"
-                  className="hover:bg-yellow-400 hover:text-black px-2 transition-colors"
+                  className="hover:bg-yellow-400 dark:hover:bg-yellow-500 hover:text-black px-2 transition-colors"
                 >
                   Games
                 </a>
@@ -30,7 +30,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/blog"
-                  className="hover:bg-cyan-400 hover:text-black px-2 transition-colors"
+                  className="hover:bg-cyan-400 dark:hover:bg-cyan-500 hover:text-black px-2 transition-colors"
                 >
                   Roadmap
                 </Link>
@@ -38,7 +38,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/contact"
-                  className="hover:bg1-emerald-400 hover:text-black px-2 transition-colors"
+                  className="hover:bg-emerald-400 dark:hover:bg-emerald-500 hover:text-black px-2 transition-colors"
                 >
                   Contact
                 </Link>
@@ -53,7 +53,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/privacy"
-                  className="hover:bg-cyan-400 hover:text-black px-2 transition-colors"
+                  className="hover:bg-cyan-400 dark:hover:bg-cyan-500 hover:text-black px-2 transition-colors"
                 >
                   Privacy Policy
                 </Link>
@@ -61,7 +61,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/terms"
-                  className="hover:bg-emerald-400 hover:text-black px-2 transition-colors"
+                  className="hover:bg-emerald-400 dark:hover:bg-emerald-500 hover:text-black px-2 transition-colors"
                 >
                   Terms of Service
                 </Link>

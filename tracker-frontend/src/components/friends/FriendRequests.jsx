@@ -48,41 +48,41 @@ const FriendRequests = ({ onActionSuccess }) => {
     }
   };
 
-  if (loading) return <div className="text-center py-4 font-black uppercase italic text-xs">Loading...</div>;
+  if (loading) return <div className="text-center py-4 font-black uppercase italic text-xs text-black dark:text-white">Loading...</div>;
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between mb-4 border-b-4 border-black pb-2">
+      <div className="flex items-center justify-between mb-4 border-b-4 border-black dark:border-white pb-2 text-black dark:text-white">
         <h2 className="text-xl font-black uppercase tracking-tight">Friend Requests</h2>
-        <span className="bg-red-500 text-white text-xs font-black px-2 py-1 neo-border">
+        <span className="bg-red-500 text-white text-xs font-black px-2 py-1 neo-border dark:border-white">
           {requests.length}
         </span>
       </div>
 
       {requests.length === 0 ? (
-        <div className="text-center py-8 border-2 border-dashed border-black/10">
-          <p className="text-xs font-black uppercase text-black/30">No pending requests.</p>
+        <div className="text-center py-8 border-2 border-dashed border-black/10 dark:border-white/10">
+          <p className="text-xs font-black uppercase text-black/30 dark:text-white/30">No pending requests.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {requests.map((req) => (
-            <div key={req.id} className="bg-white neo-border p-3 flex flex-col gap-3 neo-shadow">
+            <div key={req.id} className="bg-white dark:bg-black neo-border dark:border-white p-3 flex flex-col gap-3 neo-shadow dark:neo-shadow-white">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-black text-white flex items-center justify-center text-xs font-black neo-border">
+                <div className="w-8 h-8 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs font-black neo-border dark:border-white">
                   {req.username.charAt(0).toUpperCase()}
                 </div>
-                <span className="font-bold uppercase text-sm">{req.username}</span>
+                <span className="font-bold uppercase text-sm text-black dark:text-white">{req.username}</span>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleRequest(req.id, "accept")}
-                  className="flex-1 py-2 bg-emerald-400 text-black text-xs font-black uppercase neo-border hover:bg-emerald-300 transition-colors"
+                  className="flex-1 py-2 bg-emerald-400 dark:bg-emerald-500 text-black text-xs font-black uppercase neo-border dark:border-white hover:bg-emerald-300 dark:hover:bg-emerald-400 transition-colors"
                 >
                   Accept
                 </button>
                 <button
                   onClick={() => handleRequest(req.id, "decline")}
-                  className="flex-1 py-2 bg-red-500 text-white text-xs font-black uppercase neo-border hover:bg-red-600 transition-colors"
+                  className="flex-1 py-2 bg-red-500 dark:bg-red-600 text-white text-xs font-black uppercase neo-border dark:border-white hover:bg-red-600 dark:hover:bg-red-700 transition-colors"
                 >
                   Decline
                 </button>

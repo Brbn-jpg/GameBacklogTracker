@@ -87,7 +87,7 @@ const FriendProfile = () => {
 
   if (loading) {
     return (
-      <div className="text-center py-20 font-black uppercase italic">
+      <div className="text-center py-20 font-black uppercase italic text-black dark:text-white">
         Loading Profile...
       </div>
     );
@@ -96,12 +96,12 @@ const FriendProfile = () => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="bg-red-100 text-red-600 p-8 neo-border-thick text-center">
+        <div className="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-8 neo-border-thick dark:border-white text-center">
           <h2 className="text-2xl font-black uppercase mb-4">Error</h2>
           <p className="font-bold mb-6">{error}</p>
           <button
             onClick={() => navigate(-1)}
-            className="bg-black text-white px-6 py-3 font-black uppercase neo-border"
+            className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 font-black uppercase neo-border dark:border-white"
           >
             Go Back
           </button>
@@ -114,26 +114,26 @@ const FriendProfile = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="min-h-screen bg-white text-black font-sans p-4 md:p-8 flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white font-sans p-4 md:p-8 flex flex-col transition-colors duration-300">
         <div className="max-w-[1600px] mx-auto w-full flex-grow">
           <div className="mb-12 flex items-center gap-6">
             <button
               onClick={() => navigate(-1)}
-              className="p-4 bg-white neo-border-thick neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+              className="p-4 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all text-black dark:text-white"
               title="Back"
             >
               <FaArrowLeft />
             </button>
 
-            <div className="flex-grow bg-white neo-border-thick p-6 neo-shadow flex items-center gap-6">
-              <div className="w-16 h-16 bg-yellow-400 neo-border-thick flex items-center justify-center font-black text-3xl">
+            <div className="flex-grow bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white flex items-center gap-6">
+              <div className="w-16 h-16 bg-yellow-400 dark:bg-yellow-500 neo-border-thick dark:border-white flex items-center justify-center font-black text-3xl text-black">
                 {profileData.username.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic">
+                <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic text-black dark:text-white">
                   {profileData.username}
                 </h1>
-                <p className="font-bold uppercase text-black/40 tracking-widest text-sm">
+                <p className="font-bold uppercase text-black/60 dark:text-white/60 tracking-widest text-sm">
                   User Profile
                 </p>
               </div>
@@ -141,8 +141,8 @@ const FriendProfile = () => {
           </div>
 
           {profileData.isPublic === false ? (
-            <div className="p-20 neo-border-thick text-center bg-white neo-shadow-lg flex flex-col items-center">
-              <div className="w-20 h-20 bg-black text-white flex items-center justify-center neo-border mb-6">
+            <div className="p-20 neo-border-thick dark:border-white text-center bg-white dark:bg-black neo-shadow-lg dark:neo-shadow-white flex flex-col items-center">
+              <div className="w-20 h-20 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center neo-border dark:border-white mb-6">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-10 w-10"
@@ -158,10 +158,10 @@ const FriendProfile = () => {
                   />
                 </svg>
               </div>
-              <h2 className="text-3xl font-black uppercase mb-2">
+              <h2 className="text-3xl font-black uppercase mb-2 text-black dark:text-white">
                 Private Profile
               </h2>
-              <p className="font-bold uppercase text-black/60">
+              <p className="font-bold uppercase text-black/60 dark:text-white/60">
                 This user has restricted profile access.
               </p>
             </div>
@@ -176,32 +176,32 @@ const FriendProfile = () => {
                     icon={<FaThList className="text-2xl" />}
                   />
 
-                  <div className="bg-white neo-border-thick p-6 neo-shadow flex flex-col justify-center">
-                    <p className="text-sm font-black uppercase tracking-widest text-black/40 mb-4 border-b-2 border-black pb-2">
+                  <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white flex flex-col justify-center">
+                    <p className="text-sm font-black uppercase tracking-widest text-black/60 dark:text-white/60 mb-4 border-b-2 border-black dark:border-white pb-2">
                       Status Breakdown
                     </p>
                     <div className="grid grid-cols-2 gap-4 text-xs font-black uppercase tracking-tighter">
                       <div className="flex items-center justify-between">
                         <span>Playing</span>{" "}
-                        <span className="bg-cyan-400 px-1 neo-border">
+                        <span className="bg-cyan-400 dark:bg-cyan-500 px-1 neo-border dark:border-white text-black">
                           {playingGames.length}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Done</span>{" "}
-                        <span className="bg-emerald-400 px-1 neo-border">
+                        <span className="bg-emerald-400 dark:bg-emerald-500 px-1 neo-border dark:border-white text-black">
                           {completedGames.length}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Idle</span>{" "}
-                        <span className="bg-yellow-400 px-1 neo-border">
+                        <span className="bg-yellow-400 dark:bg-yellow-500 px-1 neo-border dark:border-white text-black">
                           {notPlayedGames.length}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Ditched</span>{" "}
-                        <span className="bg-red-500 text-white px-1 neo-border">
+                        <span className="bg-red-500 text-white px-1 neo-border dark:border-white">
                           {ditchedGames.length}
                         </span>
                       </div>
@@ -263,7 +263,7 @@ const FriendProfile = () => {
                     statusId="NOT_PLAYED"
                     games={notPlayedGames}
                     colorClass="neo-border-thick"
-                    badgeColor="bg-yellow-400 text-black"
+                    badgeColor="bg-yellow-400 dark:bg-yellow-500 text-black"
                     readOnly={true}
                   />
                   <KanbanColumn
@@ -271,7 +271,7 @@ const FriendProfile = () => {
                     statusId="PLAYING"
                     games={playingGames}
                     colorClass="neo-border-thick"
-                    badgeColor="bg-cyan-400 text-black"
+                    badgeColor="bg-cyan-400 dark:bg-cyan-500 text-black"
                     readOnly={true}
                   />
                   <KanbanColumn
@@ -279,7 +279,7 @@ const FriendProfile = () => {
                     statusId="COMPLETED"
                     games={completedGames}
                     colorClass="neo-border-thick"
-                    badgeColor="bg-emerald-400 text-black"
+                    badgeColor="bg-emerald-400 dark:bg-emerald-500 text-black"
                     readOnly={true}
                   />
                 </div>

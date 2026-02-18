@@ -40,18 +40,18 @@ const FriendsList = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-8 font-black uppercase italic">Loading Friends...</div>;
+    return <div className="text-center py-8 font-black uppercase italic text-black dark:text-white">Loading Friends...</div>;
   }
 
   if (error) {
-    return <div className="bg-red-100 text-red-600 p-4 neo-border font-bold text-center">{error}</div>;
+    return <div className="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-4 neo-border dark:border-white font-bold text-center">{error}</div>;
   }
 
   if (friends.length === 0) {
     return (
-      <div className="p-12 neo-border border-dashed border-black/20 text-center">
-        <p className="text-xl font-black uppercase mb-2">No Friends</p>
-        <p className="text-xs font-bold uppercase text-black/40">
+      <div className="p-12 neo-border border-dashed border-black/20 dark:border-white/20 text-center transition-colors">
+        <p className="text-xl font-black uppercase mb-2 text-black dark:text-white">No Friends</p>
+        <p className="text-xs font-bold uppercase text-black/60 dark:text-white/60">
           Use search to find new friends.
         </p>
       </div>
@@ -63,14 +63,14 @@ const FriendsList = () => {
       {friends.map((friend, index) => (
         <div
           key={index}
-          className="bg-white neo-border-thick p-4 flex items-center justify-between group hover:shadow-none neo-shadow transition-all"
+          className="bg-white dark:bg-black neo-border-thick dark:border-white p-4 flex items-center justify-between group hover:translate-x-1 hover:translate-y-1 hover:shadow-none neo-shadow dark:neo-shadow-white transition-all"
         >
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center font-black text-xl neo-border">
+            <div className="w-12 h-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-black text-xl neo-border dark:border-white transition-colors">
               {friend.username.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h3 className="font-black uppercase text-lg leading-none">
+              <h3 className="font-black uppercase text-lg leading-none text-black dark:text-white">
                 {friend.username}
               </h3>
             </div>
@@ -79,7 +79,7 @@ const FriendsList = () => {
           <div className="flex space-x-2">
             <Link
               to={`/profile/${friend.userId}`}
-              className="p-2 bg-white neo-border hover:bg-black hover:text-white transition-colors"
+              className="p-2 bg-white dark:bg-black neo-border dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors"
               title="View Profile"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,11 +88,11 @@ const FriendsList = () => {
               </svg>
             </Link>
             <button
-              className="p-2 bg-white neo-border text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+              className="p-2 bg-white dark:bg-black neo-border dark:border-white text-red-500 hover:bg-red-500 hover:text-white transition-colors"
               title="Remove Friend"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={3} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={3} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1v3M4 7h16" />
               </svg>
             </button>
           </div>

@@ -64,12 +64,12 @@ export const AuthProvider = ({ children }) => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
-        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8 italic animate-pulse">
+      <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center p-4 transition-colors duration-300">
+        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8 italic animate-pulse text-black dark:text-white">
           Initializing...
         </h1>
-        <div className="w-full max-w-md h-8 border-4 border-black p-1">
-          <div className="h-full bg-yellow-400 w-full animate-[loading_1.5s_ease-in-out_infinite_alternate]"></div>
+        <div className="w-full max-w-md h-8 border-4 border-black dark:border-white p-1">
+          <div className="h-full bg-yellow-400 dark:bg-yellow-500 w-full animate-[loading_1.5s_ease-in-out_infinite_alternate]"></div>
         </div>
       </div>
     );

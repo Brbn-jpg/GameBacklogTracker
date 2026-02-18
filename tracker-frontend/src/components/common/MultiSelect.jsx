@@ -34,21 +34,21 @@ const MultiSelect = ({ label, options, selectedValues, onChange, placeholder = "
   return (
     <div className="relative" ref={dropdownRef}>
       {label && (
-        <label className="block text-sm font-black uppercase tracking-widest mb-2">
+        <label className="block text-sm font-black uppercase tracking-widest mb-2 text-black dark:text-white">
           {label}
         </label>
       )}
       <div
-        className="w-full bg-white neo-border-thick p-3 text-black font-bold focus-within:bg-yellow-50 cursor-pointer min-h-[52px] flex flex-wrap gap-2 items-center neo-transition"
+        className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-3 text-black dark:text-white font-bold focus-within:bg-yellow-50 dark:focus-within:bg-black cursor-pointer min-h-[52px] flex flex-wrap gap-2 items-center neo-transition"
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedValues.length === 0 ? (
-          <span className="text-gray-400 uppercase text-xs">{placeholder}</span>
+          <span className="text-gray-400 dark:text-white/60 uppercase text-xs">{placeholder}</span>
         ) : (
           selectedValues.map((value) => (
             <span
               key={value}
-              className="bg-cyan-400 text-black text-xs font-black uppercase px-2 py-1 neo-border flex items-center gap-1"
+              className="bg-cyan-400 text-black text-xs font-black uppercase px-2 py-1 neo-border border-black flex items-center gap-1"
             >
               {value}
               <button
@@ -74,15 +74,15 @@ const MultiSelect = ({ label, options, selectedValues, onChange, placeholder = "
       </div>
 
       {isOpen && (
-        <div className="absolute z-[100] w-full mt-2 bg-white neo-border-thick neo-shadow-lg max-h-64 overflow-y-auto">
+        <div className="absolute z-[100] w-full mt-2 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:neo-shadow-white max-h-64 overflow-y-auto">
           {options.length === 0 ? (
-             <div className="p-4 text-black font-black uppercase text-center text-sm italic">No options</div>
+             <div className="p-4 text-black dark:text-white font-black uppercase text-center text-sm italic">No options</div>
           ) : (
             options.map((option) => (
               <div
                 key={option}
-                className={`px-4 py-3 cursor-pointer text-sm font-black uppercase flex items-center justify-between border-b-2 border-black last:border-b-0 hover:bg-yellow-400 ${
-                  selectedValues.includes(option) ? "bg-yellow-400" : "bg-white"
+                className={`px-4 py-3 cursor-pointer text-sm font-black uppercase flex items-center justify-between border-b-2 border-black dark:border-white last:border-b-0 hover:bg-yellow-400 dark:hover:bg-yellow-500 hover:text-black ${
+                  selectedValues.includes(option) ? "bg-yellow-400 text-black" : "bg-white dark:bg-black text-black dark:text-white"
                 }`}
                 onClick={() => toggleOption(option)}
               >

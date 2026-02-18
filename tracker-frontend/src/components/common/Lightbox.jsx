@@ -11,13 +11,13 @@ const Lightbox = ({ imageUrl, onClose, onNext, onPrev }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-white/90 z-[200] flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 bg-white/90 dark:bg-black/90 z-[200] flex items-center justify-center p-4 md:p-8 transition-colors duration-300"
       onClick={handleOverlayClick}
     >
       {/* Brutalist Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-8 right-8 bg-red-500 text-white p-4 neo-border-thick neo-shadow neo-transition z-[210] hover:bg-red-600"
+        className="absolute top-8 right-8 bg-red-500 text-white p-4 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition z-[210] hover:bg-red-600"
         aria-label="Close"
       >
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,7 +31,7 @@ const Lightbox = ({ imageUrl, onClose, onNext, onPrev }) => {
         <div className="absolute inset-x-0 flex justify-between px-4 md:px-0 z-[210] pointer-events-none">
           <button
             onClick={(e) => { e.stopPropagation(); onPrev(); }}
-            className="pointer-events-auto bg-white text-black p-6 neo-border-thick neo-shadow neo-transition hover:bg-yellow-400"
+            className="pointer-events-auto bg-white dark:bg-black text-black dark:text-white p-6 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-yellow-400 dark:hover:bg-yellow-500"
             aria-label="Previous"
           >
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@ const Lightbox = ({ imageUrl, onClose, onNext, onPrev }) => {
 
           <button
             onClick={(e) => { e.stopPropagation(); onNext(); }}
-            className="pointer-events-auto bg-white text-black p-6 neo-border-thick neo-shadow neo-transition hover:bg-yellow-400"
+            className="pointer-events-auto bg-white dark:bg-black text-black dark:text-white p-6 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-yellow-400 dark:hover:bg-yellow-500"
             aria-label="Next"
           >
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@ const Lightbox = ({ imageUrl, onClose, onNext, onPrev }) => {
         </div>
 
         {/* Image Display */}
-        <div className="bg-white neo-border-thick neo-shadow-lg p-2 md:p-4 max-h-[85vh] flex items-center justify-center overflow-hidden rotate-[-0.5deg]">
+        <div className="bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:neo-shadow-white p-2 md:p-4 max-h-[85vh] flex items-center justify-center overflow-hidden rotate-[-0.5deg]">
           <img 
             src={imageUrl} 
             alt="Enlarged screenshot" 

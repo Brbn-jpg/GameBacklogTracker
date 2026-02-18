@@ -4,7 +4,7 @@ import LoginPage from "./LoginPage";
 
 const Login = () => {
   return (
-    <div className="bg-white flex flex-col min-h-screen">
+    <div className="bg-white dark:bg-black flex flex-col min-h-screen transition-colors duration-300">
       <LoginPage />
       <Footer />
     </div>

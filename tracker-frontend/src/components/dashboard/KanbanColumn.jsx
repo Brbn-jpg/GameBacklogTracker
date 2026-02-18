@@ -50,19 +50,19 @@ const KanbanColumn = ({
   return (
     <div
       ref={!readOnly ? drop : null}
-      className={`flex flex-col w-full bg-white neo-border-thick transition-all duration-300 ${
-        isOver && !readOnly && !isCollapsed ? "bg-yellow-50" : ""
+      className={`flex flex-col w-full bg-white dark:bg-black neo-border-thick dark:border-white transition-all duration-300 ${
+        isOver && !readOnly && !isCollapsed ? "bg-yellow-50 dark:bg-yellow-900/20" : ""
       } ${isCollapsed ? "h-auto md:h-full" : "min-h-[150px] md:min-h-[500px] h-full"}`}
     >
       <div 
-        className={`p-4 border-b-4 border-black flex items-center justify-between ${badgeColor} md:cursor-default cursor-pointer hover:opacity-90 md:hover:opacity-100 transition-opacity`}
+        className={`p-4 border-b-4 border-black dark:border-white flex items-center justify-between ${badgeColor} md:cursor-default cursor-pointer hover:opacity-90 md:hover:opacity-100 transition-opacity`}
         onClick={toggleCollapse}
       >
         <div className="flex items-center gap-3">
-          <button className="text-sm focus:outline-none md:hidden">
+          <button className="text-sm focus:outline-none md:hidden text-inherit">
             {isCollapsed ? <FaChevronDown /> : <FaChevronUp />}
           </button>
-          <h3 className="text-xl font-black uppercase tracking-tighter italic select-none">{title}</h3>
+          <h3 className="text-xl font-black uppercase tracking-tighter italic select-none text-black">{title}</h3>
         </div>
         <span className="bg-black text-white text-xs font-black px-2 py-1 neo-shadow-none">
           {games.length}
@@ -71,8 +71,8 @@ const KanbanColumn = ({
 
       <div className={`flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar animate-[fadeIn_0.3s_ease-out] ${isCollapsed ? "hidden md:block" : "block"}`}>
         {games.length === 0 ? (
-          <div className="h-full flex items-center justify-center border-4 border-dashed border-black/10 p-10">
-            <span className="text-xs font-black uppercase text-black/20 italic text-center">No Data in Sector</span>
+          <div className="h-full flex items-center justify-center border-4 border-dashed border-black/10 dark:border-white/10 p-10">
+            <span className="text-xs font-black uppercase text-black/20 dark:text-white/20 italic text-center">No Data in Sector</span>
           </div>
         ) : (
           games.map((game) => (

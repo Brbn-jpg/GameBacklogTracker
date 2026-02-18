@@ -33,11 +33,11 @@ const Dashboard = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="bg-white flex flex-col h-screen overflow-hidden">
+      <div className="bg-white dark:bg-black flex flex-col h-screen overflow-hidden transition-colors duration-300">
         <Toaster
           position="bottom-right"
           toastOptions={{
-            className: 'neo-border-thick neo-shadow !rounded-none !bg-white !text-black font-black uppercase tracking-tight',
+            className: 'neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white !rounded-none !bg-white dark:!bg-black !text-black dark:!text-white font-black uppercase tracking-tight',
             duration: 4000,
             style: {
               border: '4px solid black',
@@ -69,10 +69,10 @@ const Dashboard = () => {
         />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar setView={setView} currentView={view} />
-          <main className="flex-1 flex flex-col h-full overflow-hidden bg-white">
+          <main className="flex-1 flex flex-col h-full overflow-hidden bg-white dark:bg-black">
             <div className="flex-grow overflow-y-auto custom-scrollbar relative">
               {renderView()}
-              <div className="shrink-0 z-10 relative pb-24 md:pb-0 bg-black">
+              <div className="shrink-0 z-10 relative pb-24 md:pb-0 bg-black dark:bg-black">
                 <Footer />
               </div>
             </div>

@@ -80,11 +80,11 @@ const FindFriends = () => {
           placeholder="SEARCH USERS"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full bg-white neo-border-thick p-4 text-black font-black uppercase tracking-wide placeholder-gray-400 outline-none focus:bg-yellow-50 pl-12"
+          className="peer w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-black uppercase tracking-wide placeholder-black/40 dark:placeholder-white/60 outline-none focus:bg-yellow-50 dark:focus:bg-yellow-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black pl-12 transition-colors"
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 absolute left-4 top-4.5 text-black"
+          className="h-6 w-6 absolute left-4 top-1/2 -translate-y-1/2 text-black dark:text-white peer-focus:text-black pointer-events-none transition-colors"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -94,37 +94,37 @@ const FindFriends = () => {
       </div>
 
       {loading ? (
-        <div className="text-center py-12 font-black uppercase italic animate-pulse">Searching...</div>
+        <div className="text-center py-12 font-black uppercase italic animate-pulse text-black dark:text-white">Searching...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {users.map((user) => (
             <div
               key={user.id}
-              className="bg-white neo-border-thick p-4 flex items-center justify-between group hover:translate-x-1 hover:translate-y-1 transition-transform neo-shadow"
+              className="bg-white dark:bg-black neo-border-thick dark:border-white p-4 flex items-center justify-between group hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all neo-shadow dark:neo-shadow-white"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-black text-white flex items-center justify-center font-black text-xl neo-border">
+                <div className="w-12 h-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-black text-xl neo-border dark:border-white">
                   {user.username.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-black uppercase tracking-tight">{user.username}</h3>
-                  <p className="text-[10px] font-bold uppercase text-black/40">User</p>
+                  <h3 className="font-black uppercase tracking-tight text-black dark:text-white">{user.username}</h3>
+                  <p className="text-[10px] font-bold uppercase text-black/60 dark:text-white/60">User</p>
                 </div>
               </div>
 
               <div>
                 {user.status === "ACCEPTED" ? (
-                  <span className="text-xs font-black uppercase bg-emerald-400 text-black px-3 py-1 neo-border">
+                  <span className="text-xs font-black uppercase bg-emerald-400 dark:bg-emerald-500 text-black px-3 py-1 neo-border dark:border-white">
                     Friend
                   </span>
                 ) : user.status === "PENDING" ? (
-                  <span className="text-xs font-black uppercase bg-yellow-400 text-black px-3 py-1 neo-border">
+                  <span className="text-xs font-black uppercase bg-yellow-400 dark:bg-yellow-500 text-black px-3 py-1 neo-border dark:border-white">
                     Pending
                   </span>
                 ) : (
                   <button
                     onClick={() => sendFriendRequest(user.username)}
-                    className="text-xs font-black uppercase bg-white hover:bg-cyan-400 text-black neo-border px-4 py-2 transition-colors flex items-center gap-2"
+                    className="text-xs font-black uppercase bg-white dark:bg-black hover:bg-cyan-400 dark:hover:bg-cyan-500 text-black dark:text-white hover:text-black neo-border dark:border-white px-4 py-2 transition-colors flex items-center gap-2"
                   >
                     <span>Add</span>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -139,8 +139,8 @@ const FindFriends = () => {
       )}
       
       {users.length === 0 && !loading && (
-        <div className="p-12 neo-border border-dashed border-black/20 text-center">
-          <p className="font-black uppercase text-black/40">No users found.</p>
+        <div className="p-12 neo-border border-dashed border-black/20 dark:border-white/20 text-center">
+          <p className="font-black uppercase text-black/60 dark:text-white/60">No users found.</p>
         </div>
       )}
 
@@ -149,17 +149,17 @@ const FindFriends = () => {
           <button
             disabled={page === 0}
             onClick={() => setPage((p) => Math.max(0, p - 1))}
-            className="px-6 py-2 bg-white neo-border font-black uppercase hover:bg-black hover:text-white disabled:opacity-30 transition-colors"
+            className="px-6 py-2 bg-white dark:bg-black neo-border dark:border-white font-black uppercase hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white disabled:opacity-30 transition-colors"
           >
             Prev
           </button>
-          <span className="font-black uppercase text-sm">
+          <span className="font-black uppercase text-sm text-black dark:text-white">
             {page + 1} / {totalPages}
           </span>
           <button
             disabled={page >= totalPages - 1}
             onClick={() => setPage((p) => p + 1)}
-            className="px-6 py-2 bg-white neo-border font-black uppercase hover:bg-black hover:text-white disabled:opacity-30 transition-colors"
+            className="px-6 py-2 bg-white dark:bg-black neo-border dark:border-white font-black uppercase hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white disabled:opacity-30 transition-colors"
           >
             Next
           </button>

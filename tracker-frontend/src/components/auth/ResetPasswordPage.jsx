@@ -64,19 +64,19 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="bg-white flex flex-col min-h-screen">
+    <div className="bg-white dark:bg-black flex flex-col min-h-screen transition-colors duration-300">
       <main className="flex-grow flex items-center justify-center p-4 md:p-8 relative min-h-screen overflow-hidden">
         {/* Old Text Theme - High Opacity */}
-        <div className="absolute inset-0 z-0 opacity-25 pointer-events-none flex items-center justify-center overflow-hidden">
-            <span className="text-[20rem] font-black uppercase rotate-12 select-none">Security</span>
+        <div className="absolute inset-0 z-0 opacity-25 dark:opacity-10 pointer-events-none flex items-center justify-center overflow-hidden">
+            <span className="text-[20rem] font-black uppercase rotate-12 select-none text-black dark:text-white">Security</span>
         </div>
 
-        <div className="relative z-10 w-full max-w-lg bg-white neo-border-thick neo-shadow-lg p-8 md:p-12 my-auto">
+        <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg p-8 md:p-12 my-auto">
           <div className="mb-10 text-center">
-            <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic">
-              Reset <span className="bg-yellow-400 px-2 not-italic">Access</span>
+            <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic text-black dark:text-white">
+              Reset <span className="bg-yellow-400 px-2 not-italic text-black">Access</span>
             </h2>
-            <p className="text-black font-bold uppercase tracking-widest text-sm">
+            <p className="text-black dark:text-white/80 font-bold uppercase tracking-widest text-sm">
               Establish new credentials.
             </p>
           </div>
@@ -84,20 +84,20 @@ const ResetPasswordPage = () => {
           {!message ? (
             <form className="space-y-8" onSubmit={handleSubmit}>
               {error && (
-                <div className="bg-red-500 text-white neo-border-thick p-3 font-black uppercase text-center text-sm">
+                <div className="bg-red-500 text-white neo-border-thick dark:border-white p-3 font-black uppercase text-center text-sm">
                   {error}
                 </div>
               )}
 
               <div className="space-y-2">
-                <label htmlFor="password" class="block text-xl font-black uppercase tracking-tight">
+                <label htmlFor="password" class="block text-xl font-black uppercase tracking-tight text-black dark:text-white">
                   New Password
                 </label>
                 <input
                   type="password"
                   id="password"
                   required
-                  className="w-full bg-white neo-border-thick p-4 text-black font-bold placeholder-gray-400 focus:bg-yellow-50 outline-none transition-colors"
+                  className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold placeholder-black/40 dark:placeholder-white/60 focus:bg-yellow-50 dark:focus:bg-yellow-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black outline-none transition-colors"
                   placeholder="********"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -105,14 +105,14 @@ const ResetPasswordPage = () => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="confirmPassword" class="block text-xl font-black uppercase tracking-tight">
+                <label htmlFor="confirmPassword" class="block text-xl font-black uppercase tracking-tight text-black dark:text-white">
                   Confirm Password
                 </label>
                 <input
                   type="password"
                   id="confirmPassword"
                   required
-                  className="w-full bg-white neo-border-thick p-4 text-black font-bold placeholder-gray-400 focus:bg-cyan-50 outline-none transition-colors"
+                  className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold placeholder-black/40 dark:placeholder-white/60 focus:bg-yellow-50 dark:focus:bg-yellow-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black outline-none transition-colors"
                   placeholder="********"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -122,24 +122,24 @@ const ResetPasswordPage = () => {
               <button
                 type="submit"
                 disabled={loading || !token}
-                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick neo-shadow neo-transition disabled:opacity-50"
+                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow neo-transition disabled:opacity-50 hover:bg-yellow-300"
               >
                 {loading ? "Updating..." : "Secure Account"}
               </button>
             </form>
           ) : (
             <div className="text-center py-8 space-y-6">
-              <div className="inline-block p-6 bg-emerald-400 neo-border-thick neo-shadow">
+              <div className="inline-block p-6 bg-emerald-400 neo-border-thick dark:border-white neo-shadow">
                 <svg className="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M5 13l4 4L19 7"></path>
                 </svg>
               </div>
-              <h3 className="text-3xl font-black uppercase tracking-tight">Success!</h3>
-              <p className="text-xl font-bold uppercase leading-tight">{message}</p>
+              <h3 className="text-3xl font-black uppercase tracking-tight text-black dark:text-white">Success!</h3>
+              <p className="text-xl font-bold uppercase leading-tight text-black dark:text-white/80">{message}</p>
               <div className="pt-4">
                 <Link 
                   to="/login" 
-                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow neo-transition"
+                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow neo-transition dark:border-white hover:bg-cyan-300"
                 >
                   Go to Login
                 </Link>
@@ -147,10 +147,10 @@ const ResetPasswordPage = () => {
             </div>
           )}
 
-          <div className="mt-12 pt-8 border-t-4 border-black text-center">
+          <div className="mt-12 pt-8 border-t-4 border-black dark:border-white text-center">
             <Link
               to="/login"
-              className="inline-flex items-center font-black uppercase text-sm hover:underline"
+              className="inline-flex items-center font-black uppercase text-sm hover:underline text-black dark:text-white"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>

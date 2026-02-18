@@ -86,19 +86,19 @@ const GamesContent = ({ filters }) => {
 
   if (loading && games.length === 0)
     return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <div className="text-4xl font-black uppercase tracking-tighter mb-4 italic">Scanning IGDB...</div>
-        <div className="w-64 h-6 neo-border-thick overflow-hidden">
-          <div className="h-full bg-yellow-400 animate-[pulse_1s_infinite]"></div>
+      <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-black transition-colors">
+        <div className="text-4xl font-black uppercase tracking-tighter mb-4 italic text-black dark:text-white">Scanning IGDB...</div>
+        <div className="w-64 h-6 neo-border-thick dark:border-white overflow-hidden">
+          <div className="h-full bg-yellow-400 dark:bg-yellow-500 animate-[pulse_1s_infinite]"></div>
         </div>
       </div>
     );
 
   return (
-    <div className="pb-12 bg-white">
-      <div className="mb-8 border-b-4 border-black pb-4 flex justify-between items-end">
-        <h2 className="text-4xl font-black uppercase tracking-tighter">Results</h2>
-        <span className="text-xl font-black uppercase bg-cyan-400 px-3 py-1 neo-border">Page {currentPage + 1}</span>
+    <div className="pb-12 bg-white dark:bg-black transition-colors duration-300">
+      <div className="mb-8 border-b-4 border-black dark:border-white pb-4 flex justify-between items-end">
+        <h2 className="text-4xl font-black uppercase tracking-tighter text-black dark:text-white">Results</h2>
+        <span className="text-xl font-black uppercase bg-cyan-400 dark:bg-cyan-500 px-3 py-1 neo-border border-black dark:border-white text-black">Page {currentPage + 1}</span>
       </div>
 
       <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 transition-opacity duration-300 ${loading ? "opacity-50" : "opacity-100"}`}>
@@ -119,7 +119,7 @@ const GamesContent = ({ filters }) => {
         <button
           onClick={handlePrevPage}
           disabled={currentPage === 0 || loading}
-          className="flex items-center gap-3 px-8 py-4 bg-white neo-border-thick neo-shadow neo-transition font-black uppercase text-xl disabled:opacity-30"
+          className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-xl text-black dark:text-white disabled:opacity-30 neo-transition"
         >
           <FaChevronLeft /> Prev
         </button>
@@ -127,7 +127,7 @@ const GamesContent = ({ filters }) => {
         <button
           onClick={handleNextPage}
           disabled={games.length < pageSize || loading}
-          className="flex items-center gap-3 px-8 py-4 bg-yellow-400 neo-border-thick neo-shadow neo-transition font-black uppercase text-xl disabled:opacity-30"
+          className="flex items-center gap-3 px-8 py-4 bg-yellow-400 dark:bg-yellow-500 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-xl text-black disabled:opacity-30 neo-transition"
         >
           Next <FaChevronRight />
         </button>

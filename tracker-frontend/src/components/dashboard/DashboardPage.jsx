@@ -192,26 +192,26 @@ const DashboardPage = () => {
 
   if (loading)
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-white">
-        <div className="text-4xl font-black uppercase tracking-tighter mb-4 italic">
+      <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-black transition-colors">
+        <div className="text-4xl font-black uppercase tracking-tighter mb-4 italic text-black dark:text-white">
           Loading Operations Hub...
         </div>
-        <div className="w-64 h-6 neo-border-thick overflow-hidden">
-          <div className="h-full bg-emerald-400 animate-[pulse_1s_infinite]"></div>
+        <div className="w-64 h-6 neo-border-thick dark:border-white overflow-hidden">
+          <div className="h-full bg-emerald-400 dark:bg-emerald-500 animate-[pulse_1s_infinite]"></div>
         </div>
       </div>
     );
 
   if (error)
     return (
-      <div className="p-12 neo-border-thick bg-red-100 text-red-600 text-center neo-shadow max-w-2xl mx-auto mt-20">
+      <div className="p-12 neo-border-thick dark:border-white bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-center neo-shadow dark:neo-shadow-white max-w-2xl mx-auto mt-20 transition-colors">
         <h3 className="text-4xl font-black uppercase mb-4">Core Error</h3>
         <p className="text-xl font-bold uppercase">{error}</p>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans p-4 md:p-8 flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white font-sans p-4 md:p-8 flex flex-col transition-colors duration-300">
       <div className="max-w-[1600px] mx-auto w-full">
         <UserProfile />
 
@@ -224,32 +224,32 @@ const DashboardPage = () => {
               icon={<FaThList className="text-2xl" />}
             />
 
-            <div className="bg-white neo-border-thick p-6 neo-shadow flex flex-col justify-center">
-              <p className="text-sm font-black uppercase tracking-widest text-black/40 mb-4 border-b-2 border-black pb-2">
+            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white flex flex-col justify-center transition-colors">
+              <p className="text-sm font-black uppercase tracking-widest text-black/60 dark:text-white/60 mb-4 border-b-2 border-black dark:border-white pb-2">
                 Status Breakdown
               </p>
               <div className="grid grid-cols-2 gap-4 text-xs font-black uppercase tracking-tighter">
                 <div className="flex items-center justify-between">
                   <span>Ditched</span>
-                  <span className="bg-red-500 text-white px-1 neo-border">
+                  <span className="bg-red-500 text-white px-1 neo-border dark:border-white">
                     {games.filter((g) => g.status === "DITCHED").length}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Not Played</span>
-                  <span className="bg-yellow-400 px-1 neo-border">
+                  <span className="bg-yellow-400 dark:bg-yellow-500 text-black px-1 neo-border dark:border-white">
                     {games.filter((g) => g.status === "NOT_PLAYED").length}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Playing</span>
-                  <span className="bg-cyan-400 px-1 neo-border">
+                  <span className="bg-cyan-400 dark:bg-cyan-500 text-black px-1 neo-border dark:border-white">
                     {games.filter((g) => g.status === "PLAYING").length}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Completed</span>
-                  <span className="bg-emerald-400 px-1 neo-border">
+                  <span className="bg-emerald-400 dark:bg-emerald-500 text-black px-1 neo-border dark:border-white">
                     {games.filter((g) => g.status === "COMPLETED").length}
                   </span>
                 </div>
@@ -299,8 +299,8 @@ const DashboardPage = () => {
 
         {/* Toolbar */}
         <div className="mb-8 flex flex-col md:flex-row gap-4 items-start md:items-center">
-          <div className="flex flex-wrap gap-2 bg-white neo-border-thick p-1 neo-shadow w-full md:w-auto">
-            <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black text-white shrink-0">
+          <div className="flex flex-wrap gap-2 bg-white dark:bg-black neo-border-thick dark:border-white p-1 neo-shadow dark:neo-shadow-white w-full md:w-auto transition-colors">
+            <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black shrink-0">
               <FaFilter /> Filter
             </span>
             {["ALL", "DITCHED", "NOT_PLAYED", "PLAYING", "COMPLETED"].map(
@@ -310,8 +310,8 @@ const DashboardPage = () => {
                   onClick={() => setFilterStatus(status)}
                   className={`px-2 py-1 md:px-3 md:py-2 text-[10px] md:text-xs font-black uppercase transition-colors ${
                     filterStatus === status
-                      ? "bg-yellow-400 text-black neo-border"
-                      : "hover:bg-gray-100"
+                      ? "bg-yellow-400 dark:bg-yellow-500 text-black neo-border dark:border-white"
+                      : "hover:bg-gray-100 dark:hover:bg-yellow-400 dark:hover:text-black text-black dark:text-white"
                   }`}
                 >
                   {status.replace("_", " ")}
@@ -320,8 +320,8 @@ const DashboardPage = () => {
             )}
           </div>
 
-          <div className="flex flex-wrap gap-2 bg-white neo-border-thick p-1 neo-shadow w-full md:w-auto">
-            <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black text-white shrink-0">
+          <div className="flex flex-wrap gap-2 bg-white dark:bg-black neo-border-thick dark:border-white p-1 neo-shadow dark:neo-shadow-white w-full md:w-auto transition-colors">
+            <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black shrink-0">
               {sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />}{" "}
               Sort
             </span>
@@ -335,8 +335,8 @@ const DashboardPage = () => {
                 onClick={() => toggleSort(item.key)}
                 className={`px-2 py-1 md:px-3 md:py-2 text-[10px] md:text-xs font-black uppercase transition-colors ${
                   sortBy === item.key
-                    ? "bg-cyan-400 text-black neo-border"
-                    : "hover:bg-gray-100"
+                    ? "bg-cyan-400 dark:bg-cyan-500 text-black neo-border dark:border-white"
+                    : "hover:bg-gray-100 dark:hover:bg-yellow-400 dark:hover:text-black text-black dark:text-white"
                 }`}
               >
                 {item.label}
@@ -347,16 +347,12 @@ const DashboardPage = () => {
 
         <main className="w-full pb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* If a filter is active (not ALL), we might want to show only that column or handle it differently.
-                Currently, it filters cards inside columns. So 'Playing' column will be empty if filter is 'COMPLETED'.
-                This is standard Kanban behavior when filtering.
-            */}
             <KanbanColumn
               title="Ditched"
               statusId="DITCHED"
               games={ditchedGames}
               colorClass="neo-border-thick"
-              badgeColor="bg-red-500 text-white"
+              badgeColor="bg-red-500 dark:bg-red-600 text-white"
               onDrop={handleDrop}
               onRemove={handleRemove}
             />
@@ -365,7 +361,7 @@ const DashboardPage = () => {
               statusId="NOT_PLAYED"
               games={notPlayedGames}
               colorClass="neo-border-thick"
-              badgeColor="bg-yellow-400 text-black"
+              badgeColor="bg-yellow-400 dark:bg-yellow-500 text-black"
               onDrop={handleDrop}
               onRemove={handleRemove}
             />
@@ -374,7 +370,7 @@ const DashboardPage = () => {
               statusId="PLAYING"
               games={playingGames}
               colorClass="neo-border-thick"
-              badgeColor="bg-cyan-400 text-black"
+              badgeColor="bg-cyan-400 dark:bg-cyan-500 text-black"
               onDrop={handleDrop}
               onRemove={handleRemove}
             />
@@ -383,7 +379,7 @@ const DashboardPage = () => {
               statusId="COMPLETED"
               games={completedGames}
               colorClass="neo-border-thick"
-              badgeColor="bg-emerald-400 text-black"
+              badgeColor="bg-emerald-400 dark:bg-emerald-500 text-black"
               onDrop={handleDrop}
               onRemove={handleRemove}
             />

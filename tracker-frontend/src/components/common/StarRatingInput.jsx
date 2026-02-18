@@ -14,8 +14,10 @@ const StarRatingInput = ({ rating, onChange, maxRating = 10 }) => {
             type="button"
             key={starValue}
             className={`
-              w-8 h-8 neo-border font-black text-xs transition-all
-              ${isActive ? "bg-yellow-400 text-black translate-x-[1px] translate-y-[1px] neo-shadow-none" : "bg-white text-black/20 hover:bg-gray-100 neo-shadow"}
+              w-8 h-8 neo-border dark:border-white font-black text-xs transition-all
+              ${isActive 
+                ? "bg-yellow-400 text-black translate-x-[1px] translate-y-[1px] neo-shadow-none" 
+                : "bg-white dark:bg-black text-black/20 dark:text-white/20 hover:bg-gray-100 dark:hover:bg-yellow-400 dark:hover:text-black neo-shadow dark:neo-shadow-white"}
             `}
             onClick={() => onChange(starValue)}
             onMouseEnter={() => setHover(starValue)}

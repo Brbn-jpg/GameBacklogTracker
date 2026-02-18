@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import LandingPage from "./components/landingPage/LandingPage";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -20,8 +21,9 @@ import FriendProfile from "./components/friends/FriendProfile";
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
+      <ThemeProvider>
+        <Router>
+          <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -40,9 +42,9 @@ function App() {
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </Router>
-    </AuthProvider>
-  );
-}
+              </Router>
+            </ThemeProvider>
+          </AuthProvider>
+        );}
 
 export default App;

@@ -55,21 +55,24 @@ const RegisterPage = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-      
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          }),
+        },
+      );
+
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || "Failed to register");
       }
-      
+
       setStep("verify");
     } catch (err) {
       setError(err.message);
@@ -83,14 +86,17 @@ const RegisterPage = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/verify`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          code: verificationCode,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL || "http://localhost:8080"}/v1/auth/verify`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: formData.email,
+            code: verificationCode,
+          }),
+        },
+      );
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Failed to verify");
@@ -105,9 +111,9 @@ const RegisterPage = () => {
   };
 
   return (
-    <main className="flex-grow flex items-center justify-center relative p-4 md:p-8 bg-white min-h-screen">
+    <main className="flex-grow flex items-center justify-center relative p-4 md:p-8 bg-white dark:bg-black min-h-screen transition-colors duration-300">
       {/* Background Hero Image - Subtle Grayscale */}
-      <div className="absolute inset-0 z-0 overflow-hidden opacity-25">
+      <div className="absolute inset-0 z-0 overflow-hidden opacity-25 dark:opacity-25">
         {randomImage && (
           <img
             src={randomImage}
@@ -117,32 +123,38 @@ const RegisterPage = () => {
         )}
       </div>
 
-      <div className="relative z-10 w-full max-w-lg bg-white neo-border-thick neo-shadow-lg p-8 md:p-12">
+      <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg p-8 md:p-12">
         <div className="mb-10 text-center">
-          <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic">
+          <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic text-black dark:text-white">
             {step === "register" ? "New" : "Verify"}{" "}
-            <span className="bg-emerald-400 px-2 not-italic">Operative</span>
+            <span className="bg-emerald-400 px-2 not-italic text-black">
+              Operative
+            </span>
           </h2>
-          <p className="text-black font-bold uppercase tracking-widest text-sm">
-            {step === "register" ? "Enlist in GameLog today." : `Transmission sent to ${formData.email}`}
+          <p className="text-black dark:text-white/80 font-bold uppercase tracking-widest text-sm">
+            {step === "register"
+              ? "Enlist in GameLog today."
+              : `Transmission sent to ${formData.email}`}
           </p>
         </div>
 
         {step === "register" ? (
           <form className="space-y-6" onSubmit={handleRegister}>
             {error && (
-              <div className="bg-red-500 text-white neo-border-thick p-3 font-black uppercase text-center text-sm">
+              <div className="bg-red-500 text-white neo-border-thick dark:border-white p-3 font-black uppercase text-center text-sm">
                 {error}
               </div>
             )}
-            
+
             <div className="space-y-2">
-              <label className="block text-lg font-black uppercase tracking-tight">Username</label>
+              <label className="block text-lg font-black uppercase tracking-tight text-black dark:text-white">
+                Username
+              </label>
               <input
                 type="text"
                 id="username"
                 required
-                className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold placeholder-black/60 dark:placeholder-white/60 outline-none focus:bg-yellow-50 dark:focus:bg-emerald-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black transition-colors"
                 placeholder="PLAYER_ONE"
                 value={formData.username}
                 onChange={handleChange}
@@ -150,12 +162,14 @@ const RegisterPage = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-lg font-black uppercase tracking-tight">Email</label>
+              <label className="block text-lg font-black uppercase tracking-tight text-black dark:text-white">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
                 required
-                className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold placeholder-black/60 dark:placeholder-white/60 outline-none focus:bg-yellow-50 dark:focus:bg-emerald-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black transition-colors"
                 placeholder="Gamer@Protocal.com"
                 value={formData.email}
                 onChange={handleChange}
@@ -164,24 +178,28 @@ const RegisterPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-lg font-black uppercase tracking-tight">Password</label>
+                <label className="block text-lg font-black uppercase tracking-tight text-black dark:text-white">
+                  Password
+                </label>
                 <input
                   type="password"
                   id="password"
                   required
-                  className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                  className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold placeholder-black/60 dark:placeholder-white/60 outline-none focus:bg-yellow-50 dark:focus:bg-emerald-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black transition-colors"
                   placeholder="*******"
                   value={formData.password}
                   onChange={handleChange}
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-lg font-black uppercase tracking-tight">Retype</label>
+                <label className="block text-lg font-black uppercase tracking-tight text-black dark:text-white">
+                  Retype
+                </label>
                 <input
                   type="password"
                   id="retypePassword"
                   required
-                  className="w-full bg-white neo-border-thick p-4 text-black font-bold outline-none focus:bg-emerald-50"
+                  className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-4 text-black dark:text-white font-bold placeholder-black/60 dark:placeholder-white/60 outline-none focus:bg-yellow-50 dark:focus:bg-emerald-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black transition-colors"
                   placeholder="*******"
                   value={formData.retypePassword}
                   onChange={handleChange}
@@ -199,22 +217,36 @@ const RegisterPage = () => {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="sr-only"
                   />
-                  <div className={`w-6 h-6 neo-border-thick ${rememberMe ? 'bg-emerald-400' : 'bg-white'} flex items-center justify-center`}>
+                  <div
+                    className={`w-6 h-6 neo-border-thick dark:border-white ${rememberMe ? "bg-emerald-400" : "bg-white dark:bg-black"} flex items-center justify-center`}
+                  >
                     {rememberMe && (
-                      <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="4" d="M5 13l4 4L19 7" />
+                      <svg
+                        className="w-4 h-4 text-black"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="square"
+                          strokeLinejoin="miter"
+                          strokeWidth="4"
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                     )}
                   </div>
                 </div>
-                <span className="ml-3 text-sm font-black uppercase">Remember Me</span>
+                <span className="ml-3 text-sm font-black uppercase text-black dark:text-white">
+                  Remember Me
+                </span>
               </label>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-5 bg-emerald-400 text-black font-black text-2xl uppercase neo-border-thick neo-shadow neo-transition disabled:opacity-50"
+              className="w-full py-5 bg-emerald-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow neo-transition disabled:opacity-50 hover:bg-emerald-300"
             >
               {loading ? "Registering..." : "Enlist Now"}
             </button>
@@ -222,17 +254,19 @@ const RegisterPage = () => {
         ) : (
           <form className="space-y-8" onSubmit={handleVerify}>
             {error && (
-              <div className="bg-red-500 text-white neo-border-thick p-3 font-black uppercase text-center text-sm">
+              <div className="bg-red-500 text-white neo-border-thick dark:border-white p-3 font-black uppercase text-center text-sm">
                 {error}
               </div>
             )}
             <div className="space-y-2">
-              <label className="block text-xl font-black uppercase tracking-tight">Code</label>
+              <label className="block text-xl font-black uppercase tracking-tight text-black dark:text-white">
+                Code
+              </label>
               <input
                 type="text"
                 id="code"
                 required
-                className="w-full bg-white neo-border-thick p-6 text-4xl text-center font-black tracking-[1em] outline-none focus:bg-yellow-50"
+                className="w-full bg-white dark:bg-black neo-border-thick dark:border-white p-6 text-4xl text-center font-black tracking-[1em] text-black dark:text-white placeholder-black/60 dark:placeholder-white/60 outline-none focus:bg-yellow-50 dark:focus:bg-emerald-400 dark:focus:text-black focus:placeholder-black dark:focus:placeholder-black transition-colors"
                 placeholder="000000"
                 maxLength={6}
                 value={verificationCode}
@@ -243,15 +277,15 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick neo-shadow neo-transition"
+              className="w-full py-5 bg-emerald-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow neo-transition hover:bg-yellow-300"
             >
               {loading ? "Syncing..." : "Verify Identity"}
             </button>
             <div className="text-center">
-              <button 
+              <button
                 type="button"
                 onClick={() => setStep("register")}
-                className="text-sm font-black uppercase underline hover:bg-red-500 hover:text-white transition-colors p-1"
+                className="text-sm font-black uppercase underline hover:bg-red-500 hover:text-white transition-colors p-1 text-black dark:text-white"
               >
                 Incorrect Data? Go Back
               </button>
@@ -259,12 +293,12 @@ const RegisterPage = () => {
           </form>
         )}
 
-        <div className="mt-12 pt-8 border-t-4 border-black text-center">
-          <p className="font-bold uppercase">
+        <div className="mt-12 pt-8 border-t-4 border-black dark:border-white text-center">
+          <p className="font-bold uppercase text-black dark:text-white">
             Already Enlisted?{" "}
             <Link
               to="/login"
-              className="bg-yellow-400 px-2 py-1 neo-border font-black hover:bg-yellow-300 transition-colors"
+              className="bg-yellow-400 px-2 py-1 neo-border font-black hover:bg-yellow-300 transition-colors text-black"
             >
               Log In
             </Link>

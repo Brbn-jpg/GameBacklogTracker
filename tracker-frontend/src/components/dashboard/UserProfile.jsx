@@ -43,12 +43,12 @@ const UserProfile = () => {
   }, [isAuthenticated]);
 
   if (loading) {
-    return <div className="text-center py-4 font-black uppercase italic animate-pulse">Initializing Profile...</div>;
+    return <div className="text-center py-4 font-black uppercase italic animate-pulse text-black dark:text-white">Initializing Profile...</div>;
   }
 
   if (error) {
     return (
-      <div className="bg-red-100 neo-border-thick p-4 text-red-600 font-black uppercase text-center neo-shadow">
+      <div className="bg-red-100 dark:bg-red-900/30 neo-border-thick dark:border-white p-4 text-red-600 dark:text-red-400 font-black uppercase text-center neo-shadow dark:neo-shadow-white">
         Protocol Error: {error}
       </div>
     );
@@ -57,16 +57,16 @@ const UserProfile = () => {
   if (!username) return null;
 
   return (
-    <div className="bg-white neo-border-thick p-8 mb-10 neo-shadow flex flex-col md:flex-row items-center justify-between gap-6">
+    <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 mb-10 neo-shadow dark:neo-shadow-white flex flex-col md:flex-row items-center justify-between gap-6 transition-colors">
       <div>
-        <h2 className="text-5xl font-black uppercase tracking-tighter italic">
-          Identity: <span className="bg-yellow-400 px-2 not-italic">{username}</span>
+        <h2 className="text-5xl font-black uppercase tracking-tighter italic text-black dark:text-white">
+          Identity: <span className="bg-yellow-400 dark:bg-yellow-500 px-2 not-italic text-black">{username}</span>
         </h2>
-        <p className="text-xl font-bold uppercase text-black/60 mt-2 tracking-widest border-l-4 border-black pl-4">
+        <p className="text-xl font-bold uppercase text-black/60 dark:text-white/60 mt-2 tracking-widest border-l-4 border-black dark:border-white pl-4">
           Status: Online / Backlog Protocol Active
         </p>
       </div>
-      <div className="bg-black text-white px-6 py-3 font-black uppercase text-sm neo-shadow tracking-widest rotate-[-2deg]">
+      <div className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 font-black uppercase text-sm neo-shadow dark:neo-shadow-white tracking-widest rotate-[-2deg] transition-colors">
         Standard Issue Operative
       </div>
     </div>
