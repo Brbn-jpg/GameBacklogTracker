@@ -1,5 +1,16 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "https://game-backlog-tracker-omega.vercel.app"
+        }
+      ],
+      "destination": "https://gameloggd.vercel.app/$1",
+      "permanent": true
+    }
   ]
 }
