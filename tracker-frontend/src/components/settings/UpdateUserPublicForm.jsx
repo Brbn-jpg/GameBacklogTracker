@@ -69,7 +69,7 @@ const UpdateUserPublicForm = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:neo-shadow-white flex flex-col justify-between transition-colors duration-300">
+    <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex flex-col justify-between transition-colors duration-300">
       <div>
         <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 border-b-4 border-black dark:border-white pb-2 italic text-black dark:text-white">
           Profile Visibility
@@ -90,7 +90,7 @@ const UpdateUserPublicForm = () => {
         )}
       </div>
 
-      <div className="flex items-center justify-between bg-black dark:bg-white text-white dark:text-black p-6 neo-shadow dark:neo-shadow-white rotate-[1deg] transition-colors">
+      <div className="flex items-center justify-between bg-black dark:bg-white text-white dark:text-black p-6 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] rotate-[1deg] transition-colors">
         <span className="text-xl font-black uppercase tracking-widest">
           {isPublic ? "Public" : "Private"}
         </span>

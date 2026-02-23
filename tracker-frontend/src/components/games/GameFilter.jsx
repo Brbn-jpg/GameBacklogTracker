@@ -45,7 +45,7 @@ const GameFilter = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 space-y-6 neo-shadow dark:neo-shadow-white transition-colors duration-300">
+    <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 space-y-6 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-colors duration-300">
       <div className="flex items-center gap-3 border-b-4 border-black dark:border-white pb-4 mb-2 text-black dark:text-white">
         <FaSearch className="text-2xl" />
         <h3 className="text-2xl font-black uppercase tracking-tighter">Filter Data</h3>
@@ -117,7 +117,7 @@ const GameFilter = ({ onFilterChange }) => {
 
         <button
           type="submit"
-          className="w-full bg-yellow-400 dark:bg-yellow-500 text-black font-black py-4 px-4 neo-border-thick dark:border-white neo-shadow-lg dark:neo-shadow-white uppercase text-xl neo-transition tracking-tighter"
+          className="w-full bg-yellow-400 dark:bg-yellow-500 text-black font-black py-4 px-4 neo-border-thick dark:border-white uppercase text-xl transition-all hover:bg-yellow-300 dark:hover:bg-yellow-400 tracking-tighter"
         >
           Execute Search
         </button>

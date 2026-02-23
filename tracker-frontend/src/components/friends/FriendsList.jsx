@@ -63,7 +63,7 @@ const FriendsList = () => {
       {friends.map((friend, index) => (
         <div
           key={index}
-          className="bg-white dark:bg-black neo-border-thick dark:border-white p-4 flex items-center justify-between group hover:translate-x-1 hover:translate-y-1 hover:shadow-none neo-shadow dark:neo-shadow-white transition-all"
+          className="bg-white dark:bg-black neo-border-thick dark:border-white p-4 flex items-center justify-between group hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all"
         >
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-black text-xl neo-border dark:border-white transition-colors">

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const LibraryGameCard = ({ game }) => {
   return (
     <Link to={`/games/${game.gameId}`} className="group block">
-      <div className="bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex flex-col h-full overflow-hidden">
+      <div className="bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all flex flex-col h-full overflow-hidden">
         {/* Cover Section */}
         <div className="relative aspect-video border-b-4 border-black dark:border-white overflow-hidden bg-black">
           <img

@@ -74,7 +74,7 @@ const MultiSelect = ({ label, options, selectedValues, onChange, placeholder = "
       </div>
 
       {isOpen && (
-        <div className="absolute z-[100] w-full mt-2 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:neo-shadow-white max-h-64 overflow-y-auto">
+        <div className="absolute z-[100] w-full mt-2 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] max-h-64 overflow-y-auto">
           {options.length === 0 ? (
              <div className="p-4 text-black dark:text-white font-black uppercase text-center text-sm italic">No options</div>
           ) : (

@@ -66,7 +66,7 @@ const FriendRequests = ({ onActionSuccess }) => {
       ) : (
         <div className="space-y-4">
           {requests.map((req) => (
-            <div key={req.id} className="bg-white dark:bg-black neo-border dark:border-white p-3 flex flex-col gap-3 neo-shadow dark:neo-shadow-white">
+            <div key={req.id} className="bg-white dark:bg-black neo-border dark:border-white p-3 flex flex-col gap-3 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs font-black neo-border dark:border-white">
                   {req.username.charAt(0).toUpperCase()}

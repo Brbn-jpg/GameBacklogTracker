@@ -224,7 +224,7 @@ const DashboardPage = () => {
               icon={<FaThList className="text-2xl" />}
             />
 
-            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white flex flex-col justify-center transition-colors">
+            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex flex-col justify-center transition-colors">
               <p className="text-sm font-black uppercase tracking-widest text-black/60 dark:text-white/60 mb-4 border-b-2 border-black dark:border-white pb-2">
                 Status Breakdown
               </p>
@@ -299,7 +299,7 @@ const DashboardPage = () => {
 
         {/* Toolbar */}
         <div className="mb-8 flex flex-col md:flex-row gap-4 items-start md:items-center">
-          <div className="flex flex-wrap gap-2 bg-white dark:bg-black neo-border-thick dark:border-white p-1 neo-shadow dark:neo-shadow-white w-full md:w-auto transition-colors">
+          <div className="flex flex-wrap gap-2 bg-white dark:bg-black neo-border-thick dark:border-white p-1 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] w-full md:w-auto transition-colors">
             <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black shrink-0">
               <FaFilter /> Filter
             </span>
@@ -320,7 +320,7 @@ const DashboardPage = () => {
             )}
           </div>
 
-          <div className="flex flex-wrap gap-2 bg-white dark:bg-black neo-border-thick dark:border-white p-1 neo-shadow dark:neo-shadow-white w-full md:w-auto transition-colors">
+          <div className="flex flex-wrap gap-2 bg-white dark:bg-black neo-border-thick dark:border-white p-1 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] w-full md:w-auto transition-colors">
             <span className="px-2 py-1 md:px-3 md:py-2 font-black uppercase text-[10px] md:text-xs flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black shrink-0">
               {sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />}{" "}
               Sort

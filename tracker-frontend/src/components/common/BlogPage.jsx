@@ -64,12 +64,12 @@ const BlogPage = () => {
 
   const RoadmapSection = ({ title, items, colorClass }) => (
     <div className="mb-20">
-      <h2 className={`text-4xl font-black uppercase mb-10 inline-block px-4 py-2 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white ${colorClass} text-black`}>
+      <h2 className={`text-4xl font-black uppercase mb-10 inline-block px-4 py-2 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] ${colorClass} text-black`}>
         {title}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {items.map((item) => (
-          <div key={item.id} className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+          <div key={item.id} className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all">
             <div className="flex justify-between items-start mb-4 gap-4">
               <h3 className="text-2xl font-black uppercase leading-tight tracking-tighter text-black dark:text-white">{item.title}</h3>
               <span className={`px-3 py-1 text-xs font-black uppercase neo-border dark:border-white whitespace-nowrap ${

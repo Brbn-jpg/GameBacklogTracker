@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 
 const WishlistGameCard = ({ game, onRemove }) => {
   return (
-    <div className="group relative bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex flex-col h-full overflow-hidden">
+    <div className="group relative bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all flex flex-col h-full overflow-hidden">
       <Link to={`/games/${game.gameId}`} className="block flex-grow">
         <div className="relative aspect-video border-b-4 border-black dark:border-white overflow-hidden bg-black">
           <img
@@ -25,7 +25,7 @@ const WishlistGameCard = ({ game, onRemove }) => {
       
       <button
         onClick={() => onRemove(game.id)}
-        className="absolute top-2 right-2 bg-red-500 text-white p-2 neo-border border-black dark:border-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+        className="absolute top-2 right-2 bg-red-500 text-white p-2 neo-border border-black dark:border-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
         aria-label="Remove from wishlist"
       >
         <FaTrash size={14} />

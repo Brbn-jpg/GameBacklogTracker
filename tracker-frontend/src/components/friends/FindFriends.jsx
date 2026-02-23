@@ -100,7 +100,7 @@ const FindFriends = () => {
           {users.map((user) => (
             <div
               key={user.id}
-              className="bg-white dark:bg-black neo-border-thick dark:border-white p-4 flex items-center justify-between group hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all neo-shadow dark:neo-shadow-white"
+              className="bg-white dark:bg-black neo-border-thick dark:border-white p-4 flex items-center justify-between group hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
             >
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-black text-xl neo-border dark:border-white">
@@ -149,7 +149,7 @@ const FindFriends = () => {
           <button
             disabled={page === 0}
             onClick={() => setPage((p) => Math.max(0, p - 1))}
-            className="px-6 py-2 bg-white dark:bg-black neo-border dark:border-white font-black uppercase hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white disabled:opacity-30 transition-colors"
+            className="px-6 py-2 bg-white dark:bg-black neo-border dark:border-white font-black uppercase hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white disabled:opacity-30 transition-all neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none"
           >
             Prev
           </button>
@@ -159,7 +159,7 @@ const FindFriends = () => {
           <button
             disabled={page >= totalPages - 1}
             onClick={() => setPage((p) => p + 1)}
-            className="px-6 py-2 bg-white dark:bg-black neo-border dark:border-white font-black uppercase hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white disabled:opacity-30 transition-colors"
+            className="px-6 py-2 bg-white dark:bg-black neo-border dark:border-white font-black uppercase hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white disabled:opacity-30 transition-all neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none"
           >
             Next
           </button>

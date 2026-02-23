@@ -61,7 +61,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center gap-4">
               <button
                 onClick={toggleTheme}
-                className="w-10 h-10 flex items-center justify-center neo-border dark:border-white bg-white dark:bg-black text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors"
+                className="w-10 h-10 flex items-center justify-center neo-border dark:border-white bg-white dark:bg-black text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none"
                 title="Toggle Theme"
               >
                 {theme === 'dark' ? <FaSun /> : <FaMoon />}
@@ -69,7 +69,7 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <button
                   onClick={handleLogout}
-                  className="bg-rose-500 text-white font-black uppercase py-2 px-6 neo-border dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-rose-600"
+                  className="bg-rose-500 text-white font-black uppercase py-2 px-6 neo-border dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none hover:bg-rose-600"
                 >
                   Logout
                 </button>
@@ -77,7 +77,7 @@ const Navbar = () => {
                 <div className="flex items-center space-x-4">
                   <Link
                     to="/register"
-                    className="bg-yellow-400 dark:bg-yellow-500 text-black font-black uppercase py-2 px-6 neo-border dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-yellow-300"
+                    className="bg-yellow-400 dark:bg-yellow-500 text-black font-black uppercase py-2 px-6 neo-border dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none hover:bg-yellow-300"
                   >
                     Start Tracking
                   </Link>
@@ -87,13 +87,13 @@ const Navbar = () => {
             <div className="md:hidden flex items-center gap-4">
               <button
                 onClick={toggleTheme}
-                className="w-10 h-10 flex items-center justify-center neo-border dark:border-white bg-white dark:bg-black text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors"
+                className="w-10 h-10 flex items-center justify-center neo-border dark:border-white bg-white dark:bg-black text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none"
               >
                 {theme === 'dark' ? <FaSun /> : <FaMoon />}
               </button>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center p-2 text-black dark:text-white hover:bg-yellow-400 dark:hover:bg-yellow-500 dark:hover:text-black neo-border dark:border-white focus:outline-none transition-colors"
+                className="inline-flex items-center justify-center p-2 text-black dark:text-white hover:bg-yellow-400 dark:hover:bg-yellow-500 dark:hover:text-black neo-border dark:border-white focus:outline-none neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none"
               >
                 <span className="sr-only">Open main menu</span>
                 {isMenuOpen ? (
@@ -120,21 +120,21 @@ const Navbar = () => {
             <div className="space-y-4">
               <Link
                 to="/games"
-                className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-white dark:bg-black text-black dark:text-white hover:bg-cyan-400 dark:hover:bg-cyan-500 dark:hover:text-black transition-colors neo-shadow dark:neo-shadow-white"
+                className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-white dark:bg-black text-black dark:text-white hover:bg-cyan-400 dark:hover:bg-cyan-500 dark:hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Games
               </Link>
               <Link
                 to="/blog"
-                className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-white dark:bg-black text-black dark:text-white hover:bg-yellow-400 dark:hover:bg-yellow-500 dark:hover:text-black transition-colors neo-shadow dark:neo-shadow-white"
+                className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-white dark:bg-black text-black dark:text-white hover:bg-yellow-400 dark:hover:bg-yellow-500 dark:hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Roadmap
               </Link>
               <Link
                 to="/contact"
-                className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-white dark:bg-black text-black dark:text-white hover:bg-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-black transition-colors neo-shadow dark:neo-shadow-white"
+                className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-white dark:bg-black text-black dark:text-white hover:bg-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
@@ -142,7 +142,7 @@ const Navbar = () => {
               {isAuthenticated && (
                 <Link
                   to="/dashboard"
-                  className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-yellow-400 dark:hover:text-black transition-colors neo-shadow dark:neo-shadow-white"
+                  className="block neo-border-thick dark:border-white p-4 text-center font-black uppercase bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-yellow-400 dark:hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Dashboard
@@ -156,7 +156,7 @@ const Navbar = () => {
                     handleLogout();
                     setIsMenuOpen(false);
                   }}
-                  className="w-full block bg-rose-500 text-white font-black uppercase py-4 px-4 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-rose-600"
+                  className="w-full block bg-rose-500 text-white font-black uppercase py-4 px-4 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none hover:bg-rose-600"
                 >
                   Logout
                 </button>
@@ -164,7 +164,7 @@ const Navbar = () => {
                 <Link
                   to="/register"
                   onClick={() => setIsMenuOpen(false)}
-                  className="w-full block text-center bg-yellow-400 dark:bg-yellow-500 text-black font-black uppercase py-4 px-4 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-yellow-300"
+                  className="w-full block text-center bg-yellow-400 dark:bg-yellow-500 text-black font-black uppercase py-4 px-4 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none hover:bg-yellow-300"
                 >
                   Start Tracking
                 </Link>

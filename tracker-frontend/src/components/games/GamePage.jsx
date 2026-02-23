@@ -171,7 +171,7 @@ const GamePage = ({ source }) => {
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8 transition-colors duration-300">
-        <div className="mb-12 neo-border-thick dark:border-white bg-white dark:bg-black neo-shadow-lg dark:neo-shadow-white overflow-hidden flex flex-col md:flex-row">
+        <div className="mb-12 neo-border-thick dark:border-white bg-white dark:bg-black neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] overflow-hidden flex flex-col md:flex-row">
           <div className="md:w-1/3 neo-border-r dark:border-white h-80 md:h-auto bg-black">
             <img src={game.headerImage} alt={game.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
           </div>
@@ -197,16 +197,16 @@ const GamePage = ({ source }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Info */}
           <div className="lg:col-span-2 space-y-12">
-            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:neo-shadow-white">
+            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
               <h2 className="text-4xl font-black uppercase mb-6 tracking-tighter underline decoration-8 decoration-yellow-400 dark:decoration-yellow-500 underline-offset-4 text-black dark:text-white">Intelligence</h2>
               <p className="text-xl font-bold leading-relaxed text-black dark:text-white">{game.about || "No intelligence data available."}</p>
             </div>
 
-            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:neo-shadow-white">
+            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
               <h2 className="text-4xl font-black uppercase mb-8 tracking-tighter underline decoration-8 decoration-cyan-400 dark:decoration-cyan-500 underline-offset-4 text-black dark:text-white">Visual Evidence</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {game.screenshots?.map((url, index) => (
-                  <div key={index} className="neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer overflow-hidden aspect-video">
+                  <div key={index} className="neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all cursor-pointer overflow-hidden aspect-video">
                     <img
                       src={url}
                       alt={`Evidence ${index + 1}`}
@@ -220,7 +220,7 @@ const GamePage = ({ source }) => {
           </div>
 
           <div className="space-y-8">
-            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:neo-shadow-white sticky top-28">
+            <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] sticky top-28">
               <h2 className="text-3xl font-black uppercase mb-8 tracking-tight border-b-4 border-black dark:border-white pb-2 text-black dark:text-white">Operations</h2>
               
               <div className="space-y-6 text-xl font-bold uppercase mb-8 text-black dark:text-white">
@@ -236,14 +236,14 @@ const GamePage = ({ source }) => {
                       <button
                         onClick={() => handleAction("ADD", { status: "NOT_PLAYED" })}
                         disabled={actionStatus === "loading"}
-                        className="w-full bg-emerald-400 dark:bg-emerald-500 text-black py-5 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-2xl neo-transition mb-4"
+                        className="w-full bg-emerald-400 dark:bg-emerald-500 text-black py-5 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] font-black uppercase text-2xl neo-transition mb-4"
                       >
                         {actionStatus === "loading" ? "Adding..." : "Add to Backlog"}
                       </button>
                       <button
                         onClick={() => handleAction("ADD", { status: "WISHLIST" })}
                         disabled={actionStatus === "loading"}
-                        className="w-full bg-cyan-400 dark:bg-cyan-500 text-black py-5 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-2xl neo-transition"
+                        className="w-full bg-cyan-400 dark:bg-cyan-500 text-black py-5 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] font-black uppercase text-2xl neo-transition"
                       >
                         {actionStatus === "loading" ? "Adding..." : "Add to Wishlist"}
                       </button>
@@ -253,14 +253,14 @@ const GamePage = ({ source }) => {
                       <button
                         onClick={() => handleAction("UPDATE", { status: "NOT_PLAYED" })}
                         disabled={actionStatus === "loading"}
-                        className="w-full bg-green-500 dark:bg-green-600 text-white py-5 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-2xl neo-transition mb-4"
+                        className="w-full bg-green-500 dark:bg-green-600 text-white py-5 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] font-black uppercase text-2xl neo-transition mb-4"
                       >
                         {actionStatus === "loading" ? "Moving..." : "Move to Backlog"}
                       </button>
                       <button
                         onClick={() => handleAction("DELETE")}
                         disabled={actionStatus === "loading"}
-                        className="w-full bg-red-500 dark:bg-red-600 text-white py-5 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-2xl neo-transition"
+                        className="w-full bg-red-500 dark:bg-red-600 text-white py-5 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] font-black uppercase text-2xl neo-transition"
                       >
                         {actionStatus === "loading" ? "Removing..." : "Remove from Wishlist"}
                       </button>
@@ -309,7 +309,7 @@ const GamePage = ({ source }) => {
                       <button
                         onClick={() => handleAction("DELETE")}
                         disabled={actionStatus === "loading"}
-                        className="w-full bg-red-500 dark:bg-red-600 text-white py-3 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-sm neo-transition hover:bg-red-600 dark:hover:bg-red-700"
+                        className="w-full bg-red-500 dark:bg-red-600 text-white py-3 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] font-black uppercase text-sm neo-transition hover:bg-red-600 dark:hover:bg-red-700"
                       >
                         {actionStatus === "loading" ? "Removing..." : "Eject from Library"}
                       </button>

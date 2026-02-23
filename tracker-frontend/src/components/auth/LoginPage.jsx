@@ -81,7 +81,7 @@ const LoginPage = () => {
         )}
       </div>
 
-      <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg p-8 md:p-12">
+      <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] p-8 md:p-12">
         <div className="mb-10 text-center">
           <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic text-black dark:text-white">
             Login{" "}
@@ -176,7 +176,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow neo-transition disabled:opacity-50 hover:bg-yellow-300"
+            className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] neo-transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none disabled:opacity-50 hover:bg-yellow-300"
           >
             {loading ? "Verifying..." : "Enter System"}
           </button>

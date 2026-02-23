@@ -119,7 +119,7 @@ const GamesContent = ({ filters }) => {
         <button
           onClick={handlePrevPage}
           disabled={currentPage === 0 || loading}
-          className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-xl text-black dark:text-white disabled:opacity-30 neo-transition"
+          className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] font-black uppercase text-xl text-black dark:text-white disabled:opacity-30 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none"
         >
           <FaChevronLeft /> Prev
         </button>
@@ -127,7 +127,7 @@ const GamesContent = ({ filters }) => {
         <button
           onClick={handleNextPage}
           disabled={games.length < pageSize || loading}
-          className="flex items-center gap-3 px-8 py-4 bg-yellow-400 dark:bg-yellow-500 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white font-black uppercase text-xl text-black disabled:opacity-30 neo-transition"
+          className="flex items-center gap-3 px-8 py-4 bg-yellow-400 dark:bg-yellow-500 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] font-black uppercase text-xl text-black disabled:opacity-30 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none"
         >
           Next <FaChevronRight />
         </button>

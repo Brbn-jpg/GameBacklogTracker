@@ -2,7 +2,7 @@ import React from "react";
 
 const FeatureCard = ({ title, description, icon, colorClass }) => {
   return (
-    <div className={`bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:neo-shadow-white ${colorClass} hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all`}>
+    <div className={`bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] ${colorClass} hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all`}>
       <div className="mb-6 p-4 neo-border-thick dark:border-white bg-white dark:bg-black inline-block text-black dark:text-white">{icon}</div>
       <h3 className="text-2xl font-black uppercase mb-4 tracking-tighter text-black dark:text-white">{title}</h3>
       <p className="text-lg font-bold leading-tight text-black dark:text-white">{description}</p>

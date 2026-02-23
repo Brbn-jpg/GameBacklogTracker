@@ -48,7 +48,7 @@ const UserProfile = () => {
 
   if (error) {
     return (
-      <div className="bg-red-100 dark:bg-red-900/30 neo-border-thick dark:border-white p-4 text-red-600 dark:text-red-400 font-black uppercase text-center neo-shadow dark:neo-shadow-white">
+      <div className="bg-red-100 dark:bg-red-900/30 neo-border-thick dark:border-white p-4 text-red-600 dark:text-red-400 font-black uppercase text-center neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
         Protocol Error: {error}
       </div>
     );
@@ -57,7 +57,7 @@ const UserProfile = () => {
   if (!username) return null;
 
   return (
-    <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 mb-10 neo-shadow dark:neo-shadow-white flex flex-col md:flex-row items-center justify-between gap-6 transition-colors">
+    <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 mb-10 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex flex-col md:flex-row items-center justify-between gap-6 transition-colors">
       <div>
         <h2 className="text-5xl font-black uppercase tracking-tighter italic text-black dark:text-white">
           Identity: <span className="bg-yellow-400 dark:bg-yellow-500 px-2 not-italic text-black">{username}</span>
@@ -66,7 +66,7 @@ const UserProfile = () => {
           Status: Online / Backlog Protocol Active
         </p>
       </div>
-      <div className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 font-black uppercase text-sm neo-shadow dark:neo-shadow-white tracking-widest rotate-[-2deg] transition-colors">
+      <div className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 font-black uppercase text-sm neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] tracking-widest rotate-[-2deg] transition-colors">
         Standard Issue Operative
       </div>
     </div>

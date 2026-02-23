@@ -62,7 +62,7 @@ const IgdbGameCard = ({ game, existingUserGameId, onActionSuccess }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex flex-col group overflow-hidden">
+    <div className="bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all flex flex-col group overflow-hidden">
       <Link
         to={`/igdb-games/${game.appId || game.id}`}
         className="relative aspect-video border-b-4 border-black dark:border-white block bg-black"
@@ -90,7 +90,7 @@ const IgdbGameCard = ({ game, existingUserGameId, onActionSuccess }) => {
           {!isAuthenticated ? (
             <Link
               to="/login"
-              className="w-full block py-3 bg-white dark:bg-black neo-border-thick dark:border-white text-center font-black uppercase text-lg hover:bg-yellow-400 dark:hover:bg-yellow-500 dark:hover:text-black transition-colors text-black dark:text-white"
+              className="w-full block py-3 bg-white dark:bg-black neo-border-thick dark:border-white text-center font-black uppercase text-lg transition-colors hover:bg-yellow-400 dark:hover:bg-yellow-500 dark:hover:text-black text-black dark:text-white"
             >
               Enlist to Add
             </Link>
@@ -98,7 +98,7 @@ const IgdbGameCard = ({ game, existingUserGameId, onActionSuccess }) => {
             <button
               onClick={handleAction}
               disabled={status === "loading"}
-              className={`w-full py-3 neo-border-thick dark:border-white font-black uppercase text-lg neo-transition ${
+              className={`w-full py-3 neo-border-thick dark:border-white font-black uppercase text-lg transition-colors ${
                 existingUserGameId
                   ? "bg-red-500 dark:bg-red-600 text-white hover:bg-red-600 dark:hover:bg-red-700"
                   : "bg-yellow-400 dark:bg-yellow-500 text-black hover:bg-yellow-300 dark:hover:bg-yellow-400"

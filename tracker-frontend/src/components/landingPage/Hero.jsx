@@ -21,13 +21,13 @@ const Hero = () => {
             <div className="flex flex-wrap gap-6 pt-4">
               <Link
                 to="/register"
-                className="bg-cyan-400 dark:bg-cyan-500 text-black text-2xl font-black uppercase px-8 py-4 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-cyan-300 dark:hover:bg-cyan-400"
+                className="bg-cyan-400 dark:bg-cyan-500 text-black text-2xl font-black uppercase px-8 py-4 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none hover:bg-cyan-300 dark:hover:bg-cyan-400"
               >
                 Join Squad
               </Link>
               <a
                 href="#features"
-                className="bg-white dark:bg-black text-black dark:text-white text-2xl font-black uppercase px-8 py-4 neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-gray-100 dark:hover:bg-yellow-400 dark:hover:text-black"
+                className="bg-white dark:bg-black text-black dark:text-white text-2xl font-black uppercase px-8 py-4 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none hover:bg-gray-100 dark:hover:bg-yellow-400 dark:hover:text-black"
               >
                 Learn More
               </a>

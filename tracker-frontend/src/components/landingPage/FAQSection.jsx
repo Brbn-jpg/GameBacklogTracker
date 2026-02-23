@@ -9,7 +9,7 @@ const FAQSection = () => {
         </h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {/* FAQ Item 1 */}
-          <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:neo-shadow-white rotate-[0.5deg]">
+          <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] rotate-[0.5deg] hover:rotate-0 hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all">
             <h3 className="text-3xl font-black uppercase mb-4 tracking-tight text-black dark:text-white">
               Is it free?
             </h3>
@@ -19,7 +19,7 @@ const FAQSection = () => {
           </div>
 
           {/* FAQ Item 2 */}
-          <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:neo-shadow-white rotate-[-0.5deg]">
+          <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] rotate-[-0.5deg] hover:rotate-0 hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all">
             <h3 className="text-3xl font-black uppercase mb-4 tracking-tight text-black dark:text-white">
               Data source?
             </h3>
@@ -29,7 +29,7 @@ const FAQSection = () => {
           </div>
 
           {/* FAQ Item 3 */}
-          <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:neo-shadow-white rotate-[0.3deg]">
+          <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-8 neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] rotate-[0.3deg] hover:rotate-0 hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all">
             <h3 className="text-3xl font-black uppercase mb-4 tracking-tight text-black dark:text-white">
               Steam Import?
             </h3>

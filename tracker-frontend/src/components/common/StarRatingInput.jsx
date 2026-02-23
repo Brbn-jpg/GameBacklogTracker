@@ -17,7 +17,7 @@ const StarRatingInput = ({ rating, onChange, maxRating = 10 }) => {
               w-8 h-8 neo-border dark:border-white font-black text-xs transition-all
               ${isActive 
                 ? "bg-yellow-400 text-black translate-x-[1px] translate-y-[1px] neo-shadow-none" 
-                : "bg-white dark:bg-black text-black/20 dark:text-white/20 hover:bg-gray-100 dark:hover:bg-yellow-400 dark:hover:text-black neo-shadow dark:neo-shadow-white"}
+                : "bg-white dark:bg-black text-black/20 dark:text-white/20 hover:bg-gray-100 dark:hover:bg-yellow-400 dark:hover:text-black neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"}
             `}
             onClick={() => onChange(starValue)}
             onMouseEnter={() => setHover(starValue)}

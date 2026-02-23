@@ -5,7 +5,7 @@ const ContactPage = () => {
   return (
     <MainLayout>
       <div className="flex items-center justify-center min-h-[calc(100vh-theme(spacing.40))] p-4 transition-colors duration-300">
-        <div className="bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg p-10 md:p-16 max-w-2xl w-full">
+        <div className="bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] p-10 md:p-16 max-w-2xl w-full">
           <div className="mb-12 text-center">
             <h1 className="text-6xl md:text-7xl font-black uppercase tracking-tighter mb-4 italic text-black dark:text-white">
               Get in <span className="bg-yellow-400 dark:bg-yellow-500 px-4 not-italic text-black">Touch</span>
@@ -20,7 +20,7 @@ const ContactPage = () => {
               <p className="text-xs font-black uppercase mb-2 ml-1 text-black dark:text-white">Direct Transmission</p>
               <a 
                 href="mailto:kubon.kuznicki@gmail.com" 
-                className="block bg-white dark:bg-black neo-border-thick dark:border-white p-5 text-lg md:text-2xl font-black uppercase hover:bg-cyan-400 dark:hover:bg-cyan-500 neo-shadow dark:neo-shadow-white neo-transition text-center break-all text-black dark:text-white"
+                className="block bg-white dark:bg-black neo-border-thick dark:border-white p-5 text-lg md:text-2xl font-black uppercase hover:bg-cyan-400 dark:hover:bg-cyan-500 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none text-center break-all text-black dark:text-white"
               >
                 kubon.kuznicki@gmail.com
               </a>
@@ -32,7 +32,7 @@ const ContactPage = () => {
                 href="https://github.com/brbn-jpg" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="block bg-white dark:bg-black neo-border-thick dark:border-white p-5 text-2xl font-black uppercase hover:bg-emerald-400 dark:hover:bg-emerald-500 neo-shadow dark:neo-shadow-white neo-transition text-center text-black dark:text-white"
+                className="block bg-white dark:bg-black neo-border-thick dark:border-white p-5 text-2xl font-black uppercase hover:bg-emerald-400 dark:hover:bg-emerald-500 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none text-center text-black dark:text-white"
               >
                 github.com/brbn-jpg
               </a>
@@ -44,7 +44,7 @@ const ContactPage = () => {
                 href="https://brbn.pl" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="block bg-white dark:bg-black neo-border-thick dark:border-white p-5 text-2xl font-black uppercase hover:bg-yellow-400 dark:hover:bg-yellow-500 neo-shadow dark:neo-shadow-white neo-transition text-center text-black dark:text-white"
+                className="block bg-white dark:bg-black neo-border-thick dark:border-white p-5 text-2xl font-black uppercase hover:bg-yellow-400 dark:hover:bg-yellow-500 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none text-center text-black dark:text-white"
               >
                 brbn.pl
               </a>

@@ -119,13 +119,13 @@ const FriendProfile = () => {
           <div className="mb-12 flex items-center gap-6">
             <button
               onClick={() => navigate(-1)}
-              className="p-4 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all text-black dark:text-white"
+              className="p-4 bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all text-black dark:text-white"
               title="Back"
             >
               <FaArrowLeft />
             </button>
 
-            <div className="flex-grow bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white flex items-center gap-6">
+            <div className="flex-grow bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-6">
               <div className="w-16 h-16 bg-yellow-400 dark:bg-yellow-500 neo-border-thick dark:border-white flex items-center justify-center font-black text-3xl text-black">
                 {profileData.username.charAt(0).toUpperCase()}
               </div>
@@ -141,7 +141,7 @@ const FriendProfile = () => {
           </div>
 
           {profileData.isPublic === false ? (
-            <div className="p-20 neo-border-thick dark:border-white text-center bg-white dark:bg-black neo-shadow-lg dark:neo-shadow-white flex flex-col items-center">
+            <div className="p-20 neo-border-thick dark:border-white text-center bg-white dark:bg-black neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] flex flex-col items-center">
               <div className="w-20 h-20 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center neo-border dark:border-white mb-6">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@ const FriendProfile = () => {
                     icon={<FaThList className="text-2xl" />}
                   />
 
-                  <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:neo-shadow-white flex flex-col justify-center">
+                  <div className="bg-white dark:bg-black neo-border-thick dark:border-white p-6 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex flex-col justify-center">
                     <p className="text-sm font-black uppercase tracking-widest text-black/60 dark:text-white/60 mb-4 border-b-2 border-black dark:border-white pb-2">
                       Status Breakdown
                     </p>

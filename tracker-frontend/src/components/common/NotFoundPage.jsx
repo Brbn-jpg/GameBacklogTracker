@@ -13,7 +13,7 @@ const NotFoundPage = () => {
           </span>
         </h1>
 
-        <div className="bg-red-500 text-white neo-border-thick dark:border-white p-4 mb-8 neo-shadow dark:neo-shadow-white rotate-[-2deg]">
+        <div className="bg-red-500 text-white neo-border-thick dark:border-white p-4 mb-8 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] rotate-[-2deg]">
           <p className="text-2xl font-black uppercase tracking-widest">
             Sector Void / Signal Lost
           </p>
@@ -26,7 +26,7 @@ const NotFoundPage = () => {
 
         <Link
           to="/"
-          className="bg-yellow-400 dark:bg-yellow-500 text-black px-8 py-4 text-xl font-black uppercase neo-border-thick dark:border-white neo-shadow dark:neo-shadow-white neo-transition hover:bg-yellow-300 dark:hover:bg-yellow-400"
+          className="bg-yellow-400 dark:bg-yellow-500 text-black px-8 py-4 text-xl font-black uppercase neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] neo-transition hover:bg-yellow-300 dark:hover:bg-yellow-400"
         >
           Retreat to Base
         </Link>

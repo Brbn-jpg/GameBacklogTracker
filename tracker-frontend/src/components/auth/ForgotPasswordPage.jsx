@@ -43,7 +43,7 @@ const ForgotPasswordPage = () => {
             <span className="text-[15rem] font-black uppercase -rotate-12 select-none text-black dark:text-white">Recovery</span>
         </div>
 
-        <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg p-8 md:p-12">
+        <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] p-8 md:p-12">
           <div className="mb-10 text-center">
             <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic text-black dark:text-white">
               Forgot <span className="bg-cyan-400 px-2 not-italic text-black">Password?</span>
@@ -79,14 +79,14 @@ const ForgotPasswordPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow neo-transition disabled:opacity-50"
+                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] neo-transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none disabled:opacity-50"
               >
                 {loading ? "Sending..." : "Request Reset"}
               </button>
             </form>
           ) : (
             <div className="text-center py-8 space-y-6">
-              <div className="inline-block p-6 bg-emerald-400 neo-border-thick dark:border-white neo-shadow">
+              <div className="inline-block p-6 bg-emerald-400 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
                 <svg className="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                 </svg>
@@ -96,7 +96,7 @@ const ForgotPasswordPage = () => {
               <div className="pt-4">
                 <Link 
                   to="/login" 
-                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow neo-transition dark:border-white"
+                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] neo-transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none dark:border-white"
                 >
                   Return to Login
                 </Link>

@@ -34,7 +34,7 @@ const GameCard = React.memo(({ game, onRemove, onMove, readOnly = false }) => {
         onClick={() => setIsMoveMenuOpen(false)}
       >
         <div 
-          className="bg-white dark:bg-black neo-border-thick dark:border-white w-full max-w-sm p-6 neo-shadow-lg dark:neo-shadow-white animate-[slideUp_0.3s_ease-out]"
+          className="bg-white dark:bg-black neo-border-thick dark:border-white w-full max-w-sm p-6 neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] animate-[slideUp_0.3s_ease-out]"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center mb-6 border-b-4 border-black dark:border-white pb-4">
@@ -49,7 +49,7 @@ const GameCard = React.memo(({ game, onRemove, onMove, readOnly = false }) => {
               <button
                 key={status}
                 onClick={() => { onMove(game.id, status); setIsMoveMenuOpen(false); }}
-                className="w-full py-4 bg-white dark:bg-black neo-border-thick dark:border-white font-black uppercase hover:bg-yellow-400 dark:hover:bg-yellow-500 text-black dark:text-white hover:text-black neo-shadow dark:neo-shadow-white transition-all text-left px-6"
+                className="w-full py-4 bg-white dark:bg-black neo-border-thick dark:border-white font-black uppercase hover:bg-yellow-400 dark:hover:bg-yellow-500 text-black dark:text-white hover:text-black neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none text-left px-6"
               >
                 Move to {status.replace("_", " ")}
               </button>
@@ -66,7 +66,7 @@ const GameCard = React.memo(({ game, onRemove, onMove, readOnly = false }) => {
       <div
         ref={!readOnly ? drag : null}
         style={{ opacity: isDragging ? 0.5 : 1 }}
-        className={`group bg-white dark:bg-black neo-border-thick dark:border-white p-4 neo-shadow dark:neo-shadow-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex flex-col gap-4 relative ${
+        className={`group bg-white dark:bg-black neo-border-thick dark:border-white p-4 neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none transition-all flex flex-col gap-4 relative ${
           readOnly ? 'cursor-default' : 'cursor-grab'
         }`}
       >

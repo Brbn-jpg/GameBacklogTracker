@@ -71,7 +71,7 @@ const ResetPasswordPage = () => {
             <span className="text-[20rem] font-black uppercase rotate-12 select-none text-black dark:text-white">Security</span>
         </div>
 
-        <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg p-8 md:p-12 my-auto">
+        <div className="relative z-10 w-full max-w-lg bg-white dark:bg-black neo-border-thick dark:border-white neo-shadow-lg dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] p-8 md:p-12 my-auto">
           <div className="mb-10 text-center">
             <h2 className="text-5xl font-black uppercase tracking-tighter mb-2 italic text-black dark:text-white">
               Reset <span className="bg-yellow-400 px-2 not-italic text-black">Access</span>
@@ -122,14 +122,14 @@ const ResetPasswordPage = () => {
               <button
                 type="submit"
                 disabled={loading || !token}
-                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow neo-transition disabled:opacity-50 hover:bg-yellow-300"
+                className="w-full py-5 bg-yellow-400 text-black font-black text-2xl uppercase neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] neo-transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none disabled:opacity-50 hover:bg-yellow-300"
               >
                 {loading ? "Updating..." : "Secure Account"}
               </button>
             </form>
           ) : (
             <div className="text-center py-8 space-y-6">
-              <div className="inline-block p-6 bg-emerald-400 neo-border-thick dark:border-white neo-shadow">
+              <div className="inline-block p-6 bg-emerald-400 neo-border-thick dark:border-white neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
                 <svg className="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M5 13l4 4L19 7"></path>
                 </svg>
@@ -139,7 +139,7 @@ const ResetPasswordPage = () => {
               <div className="pt-4">
                 <Link 
                   to="/login" 
-                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow neo-transition dark:border-white hover:bg-cyan-300"
+                  className="inline-block bg-cyan-400 text-black font-black uppercase px-6 py-3 neo-border neo-shadow dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] neo-transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:hover:shadow-none dark:border-white hover:bg-cyan-300"
                 >
                   Go to Login
                 </Link>
