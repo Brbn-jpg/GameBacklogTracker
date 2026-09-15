@@ -2,6 +2,8 @@
 
 Game Backlog Tracker is a full-stack web application designed to help users organize their video game libraries. It allows users to track their progress, rate games, manage a wishlist, and interact with friends.
 
+Read the [Gamelog case study](https://www.brbn.pl/projects/gamelog) for the architecture, trade-offs and verified project scope.
+
 This repository is a monorepo containing both the server-side API and the client-side user interface.
 
 ## Repository Structure
